@@ -1,4 +1,3 @@
-
 /* style.css */
 * {
     margin: 0;
@@ -12,20 +11,20 @@ body {
     color: #111111;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    align-items: flex-start;
+    min-height: 100vh;
 }
 
-/* মোবাইল রেসপন্সিভ কন্টেইনার */
+/* পুরো স্ক্রিন জুড়ে মোবাইল লেআউট */
 .app {
     width: 100%;
     max-width: 480px;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: #f9f9f9;
     position: relative;
+    padding-bottom: 120px; /* নিচের ইনপুট বক্সের জন্য জায়গা */
 }
 
 /* ================= HEADER STYLE ================= */
@@ -33,9 +32,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 16px;
     background-color: #f9f9f9;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    width: 100%;
 }
 
 .icon-btn {
@@ -48,73 +47,54 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
-}
-
-.icon-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.brand-icon {
-    display: none; 
 }
 
 .brand h1 {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
     color: #1a1a1a;
-    text-align: center;
-}
-
-.brand span {
-    display: none; 
 }
 
 /* ================= CHAT AREA STYLE ================= */
 .chat-area {
     flex: 1;
-    overflow-y: auto;
-    padding: 20px;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    width: 100%;
 }
 
 .welcome-screen {
-    margin: auto;
+    margin-top: 40px; /* লেখাটিকে স্ক্রিনের একটু ওপরে রাখার জন্য */
     text-align: left;
     width: 100%;
-    max-width: 360px;
-    padding-bottom: 60px;
-}
-
-.welcome-icon {
-    display: none; 
 }
 
 .welcome-screen h2 {
     font-size: 32px;
     font-weight: 500;
     color: #111111;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     line-height: 1.2;
 }
 
 .welcome-screen p {
-    font-size: 15px;
+    font-size: 16px;
     color: #666666;
+    line-height: 1.4;
 }
 
 /* ================= COMPOSER (INPUT) STYLE ================= */
 .composer-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
     padding: 16px;
     background-color: #f9f9f9;
-    width: 100%;
+    z-index: 99;
 }
 
 .composer {
@@ -123,13 +103,10 @@ body {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 28px;
-    padding: 6px 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    gap: 6px;
-}
-
-.composer:focus-within {
-    border-color: #94a3b8;
+    padding: 8px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    gap: 8px;
+    width: 100%;
 }
 
 #messageInput {
@@ -140,46 +117,37 @@ body {
     background: transparent;
     font-size: 16px;
     color: #1a1a1a;
-    padding: 8px 4px;
-    max-height: 150px;
+    padding: 6px 0;
+    height: 24px;
 }
 
 #messageInput::placeholder {
     color: #a0aec0;
 }
 
-/* ডানপাশের মূল অ্যাকশন বাটন */
+/* ডানপাশের গোল বাটন */
 .send-btn {
     background-color: #000000;
     color: #ffffff;
     border: none;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
     flex-shrink: 0;
-}
-
-.send-btn:hover {
-    background-color: #2d3748;
-}
-
-.send-btn:active {
-    transform: scale(0.95);
 }
 
 .send-btn svg {
     color: #ffffff;
 }
 
-/* ================= ATTACHMENT POPUP STYLE ================= */
+/* পপআপ মেনু */
 .attachment-menu {
     position: absolute;
-    bottom: 80px;
+    bottom: 85px;
     left: 16px;
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -204,19 +172,13 @@ body {
     border-radius: 12px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 500;
     color: #4a5568;
     text-align: center;
-    transition: background 0.2s;
 }
 
-.attachment-menu button:hover {
-    background: #e2e8f0;
-}
-
-/* নোট ডিসক্লেমার */
+/* নিচের ছোট ডিসক্লেমার লেখা */
 .composer-note {
-    font-size: 11px;
+    font-size: 12px;
     color: #94a3b8;
     text-align: center;
     margin-top: 10px;
