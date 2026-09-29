@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="bn">
-
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffffff">
+
   <title>PingMe AI</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,612 +13,337 @@
 
   <div class="app">
 
-    <!-- =========================
-         TOP HEADER
-    ========================== -->
+    <!-- ================= HEADER ================= -->
     <header class="top-bar">
 
-      <!-- CHAT HISTORY -->
+      <!-- History / Menu -->
       <button
-        class="header-btn history-btn"
-        id="historyBtn"
+        class="icon-btn"
+        id="menuBtn"
         type="button"
-        aria-label="Chat history"
-        aria-expanded="false"
+        aria-label="History"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 7h14"></path>
-          <path d="M5 12h9"></path>
-          <path d="M5 17h6"></path>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <path
+            d="M4 7h16M4 12h16"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
       </button>
 
-      <!-- BRAND -->
-      <div class="brand">
-        <div class="brand-icon">✦</div>
 
-        <div class="brand-text">
+      <!-- Brand -->
+      <div class="brand">
+
+        <div class="brand-icon">
+          P
+        </div>
+
+        <div>
           <h1>PingMe AI</h1>
           <span>AI Assistant</span>
         </div>
-      </div>
-
-      <!-- HEADER ACTIONS -->
-      <div class="header-actions">
-
-        <!-- SEARCH -->
-        <button
-          class="header-btn search-btn"
-          id="searchBtn"
-          type="button"
-          aria-label="Search"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.5"></circle>
-            <path d="M16 16l5 5"></path>
-          </svg>
-        </button>
-
-        <!-- EDIT / NEW CHAT -->
-        <button
-          class="header-btn new-chat-btn"
-          id="newChatBtn"
-          type="button"
-          aria-label="New chat"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 20h4"></path>
-            <path d="M5 16.5L15.8 5.7a2.1 2.1 0 0 1 3 3L8 19.5 5 20z"></path>
-            <path d="M14.5 7l3 3"></path>
-          </svg>
-        </button>
-
-        <!-- SETTINGS -->
-        <button
-          class="header-btn settings-btn"
-          id="menuBtn"
-          type="button"
-          aria-label="Settings"
-          aria-expanded="false"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <line x1="4" y1="7" x2="20" y2="7"></line>
-            <circle cx="9" cy="7" r="1.6"></circle>
-
-            <line x1="4" y1="12" x2="20" y2="12"></line>
-            <circle cx="15" cy="12" r="1.6"></circle>
-
-            <line x1="4" y1="17" x2="20" y2="17"></line>
-            <circle cx="10" cy="17" r="1.6"></circle>
-          </svg>
-        </button>
 
       </div>
+
+
+      <!-- Settings -->
+      <button
+        class="icon-btn"
+        id="settingsBtn"
+        type="button"
+        aria-label="Settings"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <path
+            d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+            stroke="currentColor"
+            stroke-width="1.8"
+          />
+          <path
+            d="M19 13.5v-3l-2-.7a7.4 7.4 0 0 0-.7-1.7l.9-1.9-2.1-2.1-1.9.9a7.4 7.4 0 0 0-1.7-.7L10.8 2h-3l-.7 2.3a7.4 7.4 0 0 0-1.7.7l-1.9-.9-2.1 2.1.9 1.9a7.4 7.4 0 0 0-.7 1.7l-2 .7v3l2 .7c.2.6.4 1.2.7 1.7l-.9 1.9 2.1 2.1 1.9-.9c.5.3 1.1.5 1.7.7l.7 2.3h3l.7-2.3c.6-.2 1.2-.4 1.7-.7l1.9.9 2.1-2.1-.9-1.9c.3-.5.5-1.1.7-1.7l2-.7Z"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
     </header>
 
 
-    <!-- =========================
-         MAIN CHAT AREA
-    ========================== -->
+    <!-- ================= CHAT AREA ================= -->
     <main class="chat-area" id="chatArea">
 
-      <!-- WELCOME -->
-      <section class="welcome-screen" id="welcomeScreen">
+      <section
+        class="welcome-screen"
+        id="welcomeScreen"
+      >
 
-        <div class="welcome-icon">✦</div>
+        <div class="welcome-icon">
+          P
+        </div>
 
         <h2>How can I help you?</h2>
 
         <p>
-          Ask anything. Chat with PingMe AI in বাংলা or English.
+          Ask anything, write something, or use your voice.
         </p>
 
-        <!-- QUICK SUGGESTIONS -->
-        <div class="suggestions">
-
-          <button class="suggestion" type="button">
-            <span class="suggestion-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M5 5h14v14H5z"></path>
-                <path d="M8 9h8"></path>
-                <path d="M8 13h6"></path>
-              </svg>
-            </span>
-            <span>Write something for me</span>
-          </button>
-
-          <button class="suggestion" type="button">
-            <span class="suggestion-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7z"></path>
-              </svg>
-            </span>
-            <span>Give me an idea</span>
-          </button>
-
-          <button class="suggestion" type="button">
-            <span class="suggestion-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="8.5"></circle>
-                <path d="M3.5 12h17"></path>
-                <path d="M12 3.5a13 13 0 0 1 0 17"></path>
-                <path d="M12 3.5a13 13 0 0 0 0 17"></path>
-              </svg>
-            </span>
-            <span>Translate something</span>
-          </button>
-
-        </div>
       </section>
 
     </main>
 
 
-    <!-- =========================
-         HISTORY PANEL
-    ========================== -->
-    <aside
-      class="history-panel"
-      id="historyPanel"
-      aria-hidden="true"
-    >
-
-      <div class="panel-header">
-
-        <div>
-          <h2>Chat History</h2>
-          <span>Your conversations</span>
-        </div>
-
-        <button
-          class="panel-close-btn"
-          id="closeHistory"
-          type="button"
-          aria-label="Close history"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <div class="history-search">
-        <svg viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="6.5"></circle>
-          <path d="M16 16l5 5"></path>
-        </svg>
-
-        <input
-          id="historySearchInput"
-          type="search"
-          placeholder="Search chats..."
-          autocomplete="off"
-        >
-      </div>
-
-      <div class="history-list" id="historyList">
-
-        <div class="history-empty">
-          <div class="history-empty-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M5 5h14v11a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z"></path>
-              <path d="M8 8h8"></path>
-              <path d="M8 12h5"></path>
-            </svg>
-          </div>
-
-          <h3>No conversations yet</h3>
-          <p>Your chats will appear here.</p>
-        </div>
-
-      </div>
-
-      <div class="history-footer">
-
-        <button class="history-footer-btn" id="projectBtn" type="button">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"></path>
-          </svg>
-          <span>Projects</span>
-        </button>
-
-        <button class="history-footer-btn" id="clearHistoryBtn" type="button">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 7h14"></path>
-            <path d="M9 7V4h6v3"></path>
-            <path d="M7 7l1 14h8l1-14"></path>
-          </svg>
-          <span>Clear</span>
-        </button>
-
-      </div>
-
-    </aside>
-
-
-    <!-- =========================
-         SETTINGS PANEL
-    ========================== -->
-    <aside
-      class="settings-panel"
-      id="settingsPanel"
-      aria-hidden="true"
-    >
-
-      <!-- SETTINGS HOME -->
-      <div class="settings-home" id="settingsHome">
-
-        <div class="panel-header">
-
-          <div>
-            <h2>Settings</h2>
-            <span>PingMe AI preferences</span>
-          </div>
-
-          <button
-            class="panel-close-btn"
-            id="closeSettings"
-            type="button"
-            aria-label="Close settings"
-          >
-            ×
-          </button>
-
-        </div>
-
-
-        <div class="settings-options">
-
-          <button class="settings-option" id="profileOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>Profile</strong>
-              <small>Manage your profile</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="memoryOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M9 3h6"></path>
-                <path d="M8 5h8v4a6 6 0 0 1-3 5.2V18"></path>
-                <path d="M8 18h8"></path>
-                <path d="M7 21h10"></path>
-                <path d="M8 9h8"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>AI Memory</strong>
-              <small>Manage what PingMe AI remembers</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="historyOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M3 12a9 9 0 1 0 3-6.7"></path>
-                <polyline points="3 4 3 9 8 9"></polyline>
-                <path d="M12 7v5l3 2"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>Chat History</strong>
-              <small>Manage previous conversations</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="appearanceOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="4"></circle>
-                <path d="M12 2v2"></path>
-                <path d="M12 20v2"></path>
-                <path d="M4.9 4.9l1.4 1.4"></path>
-                <path d="M17.7 17.7l1.4 1.4"></path>
-                <path d="M2 12h2"></path>
-                <path d="M20 12h2"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>Appearance</strong>
-              <small>Theme and display</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="languageOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M3 12h18"></path>
-                <path d="M12 3a14 14 0 0 1 0 18"></path>
-                <path d="M12 3a14 14 0 0 0 0 18"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>Language</strong>
-              <small>Choose your language</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="notificationOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-                <path d="M10 21h4"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>Notifications</strong>
-              <small>Notification preferences</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="privacyOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <rect x="5" y="10" width="14" height="11" rx="2"></rect>
-                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>Privacy & Security</strong>
-              <small>Privacy and security controls</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-
-          <button class="settings-option" id="aiFeaturesOption" type="button">
-            <span class="settings-option-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"></path>
-                <path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7z"></path>
-              </svg>
-            </span>
-            <span class="settings-option-text">
-              <strong>AI Features</strong>
-              <small>Voice, AI and chat features</small>
-            </span>
-            <span class="settings-chevron">›</span>
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- SETTINGS DETAIL VIEW -->
-      <div class="settings-detail" id="settingsDetail" hidden>
-
-        <div class="panel-header">
-
-          <button
-            class="panel-back-btn"
-            id="settingsBackBtn"
-            type="button"
-            aria-label="Back"
-          >
-            <svg viewBox="0 0 24 24">
-              <path d="M19 12H5"></path>
-              <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-          </button>
-
-          <div>
-            <h2 id="settingsDetailTitle">Settings</h2>
-            <span id="settingsDetailSubtitle">PingMe AI</span>
-          </div>
-
-        </div>
-
-        <div class="settings-detail-content" id="settingsDetailContent">
-        </div>
-
-      </div>
-
-    </aside>
-
-
-    <!-- =========================
-         POPUP BACKDROP
-    ========================== -->
-    <div
-      class="ui-backdrop"
-      id="uiBackdrop"
-      aria-hidden="true"
-    ></div>
-
-
-    <!-- =========================
-         ATTACHMENT PREVIEW
-    ========================== -->
-    <div
-      class="attachment-preview"
-      id="attachmentPreview"
-      aria-hidden="true"
-    ></div>
-
-
-    <!-- =========================
-         MESSAGE COMPOSER
-    ========================== -->
+    <!-- ================= COMPOSER ================= -->
     <div class="composer-wrapper">
 
-      <div class="composer" id="composer">
+      <div class="composer">
 
         <!-- PLUS -->
         <button
-          class="composer-btn plus-btn"
+          class="icon-btn"
           id="plusBtn"
           type="button"
           aria-label="Add"
-          aria-expanded="false"
-          aria-controls="attachmentMenu"
         >
-          <svg viewBox="0 0 24 24">
-            <path d="M12 5v14"></path>
-            <path d="M5 12h14"></path>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+            <path
+              d="M12 5v14M5 12h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
           </svg>
         </button>
-
-
-        <!-- ATTACHMENT MENU -->
-        <div
-          class="attachment-menu"
-          id="attachmentMenu"
-          aria-hidden="true"
-        >
-
-          <div class="attachment-menu-title">
-            <strong>Add to chat</strong>
-            <span>Choose an option</span>
-          </div>
-
-
-          <!-- PHOTO -->
-          <button class="attachment-option" id="photoOption" type="button">
-            <span class="attachment-icon photo-icon">
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="3"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <path d="M21 15l-5-5L5 21"></path>
-              </svg>
-            </span>
-            <span>
-              <strong>Photo</strong>
-              <small>Choose an image</small>
-            </span>
-          </button>
-
-
-          <!-- CAMERA -->
-          <button class="attachment-option" id="cameraOption" type="button">
-            <span class="attachment-icon camera-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 7h3l2-2h6l2 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
-                <circle cx="12" cy="13" r="3.5"></circle>
-              </svg>
-            </span>
-            <span>
-              <strong>Camera</strong>
-              <small>Take a photo</small>
-            </span>
-          </button>
-
-
-          <!-- FILE -->
-          <button class="attachment-option" id="fileOption" type="button">
-            <span class="attachment-icon file-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="8" y1="13" x2="16" y2="13"></line>
-                <line x1="8" y1="17" x2="14" y2="17"></line>
-              </svg>
-            </span>
-            <span>
-              <strong>File</strong>
-              <small>Upload a document</small>
-            </span>
-          </button>
-
-
-          <!-- AUDIO -->
-          <button class="attachment-option" id="audioOption" type="button">
-            <span class="attachment-icon audio-icon">
-              <svg viewBox="0 0 24 24">
-                <rect x="9" y="3" width="6" height="11" rx="3"></rect>
-                <path d="M5.5 11a6.5 6.5 0 0 0 13 0"></path>
-                <path d="M12 17.5V21"></path>
-                <path d="M8.5 21h7"></path>
-              </svg>
-            </span>
-            <span>
-              <strong>Audio</strong>
-              <small>Add an audio file</small>
-            </span>
-          </button>
-
-
-          <!-- SCREEN / EXTRA -->
-          <button class="attachment-option" id="screenOption" type="button">
-            <span class="attachment-icon screen-icon">
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="4" width="18" height="14" rx="2"></rect>
-                <path d="M8 21h8"></path>
-                <path d="M12 18v3"></path>
-              </svg>
-            </span>
-            <span>
-              <strong>Screen</strong>
-              <small>Share your screen</small>
-            </span>
-          </button>
-
-
-          <!-- PROJECT -->
-          <button class="attachment-option" id="addProjectOption" type="button">
-            <span class="attachment-icon project-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"></path>
-              </svg>
-            </span>
-            <span>
-              <strong>Project</strong>
-              <small>Add this chat to a project</small>
-            </span>
-          </button>
-
-        </div>
-
-
-        <!-- HIDDEN FILE INPUTS -->
-        <input type="file" id="photoInput" accept="image/*" hidden>
-        <input type="file" id="videoInput" accept="video/*" hidden>
-        <input type="file" id="fileInput" hidden>
-        <input type="file" id="audioInput" accept="audio/*" hidden>
 
 
         <!-- MICROPHONE -->
         <button
-          class="composer-btn mic-btn"
+          class="icon-btn"
           id="micBtn"
           type="button"
           aria-label="Voice input"
-          title="Voice input"
         >
-          <svg viewBox="0 0 24 24">
-            <rect x="9" y="3" width="6" height="11" rx="3"></rect>
-            <path d="M5.5 11a6.5 6.5 0 0 0 13 0"></path>
-            <path d="M12 17.5V21"></path>
-            <path d="M8.5 21h7"></path>
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none">
+            <rect
+              x="8"
+              y="3"
+              width="8"
+              height="12"
+              rx="4"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
           </svg>
         </button>
 
 
-        <!-- EXPAND EDITOR -->
+        <!-- MESSAGE INPUT -->
+        <textarea
+          id="messageInput"
+          rows="1"
+          placeholder="Message PingMe AI..."
+          autocomplete="off"
+        ></textarea>
+
+
+        <!-- AUTO VOICE / SEND -->
         <button
-          class="composer-btn expand-btn"
-          id="expandBtn"
+          class="send-btn"
+          id="sendBtn"
           type="button"
-          aria-label="Expand editor"
-          aria-expanded="false"
+          aria-label="Voice or Send"
         >
-          <svg viewBox="0 0 24 24">
-            <path d="M
+
+          <!-- VOICE -->
+          <svg
+            id="voiceIcon"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+          >
+            <rect
+              x="8"
+              y="3"
+              width="8"
+              height="12"
+              rx="4"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+
+
+          <!-- SEND -->
+          <svg
+            id="sendIcon"
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            style="display:none;"
+          >
+            <path
+              d="M12 19V5"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="m6 11 6-6 6 6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- ================= PLUS MENU ================= -->
+      <div
+        class="attachment-menu"
+        id="attachmentMenu"
+        hidden
+      >
+
+        <!-- Camera -->
+        <button
+          type="button"
+          id="cameraBtn"
+        >
+          <span>Camera</span>
+        </button>
+
+
+        <!-- Photo -->
+        <button
+          type="button"
+          id="photoOption"
+        >
+          <span>Photo</span>
+        </button>
+
+
+        <!-- File -->
+        <button
+          type="button"
+          id="fileOption"
+        >
+          <span>File</span>
+        </button>
+
+
+        <!-- Audio -->
+        <button
+          type="button"
+          id="audioOption"
+        >
+          <span>Audio</span>
+        </button>
+
+
+        <!-- Screen -->
+        <button
+          type="button"
+          id="screenOption"
+        >
+          <span>Screen</span>
+        </button>
+
+
+        <!-- Project -->
+        <button
+          type="button"
+          id="projectOption"
+        >
+          <span>Project</span>
+        </button>
+
+      </div>
+
+
+      <div class="composer-note">
+        PingMe AI can make mistakes. Check important information.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= EXISTING FIREBASE AI ================= -->
+  <!-- এই অংশটা এখন বদলানো হয়নি -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+    import {
+      getAI,
+      getGenerativeModel,
+      GoogleAIBackend
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
+      authDomain: "pingme-ai-8d8cc.firebaseapp.com",
+      projectId: "pingme-ai-8d8cc",
+      storageBucket: "pingme-ai-8d8cc.firebasestorage.app",
+      messagingSenderId: "547217020747",
+      appId: "1:547217020747:web:62b7d3843672703d8abace",
+      measurementId: "G-3WRC64CRDR"
+    };
+
+
+    const firebaseApp =
+      initializeApp(firebaseConfig);
+
+
+    const ai =
+      getAI(firebaseApp, {
+        backend: new GoogleAIBackend()
+      });
+
+
+    const model =
+      getGenerativeModel(ai, {
+        model: "gemini-3.8-flash"
+      });
+
+
+    window.pingMeAIModel = model;
+
+  </script>
+
+
+  <!-- UI -->
+  <script src="chat-ui.js"></script>
+
+  <!-- EXISTING AI LOGIC -->
+  <script src="script.js"></script>
+
+</body>
+</html>
