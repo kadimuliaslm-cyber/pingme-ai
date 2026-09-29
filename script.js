@@ -76,9 +76,18 @@ async function sendMessage() {
 
   messageInput.value = "";
   messageInput.style.height = "auto";
+const thinkingMessage = document.createElement("div");
 
-  const thinkingMessage =
-    addMessage("ভাবছি...", "ai");
+thinkingMessage.className = "thinking-message";
+
+thinkingMessage.innerHTML = `
+  <div class="thinking-spinner"></div>
+`;
+
+chatArea.appendChild(thinkingMessage);
+
+chatArea.scrollTop = chatArea.scrollHeight;
+  
 
   try {
 
