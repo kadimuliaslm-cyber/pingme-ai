@@ -121,13 +121,58 @@
 
   </div>
 
-
-  <!-- JavaScript -->
-  <script src="script.js"></script><script type="module">
+<!-- Firebase AI Logic -->
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+  import {
+    getAI,
+    getGenerativeModel,
+    GoogleAIBackend
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
+  const firebaseConfig = {
+    apiKey: "তোর Firebase API key এখানে",
+    authDomain: "pingme-ai-8d8cc.firebaseapp.com",
+    projectId: "pingme-ai-8d8cc",
+    storageBucket: "pingme-ai-8d8cc.firebasestorage.app",
+    messagingSenderId: "547217020747",
+    appId: "1:547217020747:web:62b7d3843672703d8abace",
+    measurementId: "G-3WRC64CRDR"
+  };
+
+  <!-- Firebase AI Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import {
+    getAI,
+    getGenerativeModel,
+    GoogleAIBackend
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
+  const firebaseConfig = {
+    apiKey: ""AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
+    authDomain: "pingme-ai-8d8cc.firebaseapp.com",
+    projectId: "pingme-ai-8d8cc",
+    storageBucket: "pingme-ai-8d8cc.firebasestorage.app",
+    messagingSenderId: "547217020747",
+    appId: "1:547217020747:web:62b7d3843672703d8abace",
+    measurementId: "G-3WRC64CRDR"
+  };
+
+  const app = initializeApp(firebaseConfig);
+
+  const ai = getAI(app, {
+    backend: new GoogleAIBackend()
+  });
+
+  const model = getGenerativeModel(ai, {
+    model: "gemini-3.8-flash"
+  });
+
+  window.pingMeAIModel = model;
 </script>
+
+<script src="script.js"></script>
 
 </body>
 </html>
-    
