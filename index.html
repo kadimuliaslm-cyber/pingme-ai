@@ -1,75 +1,1010 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PingMe AI - by কাদির</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PingMe AI</title>
+
 <style>
-body{margin:0;background:#000;color:#fff;font-family:sans-serif;display:flex;flex-direction:column;height:100vh}
-.header{background:#111;padding:12px;text-align:center;border-bottom:1px solid #222}
-.header h1{margin:0;color:#00ff88}
-#chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:85%;padding:10px 14px;border-radius:15px;font-size:14px;line-height:1.4}
-.user{background:#00ff88;color:#000;align-self:flex-end}
-.ai{background:#1e1e1e;align-self:flex-start}
-.msg img{width:100%;border-radius:10px;margin-top:8px}
-.input-area{display:flex;padding:10px;background:#111;gap:8px}
-.input-area input{flex:1;background:#222;border:none;color:#fff;padding:12px;border-radius:20px;outline:none}
-.input-area button{background:#00ff88;border:none;padding:0 18px;border-radius:20px;font-weight:bold}
-#setup{padding:20px;text-align:center;background:#111}
-#setup input{width:90%;padding:10px;border-radius:10px;border:none;margin:10px 0}
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#050505;
+ color:#fff;
+ font-family:Arial,sans-serif;
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+}
+
+.header{
+ background:#101010;
+ padding:12px;
+ text-align:center;
+ border-bottom:1px solid #222;
+}
+
+.header h1{
+ margin:0;
+ color:#00ff88;
+ font-size:23px;
+}
+
+.header p{
+ margin:4px 0 0;
+ font-size:11px;
+ opacity:.55;
+}
+
+#setup{
+ padding:25px 18px;
+ text-align:center;
+ background:#101010;
+}
+
+#setup h2{
+ color:#00ff88;
+}
+
+#apiKeyInput{
+ width:100%;
+ padding:13px;
+ border:0;
+ outline:0;
+ border-radius:12px;
+ background:#222;
+ color:#fff;
+ margin:10px 0;
+}
+
+.saveBtn{
+ background:#00ff88;
+ color:#000;
+ border:0;
+ padding:12px 25px;
+ border-radius:12px;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+#chat{
+ flex:1;
+ overflow-y:auto;
+ padding:15px;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.msg{
+ max-width:88%;
+ padding:11px 14px;
+ border-radius:16px;
+ font-size:14px;
+ line-height:1.5;
+ white-space:pre-wrap;
+ word-wrap:break-word;
+}
+
+.user{
+ background:#00ff88;
+ color:#000;
+ align-self:flex-end;
+ border-bottom-right-radius:4px;
+}
+
+.ai{
+ background:#1b1b1b;
+ color:#fff;
+ align-self:flex-start;
+ border-bottom-left-radius:4px;
+}
+
+.msg img{
+ max-width:100%;
+ border-radius:12px;
+ margin-top:8px;
+ display:block;
+}
+
+.imageLabel{
+ font-size:12px;
+ opacity:.7;
+ margin-bottom:5px;
+}
+
+.input-area{
+ background:#101010;
+ border-top:1px solid #222;
+ padding:9px;
+ display:flex;
+ gap:7px;
+ align-items:center;
+}
+
+#userInput{
+ flex:1;
+ min-width:0;
+ background:#222;
+ border:0;
+ outline:0;
+ color:#fff;
+ padding:12px 14px;
+ border-radius:22px;
+ font-size:14px;
+}
+
+.iconBtn{
+ width:43px;
+ height:43px;
+ border:0;
+ border-radius:50%;
+ background:#222;
+ color:#fff;
+ font-size:18px;
+ cursor:pointer;
+}
+
+.sendBtn{
+ background:#00ff88;
+ color:#000;
+ font-weight:bold;
+}
+
+.bottomBar{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ padding:7px;
+ background:#101010;
+}
+
+.smallBtn{
+ background:#1d1d1d;
+ color:#aaa;
+ border:1px solid #333;
+ padding:7px 12px;
+ border-radius:10px;
+ font-size:11px;
+}
+
+.typing{
+ opacity:.6;
+ font-style:italic;
+}
+
+.hidden{
+ display:none!important;
+}
+
+.status{
+ text-align:center;
+ font-size:10px;
+ opacity:.45;
+ padding:3px;
+}
 </style>
 </head>
-<body>
-<div class="header"><h1>PingMe AI 🟢</h1><p style="font-size:12px;opacity:0.6">ছবি বানায় + নিজে থেকে ডাকে</p></div>
 
-<div id="setup">
-<p>Gemini API Key দাও (1 বারই)</p>
-<input id="apiKeyInput" placeholder="AIza...">
-<button onclick="saveKey()" style="background:#00ff88;padding:10px 20px;border:none;border-radius:10px;font-weight:bold">Save</button><br>
-<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#00ff88;font-size:12px">Key কোথায় পাবো? এখানে চাপ দাও</a>
+<body>
+
+<div class="header">
+<h1>PingMe AI 🟢</h1>
+<p>Chat • Image • Voice • Multilingual • Smart Follow-up</p>
 </div>
 
-<div id="chat" style="display:none"></div>
-<div class="input-area" id="inputArea" style="display:none">
-<input id="userInput" placeholder="লেখো বা বলো 'একটা বিড়ালের ছবি বানাও'..." onkeypress="if(event.key==='Enter')send()">
-<button onclick="send()">Send</button>
+<!-- API SETUP -->
+<div id="setup">
+<h2>Welcome to PingMe AI 🤖</h2>
+<p style="font-size:13px;opacity:.7">
+তোর Gemini API Key দে। এটা এই ব্রাউজারেই সংরক্ষণ হবে।
+</p>
+
+<input
+ id="apiKeyInput"
+ type="password"
+ placeholder="AIza..."
+>
+
+<br>
+
+<button class="saveBtn" onclick="saveKey()">
+Connect AI
+</button>
+
+<p style="font-size:11px;opacity:.5;margin-top:15px">
+API key কাউকে শেয়ার করিস না।
+</p>
+</div>
+
+<!-- CHAT -->
+<div id="chat" class="hidden"></div>
+
+<div id="status" class="status hidden">
+PingMe AI ready
+</div>
+
+<!-- INPUT -->
+<div id="inputArea" class="input-area hidden">
+
+<button
+ class="iconBtn"
+ onclick="startVoice()"
+ title="Voice input">
+🎤
+</button>
+
+<input
+ id="userInput"
+ placeholder="লিখো বা মাইকে কথা বলো..."
+ autocomplete="off"
+>
+
+<button
+ class="iconBtn sendBtn"
+ onclick="sendMessage()">
+➤
+</button>
+
+</div>
+
+<div id="bottomBar" class="bottomBar hidden">
+
+<button class="smallBtn" onclick="clearChat()">
+🗑 Clear Chat
+</button>
+
+<button class="smallBtn" onclick="toggleVoice()">
+🔊 Voice
+</button>
+
 </div>
 
 <script>
-let API_KEY=localStorage.getItem("gemini_key"), inactivityTimer;
-let followUps=["কিরে কই গেলে? 😏","মেসেজ দিয়ে পালালে কেন?","আমি এখনো এখানেই আছি...","বোর হচ্ছি, ফিরে আসো না!","তোমার জন্য অপেক্ষা করছি 💚"];
-if(API_KEY){showChat()}
-function saveKey(){let k=document.getElementById("apiKeyInput").value.trim();if(!k)return alert("Key দাও");localStorage.setItem("gemini_key",k);API_KEY=k;showChat();addMsg("আমি রেডি! এখন আমি ছবি বানাতে পারি, আর তুমি চলে গেলে 1 মিনিট পর নিজে থেকেই ডাকবো 😉","ai")}
-function showChat(){document.getElementById("setup").style.display="none";document.getElementById("chat").style.display="flex";document.getElementById("inputArea").style.display="flex";}
-function addMsg(t,c,isHTML=false){let d=document.getElementById("chat");let m=document.createElement("div");m.className="msg "+c;if(isHTML)m.innerHTML=t;else m.innerText=t;d.appendChild(m);d.scrollTop=d.scrollHeight;resetTimer();}
-function resetTimer(){clearTimeout(inactivityTimer);inactivityTimer=setTimeout(()=>{let msg=followUps[Math.floor(Math.random()*followUps.length)];addMsg(msg,"ai");},60000);}
 
-async function send(){
-let input=document.getElementById("userInput");let text=input.value.trim();if(!text)return;
-addMsg(text,"user");input.value="";clearTimeout(inactivityTimer);
+/* =========================
+   SETTINGS
+========================= */
 
-let lower=text.toLowerCase();
-if(lower.includes("ছবি") || lower.includes("pic") || lower.includes("image") || lower.includes("বানাও") || lower.includes("draw")){
-addMsg("ছবি বানাচ্ছি... 🎨","ai");
-let imgUrl=`https://image.pollinations.ai/prompt/${encodeURIComponent(text)}?width=512&height=512&seed=${Math.floor(Math.random()*1000)}`;
-let html=`তোমার জন্য বানালাম: <br><img src="${imgUrl}" onload="resetTimer()">`;
-let chat=document.getElementById("chat");chat.lastChild.remove();
-addMsg(html,"ai",true);
-return;
+let API_KEY = localStorage.getItem("pingme_gemini_key");
+
+const TEXT_MODEL = "gemini-2.5-flash";
+const IMAGE_MODEL = "gemini-2.5-flash-image";
+
+let inactivityTimer = null;
+let voiceEnabled = true;
+let conversation = [];
+
+const followUps = [
+ "কিরে, কোথায় গেলি? 😄",
+ "মেসেজ দিয়ে চুপ হয়ে গেলি কেন?",
+ "আমি কিন্তু এখনো এখানেই আছি 🤖💚",
+ "আর কিছু জানতে চাস?",
+ "ফিরে আয়, আড্ডা দিই 😄"
+];
+
+
+/* =========================
+   STARTUP
+========================= */
+
+if(API_KEY){
+ showChat();
+
+ const saved = localStorage.getItem("pingme_history");
+
+ if(saved){
+   try{
+     conversation = JSON.parse(saved);
+     renderHistory();
+   }catch(e){
+     conversation=[];
+   }
+ }else{
+   addMessage(
+    "হ্যালো! আমি PingMe AI 🤖💚\n\n"+
+    "তুই আমার সাথে কথা বলতে পারিস, মাইকে কথা বলতে পারিস, "+
+    "আর চাইলে বলবি—“একটা ছবি বানাও”।",
+    "ai",
+    true
+   );
+ }
 }
 
-addMsg("লিখছি...","ai");
-try{
-let res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,{
-method:"POST",headers:{"Content-Type":"application/json"},
-body:JSON.stringify({contents:[{parts:[{text:text}]}]})
+
+/* =========================
+   API KEY
+========================= */
+
+function saveKey(){
+
+ const key =
+ document.getElementById("apiKeyInput").value.trim();
+
+ if(!key){
+   alert("Gemini API Key দে।");
+   return;
+ }
+
+ localStorage.setItem("pingme_gemini_key",key);
+ API_KEY=key;
+
+ showChat();
+
+ addMessage(
+  "AI Connected ✅\n\nআমি রেডি। আমাকে কিছু বল। 🤖",
+  "ai",
+  true
+ );
+}
+
+
+function showChat(){
+
+ document.getElementById("setup")
+ .classList.add("hidden");
+
+ document.getElementById("chat")
+ .classList.remove("hidden");
+
+ document.getElementById("inputArea")
+ .classList.remove("hidden");
+
+ document.getElementById("bottomBar")
+ .classList.remove("hidden");
+
+ document.getElementById("status")
+ .classList.remove("hidden");
+}
+
+
+/* =========================
+   MESSAGE SYSTEM
+========================= */
+
+function addMessage(text,type,save=true){
+
+ const chat=document.getElementById("chat");
+
+ const msg=document.createElement("div");
+
+ msg.className="msg "+type;
+
+ msg.textContent=text;
+
+ chat.appendChild(msg);
+
+ chat.scrollTop=chat.scrollHeight;
+
+ if(save){
+
+   conversation.push({
+     role:type,
+     text:text
+   });
+
+   saveHistory();
+ }
+
+ resetInactivityTimer();
+
+ return msg;
+}
+
+
+function addImageMessage(base64){
+
+ const chat=document.getElementById("chat");
+
+ const box=document.createElement("div");
+
+ box.className="msg ai";
+
+ box.innerHTML=`
+ <div class="imageLabel">
+ 🎨 AI Generated Image
+ </div>
+
+ <img src="data:image/png;base64,${base64}">
+
+ <div style="margin-top:8px;font-size:11px;opacity:.5">
+ Gemini Image Generation
+ </div>
+ `;
+
+ chat.appendChild(box);
+
+ chat.scrollTop=chat.scrollHeight;
+
+ resetInactivityTimer();
+}
+
+
+function saveHistory(){
+
+ try{
+   localStorage.setItem(
+    "pingme_history",
+    JSON.stringify(conversation.slice(-100))
+   );
+ }catch(e){}
+}
+
+
+function renderHistory(){
+
+ const chat=document.getElementById("chat");
+
+ chat.innerHTML="";
+
+ conversation.forEach(item=>{
+
+   const msg=document.createElement("div");
+
+   msg.className="msg "+item.role;
+
+   msg.textContent=item.text;
+
+   chat.appendChild(msg);
+
+ });
+
+ chat.scrollTop=chat.scrollHeight;
+}
+
+
+/* =========================
+   CLEAR CHAT
+========================= */
+
+function clearChat(){
+
+ if(!confirm("সব chat মুছে ফেলবি?")) return;
+
+ conversation=[];
+
+ localStorage.removeItem("pingme_history");
+
+ document.getElementById("chat").innerHTML="";
+
+ addMessage(
+  "নতুন chat শুরু হলো 🤖💚",
+  "ai",
+  true
+ );
+}
+
+
+/* =========================
+   INACTIVITY
+========================= */
+
+function resetInactivityTimer(){
+
+ clearTimeout(inactivityTimer);
+
+ inactivityTimer=setTimeout(()=>{
+
+   const message=
+   followUps[
+    Math.floor(Math.random()*followUps.length)
+   ];
+
+   addMessage(message,"ai",true);
+
+   speak(message);
+
+ },60000);
+}
+
+
+/* =========================
+   SEND MESSAGE
+========================= */
+
+async function sendMessage(){
+
+ const input=document.getElementById("userInput");
+
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ input.value="";
+
+ clearTimeout(inactivityTimer);
+
+ addMessage(text,"user",true);
+
+ const lower=text.toLowerCase();
+
+
+ /* IMAGE DETECTION */
+
+ const imageWords=[
+  "ছবি বানাও",
+  "ছবি বানিয়ে",
+  "ছবি তৈরি",
+  "একটা ছবি",
+  "image",
+  "generate image",
+  "create image",
+  "make image",
+  "draw",
+  "picture",
+  "photo"
+ ];
+
+ const wantsImage=imageWords.some(word =>
+  lower.includes(word)
+ );
+
+
+ if(wantsImage){
+
+   await generateImage(text);
+
+   return;
+ }
+
+
+ /* NORMAL AI */
+
+ await askAI(text);
+}
+
+
+/* =========================
+   GEMINI TEXT AI
+========================= */
+
+async function askAI(text){
+
+ const loading=addMessage(
+  "ভাবছি... 🤔",
+  "ai",
+  false
+ );
+
+ loading.classList.add("typing");
+
+ try{
+
+   const history=conversation
+   .slice(-20)
+   .map(item=>({
+
+      role:
+       item.role==="user"
+       ? "user"
+       : "model",
+
+      parts:[
+       {text:item.text}
+      ]
+
+   }));
+
+
+   const response=await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL}:generateContent?key=${encodeURIComponent(API_KEY)}`,
+    {
+      method:"POST",
+
+      headers:{
+       "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+       systemInstruction:{
+        parts:[{
+         text:
+         "You are PingMe AI. "+
+         "Be friendly, helpful and conversational. "+
+         "Answer in the same language as the user whenever possible. "+
+         "You can communicate in many languages. "+
+         "If the user asks for an image, tell them they can ask PingMe AI to generate one."
+        }]
+       },
+
+       contents:history,
+
+       generationConfig:{
+        temperature:0.8,
+        maxOutputTokens:2048
+       }
+
+      })
+    }
+   );
+
+
+   const data=await response.json();
+
+   loading.remove();
+
+
+   if(!response.ok){
+
+     const errorMessage=
+      data?.error?.message ||
+      "Gemini API error";
+
+     addMessage(
+      "⚠️ API Error:\n"+errorMessage,
+      "ai",
+      true
+     );
+
+     return;
+   }
+
+
+   const reply=
+    data?.candidates?.[0]
+    ?.content?.parts
+    ?.map(p=>p.text || "")
+    .join("")
+    .trim();
+
+
+   if(!reply){
+
+     addMessage(
+      "AI কোনো উত্তর দেয়নি। আবার চেষ্টা কর।",
+      "ai",
+      true
+     );
+
+     return;
+   }
+
+
+   addMessage(reply,"ai",true);
+
+   speak(reply);
+
+ }catch(error){
+
+   loading.remove();
+
+   addMessage(
+    "⚠️ Connection Error\n\n"+
+    "ইন্টারনেট অথবা API Key চেক কর।",
+    "ai",
+    true
+   );
+ }
+}
+
+
+/* =========================
+   IMAGE GENERATION
+========================= */
+
+async function generateImage(prompt){
+
+ const loading=addMessage(
+  "🎨 ছবি বানাচ্ছি... একটু অপেক্ষা কর...",
+  "ai",
+  false
+ );
+
+ loading.classList.add("typing");
+
+ try{
+
+   const response=await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${IMAGE_MODEL}:generateContent?key=${encodeURIComponent(API_KEY)}`,
+    {
+      method:"POST",
+
+      headers:{
+       "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+       contents:[
+        {
+         parts:[
+          {
+           text:
+           "Create a high quality image based on this request: "+
+           prompt
+          }
+         ]
+        }
+       ],
+
+       generationConfig:{
+        responseModalities:["TEXT","IMAGE"]
+       }
+
+      })
+    }
+   );
+
+
+   const data=await response.json();
+
+   loading.remove();
+
+
+   if(!response.ok){
+
+     addMessage(
+      "⚠️ Image generation error:\n"+
+      (data?.error?.message || "Unknown error"),
+      "ai",
+      true
+     );
+
+     return;
+   }
+
+
+   let imageFound=false;
+
+
+   const parts=
+    data?.candidates?.[0]
+    ?.content?.parts || [];
+
+
+   for(const part of parts){
+
+     if(part.inlineData){
+
+       const base64=part.inlineData.data;
+
+       addImageMessage(base64);
+
+       imageFound=true;
+
+       break;
+     }
+   }
+
+
+   if(!imageFound){
+
+     const textReply=
+      parts
+      .map(p=>p.text || "")
+      .join("")
+      .trim();
+
+     addMessage(
+      textReply ||
+      "ছবি তৈরি করা যায়নি। আবার চেষ্টা কর।",
+      "ai",
+      true
+     );
+   }
+
+
+ }catch(error){
+
+   loading.remove();
+
+   addMessage(
+    "⚠️ ছবি বানাতে সমস্যা হয়েছে। API Key এবং Internet connection চেক কর।",
+    "ai",
+    true
+   );
+ }
+}
+
+
+/* =========================
+   VOICE INPUT
+========================= */
+
+let recognition=null;
+
+function startVoice(){
+
+ const SpeechRecognition=
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+
+ if(!SpeechRecognition){
+
+   alert(
+    "এই browser-এ voice input support নেই। Chrome ব্যবহার করে দেখ।"
+   );
+
+   return;
+ }
+
+
+ recognition=new SpeechRecognition();
+
+ recognition.continuous=false;
+
+ recognition.interimResults=false;
+
+ recognition.lang=navigator.language || "bn-BD";
+
+
+ recognition.onstart=()=>{
+
+   document.getElementById("status")
+   .textContent="🎤 শুনছি... কথা বল";
+
+ };
+
+
+ recognition.onresult=(event)=>{
+
+   const transcript=
+    event.results[0][0].transcript;
+
+   document.getElementById("userInput")
+   .value=transcript;
+
+   sendMessage();
+ };
+
+
+ recognition.onerror=()=>{
+
+   document.getElementById("status")
+   .textContent="PingMe AI ready";
+
+ };
+
+
+ recognition.onend=()=>{
+
+   document.getElementById("status")
+   .textContent="PingMe AI ready";
+
+ };
+
+
+ recognition.start();
+}
+
+
+/* =========================
+   AI VOICE OUTPUT
+========================= */
+
+function speak(text){
+
+ if(!voiceEnabled)return;
+
+ if(!("speechSynthesis" in window))return;
+
+ window.speechSynthesis.cancel();
+
+ const clean=text
+  .replace(/[*#_`]/g,"")
+  .slice(0,1500);
+
+ const utterance=
+  new SpeechSynthesisUtterance(clean);
+
+
+ utterance.lang=
+  detectLanguage(clean);
+
+ utterance.rate=1;
+
+ utterance.pitch=1;
+
+
+ const voices=
+  window.speechSynthesis.getVoices();
+
+
+ const matching=
+  voices.find(v =>
+   v.lang
+   .toLowerCase()
+   .startsWith(
+    utterance.lang.split("-")[0]
+   )
+  );
+
+
+ if(matching){
+   utterance.voice=matching;
+ }
+
+
+ window.speechSynthesis.speak(utterance);
+}
+
+
+/* =========================
+   LANGUAGE DETECTION
+========================= */
+
+function detectLanguage(text){
+
+ if(/[অ-হ]/.test(text))
+   return "bn-BD";
+
+ if(/[ก-๙]/.test(text))
+   return "th-TH";
+
+ if(/[一-龯]/.test(text))
+   return "zh-CN";
+
+ if(/[ぁ-んァ-ン]/.test(text))
+   return "ja-JP";
+
+ if(/[가-힣]/.test(text))
+   return "ko-KR";
+
+ if(/[А-Яа-я]/.test(text))
+   return "ru-RU";
+
+ if(/[ع-ي]/.test(text))
+   return "ar-SA";
+
+ if(/[अ-ह]/.test(text))
+   return "hi-IN";
+
+ return "en-US";
+}
+
+
+/* =========================
+   VOICE TOGGLE
+========================= */
+
+function toggleVoice(){
+
+ voiceEnabled=!voiceEnabled;
+
+ if(!voiceEnabled){
+
+   window.speechSynthesis.cancel();
+
+   alert("AI voice বন্ধ হয়েছে 🔇");
+
+ }else{
+
+   alert("AI voice চালু হয়েছে 🔊");
+ }
+}
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+document
+.getElementById("userInput")
+.addEventListener("keypress",function(e){
+
+ if(e.key==="Enter"){
+   sendMessage();
+ }
+
 });
-let data=await res.json();
-document.getElementById("chat").lastChild.remove();
-let reply=data.candidates?.[0]?.content?.parts?.[0]?.text || "Key ভুল মনে হচ্ছে";
-addMsg(reply,"ai");
-}catch(e){document.getElementById("chat").lastChild.remove();addMsg("Error: Key বা নেট চেক করো","ai");}
+
+
+/* =========================
+   LOAD BROWSER VOICES
+========================= */
+
+if("speechSynthesis" in window){
+
+ speechSynthesis.onvoiceschanged=()=>{
+   speechSynthesis.getVoices();
+ };
+
 }
+
 </script>
+
 </body>
-</html>
+  </html>
