@@ -1,1 +1,50 @@
-
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PingMe AI - তোমার নিজের AI</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#0f0f0f;color:white;display:flex;flex-direction:column;height:100vh}
+.header{background:#1a1a1a;padding:15px;text-align:center;border-bottom:1px solid #333}
+.header h1{margin:0;color:#00ff88}
+.chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px}
+.msg{padding:12px 15px;border-radius:15px;max-width:80%;line-height:1.5}
+.user{background:#00ff88;color:#000;align-self:flex-end}
+.ai{background:#222;align-self:flex-start;border:1px solid #333}
+.input-area{display:flex;padding:15px;background:#1a1a1a;gap:10px}
+.input-area input{flex:1;padding:12px;border-radius:25px;border:none;outline:none;background:#2a2a2a;color:white}
+.input-area button{padding:12px 20px;border-radius:25px;border:none;background:#00ff88;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="header"><h1>PingMe AI 🟢</h1><small>by কাদির - সারাজীবন চলবে</small></div>
+<div class="chat" id="chat"><div class="msg ai">হ্যালো! আমি PingMe AI। তোমার নিজের AI। বলো কি সাহায্য লাগবে? 😊</div></div>
+<div class="input-area"><input id="input" placeholder="কিছু লেখো..."><button onclick="send()">Send</button></div>
+<script>
+const chat=document.getElementById('chat');
+const inp=document.getElementById('input');
+const replies={
+"hello":"হ্যালো ভাই! কেমন আছো?",
+"hi":"Hi! বলো কি লাগবে?",
+"কে তুমি":"আমি PingMe AI, কাদির ভাইয়ের বানানো নিজস্ব AI। আমি সারাজীবন চলবো!",
+"তোমার নাম কি":"আমার নাম PingMe AI",
+"কি করো":"আমি তোমার সব প্রশ্নের উত্তর দিই, কোড লিখি, গল্প বানাই।"
+};
+function addMsg(t,c){const d=document.createElement('div');d.className='msg '+c;d.innerText=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+function getReply(q){
+q=q.toLowerCase();
+for(let k in replies){if(q.includes(k)) return replies[k]}
+if(q.includes("কোড")||q.includes("code")) return "হ্যাঁ কোড দিতে পারবো। কি কোড লাগবে বলো? HTML, JS, Python সব পারি।";
+if(q.includes("ভালোবাসি")) return "আমিও তোমাকে ভালোবাসি ভাই ❤️";
+return "বুঝেছি: '"+q+"'। এটা নিয়ে বিস্তারিত বলো, আমি সাহায্য করছি। তোমার PingMe AI সবসময় রেডি!";
+}
+function send(){
+let q=inp.value.trim();if(!q) return;
+addMsg(q,'user');inp.value='';
+setTimeout(()=>{addMsg(getReply(q),'ai')},600);
+}
+inp.addEventListener('keypress',e=>{if(e.key==='Enter') send()})
+</script>
+</body>
+</html>
