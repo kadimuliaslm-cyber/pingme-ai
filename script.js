@@ -1,7 +1,3 @@
-// ===============================
-// PingMe AI - Firebase AI Logic
-// ===============================
-
 const chatArea = document.getElementById("chatArea");
 const welcomeScreen = document.getElementById("welcomeScreen");
 const messageInput = document.getElementById("messageInput");
@@ -14,7 +10,7 @@ const menuBtn = document.getElementById("menuBtn");
 
 
 // ===============================
-// Add message to chat
+// Add message
 // ===============================
 
 function addMessage(text, sender) {
@@ -50,52 +46,67 @@ async function sendMessage() {
 
   if (!text) return;
 
-  // User message
   addMessage(text, "user");
 
   messageInput.value = "";
   messageInput.style.height = "auto";
 
-  // Thinking message
-  const thinkingMessage = addMessage("ভাবছি...", "ai");
+  const thinkingMessage =
+    addMessage("ভাবছি...", "ai");
 
   try {
 
-    // Wait until Firebase AI model is ready
+    // Wait for Firebase AI model
     let attempts = 0;
 
     while (!window.pingMeAIModel && attempts < 50) {
-      await new Promise(resolve => setTimeout(resolve, 100));
+
+      await new Promise(resolve =>
+        setTimeout(resolve, 100)
+      );
+
       attempts++;
     }
 
+
     if (!window.pingMeAIModel) {
-      throw new Error("Firebase AI model পাওয়া যায়নি।");
+
+      throw new Error(
+        "Firebase AI model পাওয়া যায়নি।"
+      );
+
     }
 
 
-    // Ask Gemini through Firebase AI Logic
+    // Ask Gemini
     const result =
       await window.pingMeAIModel.generateContent(text);
 
 
-    const response = result.response;
+    const response =
+      result.response;
 
-    const aiText = response.text();
+
+    const answer =
+      response.text();
 
 
-    // Remove thinking message
     thinkingMessage.remove();
 
 
-    // Show AI answer
-    addMessage(aiText || "AI কোনো উত্তর দেয়নি।", "ai");
+    addMessage(
+      answer || "AI কোনো উত্তর দেয়নি।",
+      "ai"
+    );
 
   }
 
   catch (error) {
 
-    console.error("PingMe AI Error:", error);
+    console.error(
+      "PingMe AI Error:",
+      error
+    );
 
     thinkingMessage.innerText =
       "দুঃখিত, AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে।\n\n" +
@@ -110,7 +121,10 @@ async function sendMessage() {
 // Send button
 // ===============================
 
-sendBtn.addEventListener("click", sendMessage);
+sendBtn.addEventListener(
+  "click",
+  sendMessage
+);
 
 
 // ===============================
@@ -118,93 +132,131 @@ sendBtn.addEventListener("click", sendMessage);
 // Shift + Enter = new line
 // ===============================
 
-messageInput.addEventListener("keydown", function(event) {
+messageInput.addEventListener(
+  "keydown",
+  function(event) {
 
-  if (event.key === "Enter" && !event.shiftKey) {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
 
-    event.preventDefault();
+      event.preventDefault();
 
-    sendMessage();
+      sendMessage();
+
+    }
 
   }
-
-});
-
-
-// ===============================
-// Auto resize textarea
-// ===============================
-
-messageInput.addEventListener("input", function() {
-
-  this.style.height = "auto";
-
-  this.style.height =
-    Math.min(this.scrollHeight, 140) + "px";
-
-});
+);
 
 
 // ===============================
-// Suggestion buttons
+// Auto resize
 // ===============================
 
-document.querySelectorAll(".suggestion").forEach(button => {
+messageInput.addEventListener(
+  "input",
+  function() {
 
-  button.addEventListener("click", function() {
+    this.style.height = "auto";
 
-    messageInput.value = this.innerText;
+    this.style.height =
+      Math.min(
+        this.scrollHeight,
+        140
+      ) + "px";
 
-    messageInput.focus();
+  }
+);
 
-    messageInput.dispatchEvent(
-      new Event("input")
+
+// ===============================
+// Suggestions
+// ===============================
+
+document
+  .querySelectorAll(".suggestion")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        messageInput.value =
+          this.innerText;
+
+        messageInput.focus();
+
+        messageInput.dispatchEvent(
+          new Event("input")
+        );
+
+      }
     );
 
   });
 
-});
+
+// ===============================
+// Plus
+// ===============================
+
+plusBtn.addEventListener(
+  "click",
+  function() {
+
+    alert(
+      "File attachment feature আসছে।"
+    );
+
+  }
+);
 
 
 // ===============================
-// Plus button
+// Camera
 // ===============================
 
-plusBtn.addEventListener("click", function() {
+cameraBtn.addEventListener(
+  "click",
+  function() {
 
-  alert("File attachment feature আসছে।");
+    alert(
+      "Camera feature আসছে।"
+    );
 
-});
-
-
-// ===============================
-// Camera button
-// ===============================
-
-cameraBtn.addEventListener("click", function() {
-
-  alert("Camera feature আসছে।");
-
-});
+  }
+);
 
 
 // ===============================
-// Microphone button
+// Microphone
 // ===============================
 
-micBtn.addEventListener("click", function() {
+micBtn.addEventListener(
+  "click",
+  function() {
 
-  alert("Voice input feature আসছে।");
+    alert(
+      "Voice input feature আসছে।"
+    );
 
-});
+  }
+);
 
 
 // ===============================
-// Menu button
+// Menu
 // ===============================
 
-menuBtn.addEventListener("click", function() {
+menuBtn.addEventListener(
+  "click",
+  function() {
 
-  alert("PingMe AI menu আসছে।");
+    alert(
+      "PingMe AI menu আসছে।"
+    );
 
-});
+  }
+);
