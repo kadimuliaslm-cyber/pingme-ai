@@ -1,336 +1,256 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+const chatArea = document.getElementById("chatArea");
+const welcomeScreen = document.getElementById("welcomeScreen");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
-  color: #202123;
-}
+const plusBtn = document.getElementById("plusBtn");
+const cameraBtn = document.getElementById("cameraBtn");
+const micBtn = document.getElementById("micBtn");
+const menuBtn = document.getElementById("menuBtn");
 
-body {
-  overflow: hidden;
-}
+const PINGME_AI_INSTRUCTION = `
+You are PingMe AI.
 
-button,
-textarea {
-  font-family: inherit;
-}
+Your name is PingMe AI.
+You are the AI of the PingMe AI platform.
 
-button {
-  border: none;
-  background: none;
-  cursor: pointer;
+IMPORTANT IDENTITY RULES:
+- If the user asks your name, say your name is PingMe AI.
+- Never introduce yourself as Gemini.
+- Never say that your name is Google Gemini.
+- Never claim that you are Google's AI.
+- Always maintain the PingMe AI identity.
+
+Answer naturally and helpfully.
+Reply in the same language the user uses whenever possible.
+If the user speaks Bangla, reply in Bangla.
+If the user speaks English, reply in English.
+`;
+
+
+/* ===============================
+   ADD NORMAL MESSAGE
+   =============================== */
+
+function addMessage(text, sender) {
+  if (welcomeScreen) {
+    welcomeScreen.style.display = "none";
+  }
+
+  const row = document.createElement("div");
+
+  row.className =
+    sender === "user"
+      ? "message-row user"
+      : "message-row ai";
+
+  const message = document.createElement("div");
+
+  message.className = "message";
+  message.innerText = text;
+
+  row.appendChild(message);
+  chatArea.appendChild(row);
+
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  return row;
 }
 
 
 /* ===============================
-   APP
+   THINKING SPINNER
    =============================== */
 
-.app {
-  width: 100%;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
+function addThinkingMessage() {
+  if (welcomeScreen) {
+    welcomeScreen.style.display = "none";
+  }
+
+  const row = document.createElement("div");
+
+  row.className = "message-row ai thinking-message";
+
+  const spinner = document.createElement("div");
+
+  spinner.className = "thinking-spinner";
+
+  row.appendChild(spinner);
+  chatArea.appendChild(row);
+
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  return row;
 }
 
 
 /* ===============================
-   TOP BAR
+   WAIT FOR FIREBASE MODELS
    =============================== */
 
-.top-bar {
-  height: 64px;
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  border-bottom: 1px solid #eeeeee;
-  background: #ffffff;
-}
+async function waitForModels() {
+  let attempts = 0;
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  while (
+    !window.pingMeAIModel1 &&
+    !window.pingMeAIModel2 &&
+    !window.pingMeAIModel3 &&
+    attempts < 100
+  ) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    attempts++;
+  }
 
-.brand-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #111111;
-  color: #ffffff;
-  font-size: 21px;
-  font-weight: bold;
-}
-
-.brand h1 {
-  font-size: 17px;
-  line-height: 20px;
-}
-
-.brand span {
-  display: block;
-  font-size: 11px;
-  color: #777777;
-}
-
-.menu-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 25px;
-  color: #555555;
-}
-
-
-/* ===============================
-   CHAT AREA
-   =============================== */
-
-.chat-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 15px 15px;
-}
-
-
-/* ===============================
-   WELCOME SCREEN
-   =============================== */
-
-.welcome-screen {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px 15px 60px;
-}
-
-.welcome-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #111111;
-  color: #ffffff;
-  font-size: 31px;
-  margin-bottom: 18px;
-}
-
-.welcome-screen h2 {
-  font-size: 24px;
-  margin-bottom: 9px;
-}
-
-.welcome-screen p {
-  max-width: 300px;
-  font-size: 14px;
-  line-height: 21px;
-  color: #777777;
-}
-
-
-/* ===============================
-   SUGGESTIONS
-   =============================== */
-
-.suggestions {
-  width: 100%;
-  max-width: 390px;
-  margin-top: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-
-.suggestion {
-  width: 100%;
-  padding: 13px 15px;
-  border: 1px solid #e7e7e7;
-  border-radius: 14px;
-  background: #ffffff;
-  color: #333333;
-  text-align: left;
-  font-size: 13px;
-}
-
-
-/* ===============================
-   MESSAGE ROW
-   =============================== */
-
-.message-row {
-  width: 100%;
-  display: flex;
-  margin-bottom: 18px;
-}
-
-.message-row.user {
-  justify-content: flex-end;
-}
-
-.message-row.ai {
-  justify-content: flex-start;
-}
-
-
-/* ===============================
-   MESSAGE BUBBLE
-   =============================== */
-
-.message {
-  max-width: 82%;
-  padding: 12px 14px;
-  border-radius: 18px;
-  font-size: 15px;
-  line-height: 22px;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-
-/* USER MESSAGE - RIGHT */
-
-.message-row.user .message {
-  background: #111111;
-  color: #ffffff;
-  border-bottom-right-radius: 5px;
-}
-
-
-/* AI MESSAGE - LEFT */
-
-.message-row.ai .message {
-  background: #f3f3f3;
-  color: #202123;
-  border-bottom-left-radius: 5px;
-}
-
-
-/* ===============================
-   AI THINKING SPINNER
-   =============================== */
-
-.thinking-message {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin: 8px 0 18px;
-  padding-left: 6px;
-}
-
-.thinking-spinner {
-  width: 22px;
-  height: 22px;
-  border: 3px solid #e5e5e5;
-  border-top-color: #111111;
-  border-radius: 50%;
-  animation: pingmeSpin 0.8s linear infinite;
-}
-
-@keyframes pingmeSpin {
-  to {
-    transform: rotate(360deg);
+  if (
+    !window.pingMeAIModel1 &&
+    !window.pingMeAIModel2 &&
+    !window.pingMeAIModel3
+  ) {
+    throw new Error("MODEL_NOT_FOUND");
   }
 }
 
 
 /* ===============================
-   COMPOSER
+   GENERATE AI RESPONSE
+   3 MODEL FALLBACK
    =============================== */
 
-.composer-wrapper {
-  width: 100%;
-  padding: 8px 12px 10px;
-  background: #ffffff;
-  border-top: 1px solid #eeeeee;
-}
+async function generateAIResponse(prompt) {
+  await waitForModels();
 
-.composer {
-  width: 100%;
-  min-height: 52px;
-  display: flex;
-  align-items: flex-end;
-  gap: 1px;
-  padding: 6px;
-  border: 1px solid #dddddd;
-  border-radius: 27px;
-  background: #ffffff;
+  const models = [
+    window.pingMeAIModel1,
+    window.pingMeAIModel2,
+    window.pingMeAIModel3
+  ].filter(Boolean);
+
+  let lastError = null;
+
+  for (let i = 0; i < models.length; i++) {
+    try {
+      console.log("Trying PingMe AI model:", i + 1);
+
+      const result = await models[i].generateContent(prompt);
+
+      const response = result.response;
+
+      const answer = response.text();
+
+      if (answer && answer.trim()) {
+        console.log("PingMe AI model", i + 1, "success");
+        return answer.trim();
+      }
+
+    } catch (error) {
+      lastError = error;
+
+      console.error(
+        "PingMe AI model",
+        i + 1,
+        "failed:",
+        error
+      );
+
+      // Try next model
+    }
+  }
+
+  throw lastError || new Error("ALL_MODELS_FAILED");
 }
 
 
 /* ===============================
-   ICON BUTTONS
+   SEND MESSAGE
    =============================== */
 
-.icon-btn {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555555;
-  font-size: 21px;
-}
+async function sendMessage() {
 
-#plusBtn,
-#micBtn {
-  margin: 0;
-}
+  const text = messageInput.value.trim();
 
-#micBtn {
-  margin-left: -2px;
-}
+  if (!text) {
+    return;
+  }
 
-#cameraBtn {
-  font-size: 18px;
-}
+  // Prevent double sending
+  sendBtn.disabled = true;
 
-#micBtn {
-  font-size: 17px;
-}
+  // User message
+  addMessage(text, "user");
 
+  // Clear input
+  messageInput.value = "";
+  messageInput.style.height = "auto";
 
-/* ===============================
-   MESSAGE INPUT
-   =============================== */
+  // AI thinking spinner
+  const thinkingMessage = addThinkingMessage();
 
-#messageInput {
-  flex: 1;
-  width: 100%;
-  min-height: 38px;
-  max-height: 120px;
-  padding: 9px 5px;
-  border: none;
-  outline: none;
-  resize: none;
-  background: transparent;
-  color: #202123;
-  font-size: 15px;
-  line-height: 20px;
-}
+  try {
 
-#messageInput::placeholder {
-  color: #999999;
+    const finalPrompt =
+      PINGME_AI_INSTRUCTION +
+      "\n\nUser message:\n" +
+      text;
+
+    const answer = await generateAIResponse(finalPrompt);
+
+    // Remove spinner
+    thinkingMessage.remove();
+
+    // AI response
+    addMessage(
+      answer || "AI কোনো উত্তর দেয়নি।",
+      "ai"
+    );
+
+  } catch (error) {
+
+    console.error("PingMe AI Error:", error);
+
+    // Remove spinner
+    if (thinkingMessage) {
+      thinkingMessage.remove();
+    }
+
+    const errorText =
+      String(error?.message || error || "");
+
+    if (
+      errorText.includes("429") ||
+      errorText.includes("quota") ||
+      errorText.includes("Quota exceeded") ||
+      errorText.includes("generate_content_free_tier_requests")
+    ) {
+
+      addMessage(
+        "AI এখন সাময়িকভাবে ব্যস্ত। একটু পরে আবার চেষ্টা কর।",
+        "ai"
+      );
+
+    } else if (
+      errorText.includes("MODEL_NOT_FOUND")
+    ) {
+
+      addMessage(
+        "PingMe AI এখন চালু হতে সমস্যা হচ্ছে। একটু পরে আবার চেষ্টা কর।",
+        "ai"
+      );
+
+    } else {
+
+      addMessage(
+        "দুঃখিত, এই মুহূর্তে AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে। একটু পরে আবার চেষ্টা কর।",
+        "ai"
+      );
+    }
+
+  } finally {
+
+    // Enable send button again
+    sendBtn.disabled = false;
+
+    messageInput.focus();
+  }
 }
 
 
@@ -338,81 +258,159 @@ button {
    SEND BUTTON
    =============================== */
 
-.send-btn {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  padding: 0;
-}
-
-.send-btn svg {
-  width: 21px;
-  height: 21px;
+if (sendBtn) {
+  sendBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    sendMessage();
+  });
 }
 
 
 /* ===============================
-   FOOTER NOTE
+   ENTER TO SEND
    =============================== */
 
-.composer-note {
-  padding-top: 6px;
-  text-align: center;
-  color: #999999;
-  font-size: 9px;
+if (messageInput) {
+  messageInput.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter" && !event.shiftKey) {
+
+      event.preventDefault();
+
+      sendMessage();
+    }
+
+  });
+
+
+  /* ===============================
+     AUTO RESIZE INPUT
+     =============================== */
+
+  messageInput.addEventListener("input", function() {
+
+    this.style.height = "auto";
+
+    this.style.height =
+      Math.min(this.scrollHeight, 120) + "px";
+
+  });
 }
 
 
 /* ===============================
-   MOBILE
+   SUGGESTIONS
    =============================== */
 
-@media (max-width: 480px) {
+document
+  .querySelectorAll(".suggestion-item, .suggestion")
+  .forEach(button => {
 
-  .top-bar {
-    height: 60px;
-    min-height: 60px;
-    padding: 0 12px;
-  }
+    button.addEventListener("click", function() {
 
-  .brand-icon {
-    width: 35px;
-    height: 35px;
-  }
+      messageInput.value =
+        this.innerText.trim();
 
-  .brand h1 {
-    font-size: 16px;
-  }
+      messageInput.focus();
 
-  .chat-area {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
+      messageInput.dispatchEvent(
+        new Event("input")
+      );
 
-  .welcome-screen h2 {
-    font-size: 22px;
-  }
+    });
 
-  .message {
-    max-width: 86%;
-  }
+  });
 
-  .composer-wrapper {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
 
-  .icon-btn,
-  .send-btn {
-    width: 36px;
-    min-width: 36px;
-  }
+/* ===============================
+   PLUS BUTTON
+   =============================== */
+
+if (plusBtn) {
+
+  plusBtn.addEventListener("click", function() {
+
+    const menu =
+      document.getElementById("attachmentMenu");
+
+    if (menu) {
+      menu.hidden = !menu.hidden;
+    }
+
+  });
 
 }
+
+
+/* ===============================
+   CAMERA
+   =============================== */
+
+if (cameraBtn) {
+
+  cameraBtn.addEventListener("click", function() {
+
+    alert("Camera feature আসছে।");
+
+  });
+
+}
+
+
+/* ===============================
+   MIC
+   =============================== */
+
+if (micBtn) {
+
+  micBtn.addEventListener("click", function() {
+
+    alert("Voice input feature আসছে।");
+
+  });
+
+}
+
+
+/* ===============================
+   MENU
+   =============================== */
+
+if (menuBtn) {
+
+  menuBtn.addEventListener("click", function() {
+
+    alert("PingMe AI menu আসছে।");
+
+  });
+
+}
+
+
+/* ===============================
+   FILE OPTIONS
+   =============================== */
+
+const fileOptions = [
+  "photoOption",
+  "fileOption",
+  "audioOption",
+  "screenOption",
+  "projectOption"
+];
+
+fileOptions.forEach(id => {
+
+  const button = document.getElementById(id);
+
+  if (button) {
+
+    button.addEventListener("click", function() {
+
+      alert("এই ফিচারটি শিগগিরই আসছে।");
+
+    });
+
+  }
+
+});
