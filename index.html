@@ -1582,3 +1582,30 @@ function speakText(text){
 
  /*
   Natural spea
+  <!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PingMe AI</title>
+<style>body{background:#000;color:#0f0;text-align:center;padding:20px;font-family:sans-serif}input{width:90%;padding:12px;border-radius:8px}button{padding:12px 20px;background:#0f0;border:0;margin-top:10px;border-radius:8px;font-weight:bold}</style>
+</head>
+<body>
+<h2>PingMe AI 🟢</h2>
+<p>Gemini API Key দিন</p>
+<input id="k" placeholder="API Key here">
+<br>
+<button onclick="go()">Connect PingMe AI</button>
+<script>
+function go(){
+  var v=document.getElementById('k').value.trim();
+  if(!v){alert('Key দিন');return;}
+  localStorage.setItem('key',v);
+  localStorage.setItem('gemini_key',v);
+  alert('Connected! Reload হচ্ছে');
+  location.reload();
+}
+if(localStorage.getItem('key')){
+  document.body.innerHTML='<h2>Connected ✅</h2><p>Key: '+localStorage.getItem('key').slice(0,12)+'...</p><a href=\"https://kadimulashim-cyber.github.io/pingme-ai/\" style=\"color:#0f0\">Chat শুরু করুন</a><br><br><button onclick=\"localStorage.clear();location.reload()\">Logout</button>';
+}
+</script>
+</body>
+</html>
