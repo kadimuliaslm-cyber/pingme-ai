@@ -16,7 +16,7 @@ const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
 
 
 // Gemini model
-const MODEL_NAME = "gemini-3.8-flash";
+const MODEL_NAME = "gemini-2.5-flash";
 
 
 // ========================================
