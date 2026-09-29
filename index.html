@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>PingMe AI</title>
 
   <link rel="stylesheet" href="style.css">
@@ -14,23 +12,16 @@
 
   <div class="app">
 
-    <!-- ================= HEADER ================= -->
-
+    <!-- HEADER -->
     <header class="top-bar">
 
-      <!-- HISTORY -->
       <button
         class="icon-btn"
         id="menuBtn"
         type="button"
         aria-label="History"
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="22"
-          height="22"
-          fill="none"
-        >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
           <path
             d="M4 7h16M4 12h16M4 17h10"
             stroke="currentColor"
@@ -40,15 +31,9 @@
         </svg>
       </button>
 
-
-      <!-- BRAND -->
-
       <div class="brand">
         <h1>PingMe AI</h1>
       </div>
-
-
-      <!-- SETTINGS -->
 
       <button
         class="icon-btn"
@@ -56,18 +41,12 @@
         type="button"
         aria-label="Settings"
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="22"
-          height="22"
-          fill="none"
-        >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
           <path
             d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
             stroke="currentColor"
             stroke-width="1.8"
           />
-
           <path
             d="M19 13.5v-3l-2-.7a7.4 7.4 0 0 0-.7-1.7l.9-1.9-2.1-2.1-1.9.9a7.4 7.4 0 0 0-1.7-.7L10.8 2h-3l-.7 2.3a7.4 7.4 0 0 0-1.7.7l-1.9-.9-2.1 2.1.9 1.9a7.4 7.4 0 0 0-.7 1.7l-2 .7v3l2 .7c.2.6.4 1.2.7 1.7l-.9 1.9 2.1 2.1 1.9-.9c.5.3 1.1.5 1.7.7l.7 2.3h3l.7-2.3c.6-.2 1.2-.4 1.7-.7l1.9.9 2.1-2.1-.9-1.9c.3-.5.5-1.1.7-1.7l2-.7Z"
             stroke="currentColor"
@@ -80,53 +59,28 @@
     </header>
 
 
-    <!-- ================= CHAT AREA ================= -->
+    <!-- CHAT -->
+    <main class="chat-area" id="chatArea">
 
-    <main
-      class="chat-area"
-      id="chatArea"
-    >
-
-      <section
-        class="welcome-screen"
-        id="welcomeScreen"
-      >
+      <section class="welcome-screen" id="welcomeScreen">
 
         <h2>What's on your mind?</h2>
 
-
         <div class="suggestions-list">
 
-          <button
-            type="button"
-            class="suggestion-item"
-          >
+          <button type="button" class="suggestion-item">
             <span class="icon">🩺</span>
-            <span class="text">
-              Prepare for a doctor visit
-            </span>
+            <span class="text">Prepare for a doctor visit</span>
           </button>
 
-
-          <button
-            type="button"
-            class="suggestion-item"
-          >
+          <button type="button" class="suggestion-item">
             <span class="icon">🛋️</span>
-            <span class="text">
-              Visualize new home decor
-            </span>
+            <span class="text">Visualize new home decor</span>
           </button>
 
-
-          <button
-            type="button"
-            class="suggestion-item"
-          >
+          <button type="button" class="suggestion-item">
             <span class="icon">🐱</span>
-            <span class="text">
-              Create city cat art
-            </span>
+            <span class="text">Create city cat art</span>
           </button>
 
         </div>
@@ -136,26 +90,19 @@
     </main>
 
 
-    <!-- ================= COMPOSER ================= -->
-
+    <!-- COMPOSER -->
     <div class="composer-wrapper">
 
       <div class="composer">
 
         <!-- PLUS -->
-
         <button
           class="icon-btn"
           id="plusBtn"
           type="button"
           aria-label="Add"
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="22"
-            height="22"
-            fill="none"
-          >
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
             <path
               d="M12 5v14M5 12h14"
               stroke="currentColor"
@@ -167,7 +114,6 @@
 
 
         <!-- INPUT -->
-
         <textarea
           id="messageInput"
           rows="1"
@@ -177,19 +123,13 @@
 
 
         <!-- MIC -->
-
         <button
           class="icon-btn"
           id="micBtn"
           type="button"
           aria-label="Voice input"
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="21"
-            height="21"
-            fill="none"
-          >
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none">
             <rect
               x="8"
               y="3"
@@ -199,7 +139,6 @@
               stroke="currentColor"
               stroke-width="1.8"
             />
-
             <path
               d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"
               stroke="currentColor"
@@ -211,30 +150,12 @@
 
 
         <!-- SEND -->
-
         <button
           class="send-btn"
           id="sendBtn"
           type="button"
           aria-label="Send message"
         >
-
-          <svg
-            id="voiceIcon"
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-            style="display:none;"
-          >
-            <path
-              d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-            />
-          </svg>
-
 
           <svg
             id="sendIcon"
@@ -257,60 +178,22 @@
       </div>
 
 
-      <!-- PLUS MENU -->
-
+      <!-- ATTACHMENT MENU -->
       <div
         class="attachment-menu"
         id="attachmentMenu"
         hidden
       >
 
-        <button
-          type="button"
-          id="cameraBtn"
-        >
-          Camera
-        </button>
-
-        <button
-          type="button"
-          id="photoOption"
-        >
-          Photo
-        </button>
-
-        <button
-          type="button"
-          id="fileOption"
-        >
-          File
-        </button>
-
-        <button
-          type="button"
-          id="audioOption"
-        >
-          Audio
-        </button>
-
-        <button
-          type="button"
-          id="screenOption"
-        >
-          Screen
-        </button>
-
-        <button
-          type="button"
-          id="projectOption"
-        >
-          Project
-        </button>
+        <button type="button" id="cameraBtn">Camera</button>
+        <button type="button" id="photoOption">Photo</button>
+        <button type="button" id="fileOption">File</button>
+        <button type="button" id="audioOption">Audio</button>
+        <button type="button" id="screenOption">Screen</button>
+        <button type="button" id="projectOption">Project</button>
 
       </div>
 
-
-      <!-- NOTE -->
 
       <div class="composer-note">
         PingMe AI can make mistakes. Check important information.
@@ -321,28 +204,23 @@
   </div>
 
 
-  <!-- ================= FIREBASE AI ================= -->
-
+  <!-- FIREBASE AI -->
   <script type="module">
 
-    import {
-      initializeApp
-    } from
-    "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
     import {
       getAI,
       getGenerativeModel,
       GoogleAIBackend
-    } from
-    "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+    }
+      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
 
 
     const firebaseConfig = {
 
-      apiKey:"AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
-        
+      apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
 
       authDomain:
         "pingme-ai-8d8cc.firebaseapp.com",
@@ -371,29 +249,25 @@
 
     const ai =
       getAI(firebaseApp, {
-        backend:
-          new GoogleAIBackend()
+        backend: new GoogleAIBackend()
       });
 
 
     const model1 =
       getGenerativeModel(ai, {
-        model:
-          "gemini-3.7-flash"
+        model: "gemini-3.7-flash"
       });
 
 
     const model2 =
       getGenerativeModel(ai, {
-        model:
-          "gemini-3.5-flash-lite"
+        model: "gemini-3.5-flash-lite"
       });
 
 
     const model3 =
       getGenerativeModel(ai, {
-        model:
-          "gemini-3.6-flash"
+        model: "gemini-3.6-flash"
       });
 
 
@@ -406,11 +280,8 @@
   </script>
 
 
-  <!-- ================= JAVASCRIPT ================= -->
-
-  <script src="chat-ui.js"></script>
+  <!-- MAIN JAVASCRIPT -->
   <script src="script.js"></script>
-  <script src="voice.js"></script>
 
 </body>
 </html>
