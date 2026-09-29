@@ -1,127 +1,210 @@
-const GEMINI_API_KEY = "AQ.Ab8RN6IDLRBaJ2DfPJOTKBuU9TpXxfIWaxerE9HzJmX_JZax9A";
-const MODEL_NAME = "gemini-3.8-flash";
+// ===============================
+// PingMe AI - Firebase AI Logic
+// ===============================
 
 const chatArea = document.getElementById("chatArea");
+const welcomeScreen = document.getElementById("welcomeScreen");
 const messageInput = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 
-let previousInteractionId = null;
+const plusBtn = document.getElementById("plusBtn");
+const cameraBtn = document.getElementById("cameraBtn");
+const micBtn = document.getElementById("micBtn");
+const menuBtn = document.getElementById("menuBtn");
 
-function addMessage(text, type) {
-    const message = document.createElement("div");
-    message.className = "message " + type;
-    message.textContent = text;
 
-    chatArea.appendChild(message);
-    chatArea.scrollTop = chatArea.scrollHeight;
+// ===============================
+// Add message to chat
+// ===============================
 
-    return message;
+function addMessage(text, sender) {
+
+  if (welcomeScreen) {
+    welcomeScreen.style.display = "none";
+  }
+
+  const message = document.createElement("div");
+
+  message.className =
+    sender === "user"
+      ? "message user-message"
+      : "message ai-message";
+
+  message.innerText = text;
+
+  chatArea.appendChild(message);
+
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  return message;
 }
+
+
+// ===============================
+// Send message
+// ===============================
 
 async function sendMessage() {
-    const text = messageInput.value.trim();
 
-    if (!text) return;
+  const text = messageInput.value.trim();
 
-    addMessage(text, "user");
-    messageInput.value = "";
+  if (!text) return;
 
-    const thinkingMessage = addMessage("ভাবছি...", "ai");
+  // User message
+  addMessage(text, "user");
 
-    try {
-        const body = {
-            model: MODEL_NAME,
-            input: text
-        };
+  messageInput.value = "";
+  messageInput.style.height = "auto";
 
-        if (previousInteractionId) {
-            body.previous_interaction_id = previousInteractionId;
-        }
+  // Thinking message
+  const thinkingMessage = addMessage("ভাবছি...", "ai");
 
-        const response = await fetch(
-            "https://generativelanguage.googleapis.com/v1beta/interactions",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-goog-api-key": GEMINI_API_KEY
-                },
-                body: JSON.stringify(body)
-            }
-        );
+  try {
 
-        if (!response.ok) {
-            const errorText = await response.text();
+    // Wait until Firebase AI model is ready
+    let attempts = 0;
 
-            throw new Error(
-                "API Error " +
-                response.status +
-                ": " +
-                errorText
-            );
-        }
-
-        const data = await response.json();
-
-        previousInteractionId = data.id || null;
-
-        let aiText = data.output_text || "";
-
-        if (!aiText && Array.isArray(data.steps)) {
-            for (let i = data.steps.length - 1; i >= 0; i--) {
-                const step = data.steps[i];
-
-                if (
-                    step.type === "model_output" &&
-                    Array.isArray(step.content)
-                ) {
-                    const textPart = step.content.find(
-                        part => part.type === "text"
-                    );
-
-                    if (textPart && textPart.text) {
-                        aiText = textPart.text;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!aiText && Array.isArray(data.outputs)) {
-            const textPart = data.outputs.find(
-                part => part.type === "text"
-            );
-
-            if (textPart && textPart.text) {
-                aiText = textPart.text;
-            }
-        }
-
-        if (!aiText) {
-            console.log("Gemini response:", data);
-            throw new Error(
-                "AI কোনো উত্তর দেয়নি। Response console-এ দেখানো হয়েছে।"
-            );
-        }
-
-        thinkingMessage.textContent = aiText;
-
-    } catch (error) {
-        console.error("Gemini Error:", error);
-
-        thinkingMessage.textContent =
-            "দুঃখিত, AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে.\n\n" +
-            error.message;
+    while (!window.pingMeAIModel && attempts < 50) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
     }
 
-    chatArea.scrollTop = chatArea.scrollHeight;
+    if (!window.pingMeAIModel) {
+      throw new Error("Firebase AI model পাওয়া যায়নি।");
+    }
+
+
+    // Ask Gemini through Firebase AI Logic
+    const result =
+      await window.pingMeAIModel.generateContent(text);
+
+
+    const response = result.response;
+
+    const aiText = response.text();
+
+
+    // Remove thinking message
+    thinkingMessage.remove();
+
+
+    // Show AI answer
+    addMessage(aiText || "AI কোনো উত্তর দেয়নি।", "ai");
+
+  }
+
+  catch (error) {
+
+    console.error("PingMe AI Error:", error);
+
+    thinkingMessage.innerText =
+      "দুঃখিত, AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে।\n\n" +
+      error.message;
+
+  }
+
 }
+
+
+// ===============================
+// Send button
+// ===============================
 
 sendBtn.addEventListener("click", sendMessage);
 
+
+// ===============================
+// Enter to send
+// Shift + Enter = new line
+// ===============================
+
 messageInput.addEventListener("keydown", function(event) {
-    if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
-    }
+
+  if (event.key === "Enter" && !event.shiftKey) {
+
+    event.preventDefault();
+
+    sendMessage();
+
+  }
+
+});
+
+
+// ===============================
+// Auto resize textarea
+// ===============================
+
+messageInput.addEventListener("input", function() {
+
+  this.style.height = "auto";
+
+  this.style.height =
+    Math.min(this.scrollHeight, 140) + "px";
+
+});
+
+
+// ===============================
+// Suggestion buttons
+// ===============================
+
+document.querySelectorAll(".suggestion").forEach(button => {
+
+  button.addEventListener("click", function() {
+
+    messageInput.value = this.innerText;
+
+    messageInput.focus();
+
+    messageInput.dispatchEvent(
+      new Event("input")
+    );
+
+  });
+
+});
+
+
+// ===============================
+// Plus button
+// ===============================
+
+plusBtn.addEventListener("click", function() {
+
+  alert("File attachment feature আসছে।");
+
+});
+
+
+// ===============================
+// Camera button
+// ===============================
+
+cameraBtn.addEventListener("click", function() {
+
+  alert("Camera feature আসছে।");
+
+});
+
+
+// ===============================
+// Microphone button
+// ===============================
+
+micBtn.addEventListener("click", function() {
+
+  alert("Voice input feature আসছে।");
+
+});
+
+
+// ===============================
+// Menu button
+// ===============================
+
+menuBtn.addEventListener("click", function() {
+
+  alert("PingMe AI menu আসছে।");
+
 });
