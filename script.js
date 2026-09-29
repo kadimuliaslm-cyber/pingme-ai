@@ -1,5 +1,5 @@
 const GEMINI_API_KEY = "AQ.Ab8RN6IDLRBaJ2DfPJOTKBuU9TpXxfIWaxerE9HzJmX_JZax9A";
-const MODEL_NAME = "gemini-2.5-flash";
+const MODEL_NAME = "gemini-3.8-flash";
 
 const chatArea = document.getElementById("chatArea");
 const messageInput = document.getElementById("messageInput");
