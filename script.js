@@ -98,7 +98,7 @@ async function sendMessage() {
     if (!window.pingMeAIModel) {
 
       throw new Error(
-        "Firebase AI model পাওয়া যায়নি।"
+        "MODEL_NOT_FOUND"
       );
 
     }
@@ -149,9 +149,55 @@ async function sendMessage() {
       error
     );
 
-    thinkingMessage.innerText =
-      "দুঃখিত, AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে।\n\n" +
-      error.message;
+
+    // Remove "ভাবছি..."
+    thinkingMessage.remove();
+
+
+    // ===============================
+    // Friendly Error Messages
+    // ===============================
+
+    const errorText =
+      String(error?.message || error || "");
+
+
+    // Quota / 429
+    if (
+      errorText.includes("429") ||
+      errorText.includes("quota") ||
+      errorText.includes("Quota exceeded") ||
+      errorText.includes("generate_content_free_tier_requests")
+    ) {
+
+      addMessage(
+        "AI এখন সাময়িকভাবে ব্যস্ত। একটু পরে আবার চেষ্টা কর।",
+        "ai"
+      );
+
+      return;
+    }
+
+
+    // Model not found
+    if (
+      errorText.includes("MODEL_NOT_FOUND")
+    ) {
+
+      addMessage(
+        "PingMe AI এখন চালু হতে একটু সমস্যা হচ্ছে। একটু পরে আবার চেষ্টা কর।",
+        "ai"
+      );
+
+      return;
+    }
+
+
+    // Other errors
+    addMessage(
+      "দুঃখিত, এই মুহূর্তে AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে। একটু পরে আবার চেষ্টা কর।",
+      "ai"
+    );
 
   }
 
