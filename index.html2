@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT UI Clone</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#f9f9f9] h-screen flex flex-col justify-between text-black antialiased selection:bg-gray-200">
 
+    <!-- ১. টপ হেডার বার (Top Header Bar) -->
+    <header class="flex items-center justify-between px-4 py-3 bg-[#f9f9f9] sticky top-0 z-10">
+        <!-- মেনু আইকন -->
+        <button class="text-2xl text-gray-800 focus:outline-none">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+        
+        <!-- গেট প্লাস বাটন -->
+        <button class="flex items-center space-x-1 bg-[#eef5ff] text-[#1066e5] px-3 py-1.5 rounded-full font-medium text-sm border border-[#d0e3ff] hover:bg-[#dce9ff] transition">
+            <i class="fa-solid fa-sparkles text-xs"></i>
+            <span>Get Plus</span>
+        </button>
+        
+        <!-- প্রোফাইল/হিস্ট্রি আইকন -->
+        <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center bg-white text-gray-700 hover:bg-gray-50">
+            <i class="fa-regular fa-clock-rotate-left text-sm"></i>
+        </button>
+    </header>
+
+    <!-- ২. মেইন কন্টেন্ট এরিয়া (Main Content Area) -->
+    <main class="flex-1 flex flex-col justify-center px-6 max-w-md mx-auto w-full mb-20">
+        <!-- শিরোনাম -->
+        <h1 class="text-3xl font-normal text-gray-900 mb-8 tracking-wide">
+            What's on your mind?
+        </h1>
+
+        <!-- সাজেশন লিস্ট (Suggestions List) -->
+        <div class="space-y-4">
+            <!-- অপশন ১ -->
+            <button class="w-full flex items-center space-x-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm active:scale-[0.98] transition text-left group">
+                <span class="text-xl">🩺</span>
+                <span class="text-gray-700 font-normal text-[15px] group-hover:text-black">Prepare for a doctor visit</span>
+            </button>
+
+            <!-- অপশন ২ -->
+            <button class="w-full flex items-center space-x-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm active:scale-[0.98] transition text-left group">
+                <span class="text-xl">🛋️</span>
+                <span class="text-gray-700 font-normal text-[15px] group-hover:text-black">Visualize new home decor</span>
+            </button>
+
+            <!-- অপশন ৩ -->
+            <button class="w-full flex items-center space-x-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm active:scale-[0.98] transition text-left group">
+                <span class="text-xl">🐱</span>
+                <span class="text-gray-700 font-normal text-[15px] group-hover:text-black">Create city cat art</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- ৩. বটম ইনপুট বার (Bottom Input Bar) -->
+    <footer class="fixed bottom-0 left-0 right-0 p-4 bg-[#f9f9f9] max-w-md mx-auto w-full">
+        <div class="flex items-center bg-white border border-gray-200 rounded-full px-4 py-2.5 shadow-sm focus-within:border-gray-400 transition">
+            <!-- প্লাস বাটন -->
+            <button class="text-gray-500 hover:text-black text-xl p-1">
+                <i class="fa-regular fa-plus"></i>
+            </button>
+            
+            <!-- টেক্সট ইনপুট ফিল্ড -->
+            <input 
+                type="text" 
+                id="chat-input"
+                placeholder="Ask ChatGPT" 
+                class="flex-grow mx-3 bg-transparent border-none outline-none text-base text-gray-800 placeholder-gray-400"
+                oninput="toggleButtons()"
+            />
+            
+            <!-- ডানপাশের অ্যাকশন বাটনসমূহ -->
+            <div class="flex items-center space-x-3">
+                <!-- মাইক্রোফোন আইকন -->
+                <button id="mic-btn" class="text-gray-500 hover:text-black text-lg p-1">
+                    <i class="fa-regular fa-microphone"></i>
+                </button>
+                
+                <!-- ভয়েস ওয়েভফর্ম আইকন (ডিফল্ট) -->
+                <button id="voice-mode-btn" class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-waveform-lines text-xs"></i>
+                </button>
+
+                <!-- সেন্ড বাটন (কিছু টাইপ করলে এটি দেখাবে) -->
+                <button id="send-btn" class="hidden bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-arrow-up text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- বাটন টগল করার জন্য সাধারণ জাভাস্ক্রিপ্ট কোড -->
+    <script>
+        function toggleButtons() {
+            const input = document.getElementById('chat-input');
+            const voiceBtn = document.getElementById('voice-mode-btn');
+            const sendBtn = document.getElementById('send-btn');
+
+            if (input.value.trim() !== "") {
+                // ইনপুটে লেখা থাকলে সেন্ড বাটন দেখাবে, ভয়েস বাটন লুকাবে
+                voiceBtn.classList.add('hidden');
+                sendBtn.classList.remove('hidden');
+            } else {
+                // ইনপুট খালি থাকলে ভয়েস বাটন দেখাবে, সেন্ড বাটন লুকাবে
+                voiceBtn.classList.remove('hidden');
+                sendBtn.classList.add('hidden');
+            }
+        }
+    </script>
+
+</body>
+</html>
