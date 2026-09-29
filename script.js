@@ -63,16 +63,45 @@ async function sendMessage() {
 
         const data = await response.json();
 
-        previousInteractionId = data.id;
+        previousInteractionId = data.id || null;
 
-        const aiText =
-            data.output_text ||
-            data.outputs?.find(
-                item => item.type === "text"
-            )?.text;
+        let aiText = data.output_text || "";
+
+        if (!aiText && Array.isArray(data.steps)) {
+            for (let i = data.steps.length - 1; i >= 0; i--) {
+                const step = data.steps[i];
+
+                if (
+                    step.type === "model_output" &&
+                    Array.isArray(step.content)
+                ) {
+                    const textPart = step.content.find(
+                        part => part.type === "text"
+                    );
+
+                    if (textPart && textPart.text) {
+                        aiText = textPart.text;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!aiText && Array.isArray(data.outputs)) {
+            const textPart = data.outputs.find(
+                part => part.type === "text"
+            );
+
+            if (textPart && textPart.text) {
+                aiText = textPart.text;
+            }
+        }
 
         if (!aiText) {
-            throw new Error("AI কোনো উত্তর দেয়নি।");
+            console.log("Gemini response:", data);
+            throw new Error(
+                "AI কোনো উত্তর দেয়নি। Response console-এ দেখানো হয়েছে।"
+            );
         }
 
         thinkingMessage.textContent = aiText;
