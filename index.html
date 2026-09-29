@@ -1,2 +1,130 @@
- 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+
+  <title>PingMe AI</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-icon">✦</div>
+        <div>
+          <h1>PingMe AI</h1>
+          <span>AI Assistant</span>
+        </div>
+      </div>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        ⋮
+      </button>
+    </header>
+
+
+    <!-- Chat Area -->
+    <main class="chat-area" id="chatArea">
+
+      <!-- Welcome Screen -->
+      <section class="welcome-screen" id="welcomeScreen">
+
+        <div class="welcome-icon">
+          ✦
+        </div>
+
+        <h2>How can I help you?</h2>
+
+        <p>
+          Ask me anything. You can chat in বাংলা or English.
+        </p>
+
+        <div class="suggestions">
+
+          <button class="suggestion">
+            ✨ Write something for me
+          </button>
+
+          <button class="suggestion">
+            💡 Give me an idea
+          </button>
+
+          <button class="suggestion">
+            🌐 Translate something
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- Message Composer -->
+    <div class="composer-wrapper">
+
+      <div class="composer">
+
+        <!-- Plus / Attachment -->
+        <button
+          class="icon-btn"
+          id="plusBtn"
+          aria-label="Add attachment">
+          +
+        </button>
+
+        <!-- Camera -->
+        <button
+          class="icon-btn"
+          id="cameraBtn"
+          aria-label="Camera">
+          ◉
+        </button>
+
+        <!-- Message Input -->
+        <textarea
+          id="messageInput"
+          rows="1"
+          placeholder="Message PingMe AI..."
+          autocomplete="off"></textarea>
+
+        <!-- Microphone -->
+        <button
+          class="icon-btn"
+          id="micBtn"
+          aria-label="Voice input">
+          🎤
+        </button>
+
+        <!-- Send -->
+        <button
+          class="send-btn"
+          id="sendBtn"
+          aria-label="Send message">
+          ↑
+        </button>
+
+      </div>
+
+      <div class="composer-note">
+        PingMe AI can make mistakes. Check important information.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
     
