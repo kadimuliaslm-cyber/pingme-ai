@@ -123,7 +123,10 @@
 
 
   <!-- JavaScript -->
-  <script src="script.js"></script>
+  <script src="script.js"></script><script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+</script>
 
 </body>
 </html>
