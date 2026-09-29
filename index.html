@@ -1,50 +1,75 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PingMe AI - তোমার নিজের AI</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PingMe AI - by কাদির</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#0f0f0f;color:white;display:flex;flex-direction:column;height:100vh}
-.header{background:#1a1a1a;padding:15px;text-align:center;border-bottom:1px solid #333}
+body{margin:0;background:#000;color:#fff;font-family:sans-serif;display:flex;flex-direction:column;height:100vh}
+.header{background:#111;padding:12px;text-align:center;border-bottom:1px solid #222}
 .header h1{margin:0;color:#00ff88}
-.chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px}
-.msg{padding:12px 15px;border-radius:15px;max-width:80%;line-height:1.5}
+#chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:85%;padding:10px 14px;border-radius:15px;font-size:14px;line-height:1.4}
 .user{background:#00ff88;color:#000;align-self:flex-end}
-.ai{background:#222;align-self:flex-start;border:1px solid #333}
-.input-area{display:flex;padding:15px;background:#1a1a1a;gap:10px}
-.input-area input{flex:1;padding:12px;border-radius:25px;border:none;outline:none;background:#2a2a2a;color:white}
-.input-area button{padding:12px 20px;border-radius:25px;border:none;background:#00ff88;font-weight:bold;cursor:pointer}
+.ai{background:#1e1e1e;align-self:flex-start}
+.msg img{width:100%;border-radius:10px;margin-top:8px}
+.input-area{display:flex;padding:10px;background:#111;gap:8px}
+.input-area input{flex:1;background:#222;border:none;color:#fff;padding:12px;border-radius:20px;outline:none}
+.input-area button{background:#00ff88;border:none;padding:0 18px;border-radius:20px;font-weight:bold}
+#setup{padding:20px;text-align:center;background:#111}
+#setup input{width:90%;padding:10px;border-radius:10px;border:none;margin:10px 0}
 </style>
 </head>
 <body>
-<div class="header"><h1>PingMe AI 🟢</h1><small>by কাদির - সারাজীবন চলবে</small></div>
-<div class="chat" id="chat"><div class="msg ai">হ্যালো! আমি PingMe AI। তোমার নিজের AI। বলো কি সাহায্য লাগবে? 😊</div></div>
-<div class="input-area"><input id="input" placeholder="কিছু লেখো..."><button onclick="send()">Send</button></div>
+<div class="header"><h1>PingMe AI 🟢</h1><p style="font-size:12px;opacity:0.6">ছবি বানায় + নিজে থেকে ডাকে</p></div>
+
+<div id="setup">
+<p>Gemini API Key দাও (1 বারই)</p>
+<input id="apiKeyInput" placeholder="AIza...">
+<button onclick="saveKey()" style="background:#00ff88;padding:10px 20px;border:none;border-radius:10px;font-weight:bold">Save</button><br>
+<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#00ff88;font-size:12px">Key কোথায় পাবো? এখানে চাপ দাও</a>
+</div>
+
+<div id="chat" style="display:none"></div>
+<div class="input-area" id="inputArea" style="display:none">
+<input id="userInput" placeholder="লেখো বা বলো 'একটা বিড়ালের ছবি বানাও'..." onkeypress="if(event.key==='Enter')send()">
+<button onclick="send()">Send</button>
+</div>
+
 <script>
-const chat=document.getElementById('chat');
-const inp=document.getElementById('input');
-const replies={
-"hello":"হ্যালো ভাই! কেমন আছো?",
-"hi":"Hi! বলো কি লাগবে?",
-"কে তুমি":"আমি PingMe AI, কাদির ভাইয়ের বানানো নিজস্ব AI। আমি সারাজীবন চলবো!",
-"তোমার নাম কি":"আমার নাম PingMe AI",
-"কি করো":"আমি তোমার সব প্রশ্নের উত্তর দিই, কোড লিখি, গল্প বানাই।"
-};
-function addMsg(t,c){const d=document.createElement('div');d.className='msg '+c;d.innerText=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
-function getReply(q){
-q=q.toLowerCase();
-for(let k in replies){if(q.includes(k)) return replies[k]}
-if(q.includes("কোড")||q.includes("code")) return "হ্যাঁ কোড দিতে পারবো। কি কোড লাগবে বলো? HTML, JS, Python সব পারি।";
-if(q.includes("ভালোবাসি")) return "আমিও তোমাকে ভালোবাসি ভাই ❤️";
-return "বুঝেছি: '"+q+"'। এটা নিয়ে বিস্তারিত বলো, আমি সাহায্য করছি। তোমার PingMe AI সবসময় রেডি!";
+let API_KEY=localStorage.getItem("gemini_key"), inactivityTimer;
+let followUps=["কিরে কই গেলে? 😏","মেসেজ দিয়ে পালালে কেন?","আমি এখনো এখানেই আছি...","বোর হচ্ছি, ফিরে আসো না!","তোমার জন্য অপেক্ষা করছি 💚"];
+if(API_KEY){showChat()}
+function saveKey(){let k=document.getElementById("apiKeyInput").value.trim();if(!k)return alert("Key দাও");localStorage.setItem("gemini_key",k);API_KEY=k;showChat();addMsg("আমি রেডি! এখন আমি ছবি বানাতে পারি, আর তুমি চলে গেলে 1 মিনিট পর নিজে থেকেই ডাকবো 😉","ai")}
+function showChat(){document.getElementById("setup").style.display="none";document.getElementById("chat").style.display="flex";document.getElementById("inputArea").style.display="flex";}
+function addMsg(t,c,isHTML=false){let d=document.getElementById("chat");let m=document.createElement("div");m.className="msg "+c;if(isHTML)m.innerHTML=t;else m.innerText=t;d.appendChild(m);d.scrollTop=d.scrollHeight;resetTimer();}
+function resetTimer(){clearTimeout(inactivityTimer);inactivityTimer=setTimeout(()=>{let msg=followUps[Math.floor(Math.random()*followUps.length)];addMsg(msg,"ai");},60000);}
+
+async function send(){
+let input=document.getElementById("userInput");let text=input.value.trim();if(!text)return;
+addMsg(text,"user");input.value="";clearTimeout(inactivityTimer);
+
+let lower=text.toLowerCase();
+if(lower.includes("ছবি") || lower.includes("pic") || lower.includes("image") || lower.includes("বানাও") || lower.includes("draw")){
+addMsg("ছবি বানাচ্ছি... 🎨","ai");
+let imgUrl=`https://image.pollinations.ai/prompt/${encodeURIComponent(text)}?width=512&height=512&seed=${Math.floor(Math.random()*1000)}`;
+let html=`তোমার জন্য বানালাম: <br><img src="${imgUrl}" onload="resetTimer()">`;
+let chat=document.getElementById("chat");chat.lastChild.remove();
+addMsg(html,"ai",true);
+return;
 }
-function send(){
-let q=inp.value.trim();if(!q) return;
-addMsg(q,'user');inp.value='';
-setTimeout(()=>{addMsg(getReply(q),'ai')},600);
+
+addMsg("লিখছি...","ai");
+try{
+let res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,{
+method:"POST",headers:{"Content-Type":"application/json"},
+body:JSON.stringify({contents:[{parts:[{text:text}]}]})
+});
+let data=await res.json();
+document.getElementById("chat").lastChild.remove();
+let reply=data.candidates?.[0]?.content?.parts?.[0]?.text || "Key ভুল মনে হচ্ছে";
+addMsg(reply,"ai");
+}catch(e){document.getElementById("chat").lastChild.remove();addMsg("Error: Key বা নেট চেক করো","ai");}
 }
-inp.addEventListener('keypress',e=>{if(e.key==='Enter') send()})
 </script>
 </body>
 </html>
