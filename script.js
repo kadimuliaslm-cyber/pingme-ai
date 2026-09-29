@@ -1,152 +1,185 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+// ================================
+// PingMe AI - Main JavaScript
+// ================================
+
+const chatArea = document.getElementById("chatArea");
+const welcomeScreen = document.getElementById("welcomeScreen");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+
+const plusBtn = document.getElementById("plusBtn");
+const cameraBtn = document.getElementById("cameraBtn");
+const micBtn = document.getElementById("micBtn");
+const menuBtn = document.getElementById("menuBtn");
+
+
+// ================================
+// SEND MESSAGE
+// ================================
+
+function sendMessage() {
+  const text = messageInput.value.trim();
+
+  if (!text) return;
+
+  // Hide welcome screen
+  if (welcomeScreen) {
+    welcomeScreen.style.display = "none";
+  }
+
+  // Add user message
+  addMessage(text, "user");
+
+  // Clear input
+  messageInput.value = "";
+
+  // Reset textarea height
+  messageInput.style.height = "38px";
+
+  // Temporary AI reply
+  setTimeout(() => {
+    addMessage(
+      "তোর মেসেজ পেয়েছি। 😊\n\nএখন PingMe AI-এর chat system কাজ করছে। পরের ধাপে এখানে আসল AI যুক্ত করা হবে।",
+      "ai"
+    );
+  }, 600);
 }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
-  color: #202123;
+
+// ================================
+// ADD MESSAGE
+// ================================
+
+function addMessage(text, type) {
+  const row = document.createElement("div");
+  row.className = `message-row ${type}`;
+
+  const message = document.createElement("div");
+  message.className = "message";
+  message.textContent = text;
+
+  row.appendChild(message);
+  chatArea.appendChild(row);
+
+  scrollToBottom();
 }
 
-body {
-  overflow: hidden;
+
+// ================================
+// SCROLL TO BOTTOM
+// ================================
+
+function scrollToBottom() {
+  setTimeout(() => {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }, 50);
 }
 
-button,
-textarea {
-  font-family: inherit;
-}
 
-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-}
+// ================================
+// SEND BUTTON
+// ================================
 
-/* =========================
-   MAIN APP
-========================= */
+sendBtn.addEventListener("click", sendMessage);
 
-.app {
-  width: 100%;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-}
 
-/* =========================
-   TOP BAR
-========================= */
+// ================================
+// ENTER TO SEND
+// ================================
 
-.top-bar {
-  height: 64px;
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  border-bottom: 1px solid #eeeeee;
-  background: rgba(255, 255, 255, 0.96);
-}
+messageInput.addEventListener("keydown", function (event) {
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
 
-.brand-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #111111;
-  color: #ffffff;
-  font-size: 21px;
-  font-weight: bold;
-}
+});
 
-.brand h1 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
 
-.brand span {
-  display: block;
-  margin-top: 1px;
-  font-size: 11px;
-  color: #777777;
-}
+// ================================
+// AUTO RESIZE TEXTAREA
+// ================================
 
-.menu-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 25px;
-  color: #555555;
-}
+messageInput.addEventListener("input", function () {
 
-.menu-btn:active {
-  background: #f1f1f1;
-}
+  this.style.height = "38px";
 
-/* =========================
-   CHAT AREA
-========================= */
+  this.style.height =
+    Math.min(this.scrollHeight, 120) + "px";
 
-.chat-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 15px 15px;
-  scroll-behavior: smooth;
-}
+});
 
-.chat-area::-webkit-scrollbar {
-  width: 4px;
-}
 
-.chat-area::-webkit-scrollbar-thumb {
-  background: #dddddd;
-  border-radius: 10px;
-}
+// ================================
+// SUGGESTION BUTTONS
+// ================================
 
-/* =========================
-   WELCOME SCREEN
-========================= */
+document.querySelectorAll(".suggestion").forEach(button => {
 
-.welcome-screen {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px 15px 60px;
-}
+  button.addEventListener("click", () => {
 
-.welcome-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #111111;
-  color: #ffffff;
-  font-size: 31px;
-  margin-bottom: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-}
+    const text = button.textContent
+      .replace("✨", "")
+      .replace("💡", "")
+      .replace("🌐", "")
+      .trim();
 
-.welcome-screen h2 {
-  font-size: 24px;
-  font-weight: 
+    messageInput.value = text;
+
+    messageInput.focus();
+
+  });
+
+});
+
+
+// ================================
+// PLUS BUTTON
+// ================================
+
+plusBtn.addEventListener("click", () => {
+
+  alert("📎 Attachment feature will be added soon.");
+
+});
+
+
+// ================================
+// CAMERA BUTTON
+// ================================
+
+cameraBtn.addEventListener("click", () => {
+
+  alert("📷 Camera feature will be added soon.");
+
+});
+
+
+// ================================
+// MICROPHONE BUTTON
+// ================================
+
+micBtn.addEventListener("click", () => {
+
+  alert("🎤 Voice input will be added soon.");
+
+});
+
+
+// ================================
+// MENU BUTTON
+// ================================
+
+menuBtn.addEventListener("click", () => {
+
+  alert("☰ Menu and chat history will be added soon.");
+
+});
+
+
+// ================================
+// START
+// ================================
+
+console.log("PingMe AI is ready.");
