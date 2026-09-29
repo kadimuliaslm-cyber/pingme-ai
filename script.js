@@ -1,358 +1,418 @@
-const chatArea = document.getElementById("chatArea");
-const welcomeScreen = document.getElementById("welcomeScreen");
-const messageInput = document.getElementById("messageInput");
-const sendBtn = document.getElementById("sendBtn");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-const plusBtn = document.getElementById("plusBtn");
-const cameraBtn = document.getElementById("cameraBtn");
-const micBtn = document.getElementById("micBtn");
-const menuBtn = document.getElementById("menuBtn");
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #202123;
+}
 
+body {
+  overflow: hidden;
+}
 
-// ===============================
-// PingMe AI Identity
-// ===============================
+button,
+textarea {
+  font-family: inherit;
+}
 
-const PINGME_AI_INSTRUCTION = `
-You are PingMe AI.
-
-Your name is PingMe AI.
-You are the AI of the PingMe AI platform.
-
-IMPORTANT IDENTITY RULES:
-- If the user asks your name, say your name is PingMe AI.
-- Never introduce yourself as Gemini.
-- Never say that your name is Google Gemini.
-- Never claim that you are Google's AI.
-- Do not use Gemini as your identity.
-- Do not describe yourself as a generic assistant when talking about your identity.
-- Always maintain the PingMe AI identity.
-
-Answer naturally and helpfully.
-Reply in the same language the user uses whenever possible.
-If the user speaks Bangla, reply in Bangla.
-If the user speaks English, reply in English.
-`;
-
-
-// ===============================
-// Add message
-// ===============================
-
-function addMessage(text, sender) {
-
-  if (welcomeScreen) {
-    welcomeScreen.style.display = "none";
-  }
-
-  const message = document.createElement("div");
-
-  message.className =
-    sender === "user"
-      ? "message user-message"
-      : "message ai-message";
-
-  message.innerText = text;
-
-  chatArea.appendChild(message);
-
-  chatArea.scrollTop = chatArea.scrollHeight;
-
-  return message;
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 
-// ===============================
-// Send message
-// ===============================
+/* ===============================
+   APP
+   =============================== */
 
-async function sendMessage() {
-
-  const text = messageInput.value.trim();
-
-  if (!text) return;
-
-  addMessage(text, "user");
-
-  messageInput.value = "";
-  messageInput.style.height = "auto";
-const thinkingMessage = document.createElement("div");
-
-thinkingMessage.className = "thinking-message";
-
-thinkingMessage.innerHTML = `
-  <div class="thinking-spinner"></div>
-`;
-
-chatArea.appendChild(thinkingMessage);
-
-chatArea.scrollTop = chatArea.scrollHeight;
-  
-
-  try {
-
-    // Wait for Firebase AI model
-    let attempts = 0;
-
-    while (!window.pingMeAIModel && attempts < 50) {
-
-      await new Promise(resolve =>
-        setTimeout(resolve, 100)
-      );
-
-      attempts++;
-    }
-
-
-    if (!window.pingMeAIModel) {
-
-      throw new Error(
-        "MODEL_NOT_FOUND"
-      );
-
-    }
-
-
-    // ===============================
-    // PingMe AI Prompt
-    // ===============================
-
-    const finalPrompt =
-      PINGME_AI_INSTRUCTION +
-      "\n\nUser message:\n" +
-      text;
-
-
-    // ===============================
-    // Ask AI
-    // ===============================
-
-    const result =
-      await window.pingMeAIModel.generateContent(
-        finalPrompt
-      );
-
-
-    const response =
-      result.response;
-
-
-    const answer =
-      response.text();
-
-
-    thinkingMessage.remove();
-
-
-    addMessage(
-      answer || "AI কোনো উত্তর দেয়নি।",
-      "ai"
-    );
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "PingMe AI Error:",
-      error
-    );
-
-
-    // Remove "ভাবছি..."
-    thinkingMessage.remove();
-
-
-    // ===============================
-    // Friendly Error Messages
-    // ===============================
-
-    const errorText =
-      String(error?.message || error || "");
-
-
-    // Quota / 429
-    if (
-      errorText.includes("429") ||
-      errorText.includes("quota") ||
-      errorText.includes("Quota exceeded") ||
-      errorText.includes("generate_content_free_tier_requests")
-    ) {
-
-      addMessage(
-        "AI এখন সাময়িকভাবে ব্যস্ত। একটু পরে আবার চেষ্টা কর।",
-        "ai"
-      );
-
-      return;
-    }
-
-
-    // Model not found
-    if (
-      errorText.includes("MODEL_NOT_FOUND")
-    ) {
-
-      addMessage(
-        "PingMe AI এখন চালু হতে একটু সমস্যা হচ্ছে। একটু পরে আবার চেষ্টা কর।",
-        "ai"
-      );
-
-      return;
-    }
-
-
-    // Other errors
-    addMessage(
-      "দুঃখিত, এই মুহূর্তে AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে। একটু পরে আবার চেষ্টা কর।",
-      "ai"
-    );
-
-  }
-
+.app {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
 }
 
 
-// ===============================
-// Send button
-// ===============================
+/* ===============================
+   TOP BAR
+   =============================== */
 
-sendBtn.addEventListener(
-  "click",
-  sendMessage
-);
+.top-bar {
+  height: 64px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid #eeeeee;
+  background: #ffffff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111111;
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.brand h1 {
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.brand span {
+  display: block;
+  font-size: 11px;
+  color: #777777;
+}
+
+.menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 25px;
+  color: #555555;
+}
 
 
-// ===============================
-// Enter to send
-// Shift + Enter = new line
-// ===============================
+/* ===============================
+   CHAT AREA
+   =============================== */
 
-messageInput.addEventListener(
-  "keydown",
-  function(event) {
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 15px 15px;
+}
 
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
 
-      event.preventDefault();
+/* ===============================
+   WELCOME SCREEN
+   =============================== */
 
-      sendMessage();
+.welcome-screen {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px 15px 60px;
+}
 
-    }
+.welcome-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111111;
+  color: #ffffff;
+  font-size: 31px;
+  margin-bottom: 18px;
+}
 
+.welcome-screen h2 {
+  font-size: 24px;
+  margin-bottom: 9px;
+}
+
+.welcome-screen p {
+  max-width: 300px;
+  font-size: 14px;
+  line-height: 21px;
+  color: #777777;
+}
+
+
+/* ===============================
+   SUGGESTIONS
+   =============================== */
+
+.suggestions {
+  width: 100%;
+  max-width: 390px;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.suggestion {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid #e7e7e7;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #333333;
+  text-align: left;
+  font-size: 13px;
+}
+
+
+/* ===============================
+   MESSAGE ROW
+   =============================== */
+
+.message-row {
+  width: 100%;
+  display: flex;
+  margin-bottom: 18px;
+}
+
+.message-row.user {
+  justify-content: flex-end;
+}
+
+.message-row.ai {
+  justify-content: flex-start;
+}
+
+
+/* ===============================
+   MESSAGE BUBBLE
+   =============================== */
+
+.message {
+  max-width: 82%;
+  padding: 12px 14px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 22px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
+/* USER MESSAGE - RIGHT */
+
+.message-row.user .message {
+  background: #111111;
+  color: #ffffff;
+  border-bottom-right-radius: 5px;
+}
+
+
+/* AI MESSAGE - LEFT */
+
+.message-row.ai .message {
+  background: #f3f3f3;
+  color: #202123;
+  border-bottom-left-radius: 5px;
+}
+
+
+/* ===============================
+   AI THINKING SPINNER
+   =============================== */
+
+.thinking-message {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin: 8px 0 18px;
+  padding-left: 6px;
+}
+
+.thinking-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #111111;
+  border-radius: 50%;
+  animation: pingmeSpin 0.8s linear infinite;
+}
+
+@keyframes pingmeSpin {
+  to {
+    transform: rotate(360deg);
   }
-);
+}
 
 
-// ===============================
-// Auto resize
-// ===============================
+/* ===============================
+   COMPOSER
+   =============================== */
 
-messageInput.addEventListener(
-  "input",
-  function() {
+.composer-wrapper {
+  width: 100%;
+  padding: 8px 12px 10px;
+  background: #ffffff;
+  border-top: 1px solid #eeeeee;
+}
 
-    this.style.height = "auto";
+.composer {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 6px;
+  border: 1px solid #dddddd;
+  border-radius: 27px;
+  background: #ffffff;
+}
 
-    this.style.height =
-      Math.min(
-        this.scrollHeight,
-        140
-      ) + "px";
 
+/* ===============================
+   ICON BUTTONS
+   =============================== */
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+  font-size: 21px;
+}
+
+#plusBtn,
+#micBtn {
+  margin: 0;
+}
+
+#micBtn {
+  margin-left: -2px;
+}
+
+#cameraBtn {
+  font-size: 18px;
+}
+
+#micBtn {
+  font-size: 17px;
+}
+
+
+/* ===============================
+   MESSAGE INPUT
+   =============================== */
+
+#messageInput {
+  flex: 1;
+  width: 100%;
+  min-height: 38px;
+  max-height: 120px;
+  padding: 9px 5px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: #202123;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+#messageInput::placeholder {
+  color: #999999;
+}
+
+
+/* ===============================
+   SEND BUTTON
+   =============================== */
+
+.send-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 0;
+}
+
+.send-btn svg {
+  width: 21px;
+  height: 21px;
+}
+
+
+/* ===============================
+   FOOTER NOTE
+   =============================== */
+
+.composer-note {
+  padding-top: 6px;
+  text-align: center;
+  color: #999999;
+  font-size: 9px;
+}
+
+
+/* ===============================
+   MOBILE
+   =============================== */
+
+@media (max-width: 480px) {
+
+  .top-bar {
+    height: 60px;
+    min-height: 60px;
+    padding: 0 12px;
   }
-);
 
-
-// ===============================
-// Suggestions
-// ===============================
-
-document
-  .querySelectorAll(".suggestion")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      function() {
-
-        messageInput.value =
-          this.innerText;
-
-        messageInput.focus();
-
-        messageInput.dispatchEvent(
-          new Event("input")
-        );
-
-      }
-    );
-
-  });
-
-
-// ===============================
-// Plus
-// ===============================
-
-plusBtn.addEventListener(
-  "click",
-  function() {
-
-    alert(
-      "File attachment feature আসছে।"
-    );
-
+  .brand-icon {
+    width: 35px;
+    height: 35px;
   }
-);
 
-
-// ===============================
-// Camera
-// ===============================
-
-cameraBtn.addEventListener(
-  "click",
-  function() {
-
-    alert(
-      "Camera feature আসছে।"
-    );
-
+  .brand h1 {
+    font-size: 16px;
   }
-);
 
-
-// ===============================
-// Microphone
-// ===============================
-
-micBtn.addEventListener(
-  "click",
-  function() {
-
-    alert(
-      "Voice input feature আসছে।"
-    );
-
+  .chat-area {
+    padding-left: 12px;
+    padding-right: 12px;
   }
-);
 
-
-// ===============================
-// Menu
-// ===============================
-
-menuBtn.addEventListener(
-  "click",
-  function() {
-
-    alert(
-      "PingMe AI menu আসছে।"
-    );
-
+  .welcome-screen h2 {
+    font-size: 22px;
   }
-);
+
+  .message {
+    max-width: 86%;
+  }
+
+  .composer-wrapper {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .icon-btn,
+  .send-btn {
+    width: 36px;
+    min-width: 36px;
+  }
+
+}
