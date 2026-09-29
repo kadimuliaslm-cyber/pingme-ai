@@ -29,7 +29,6 @@
 
     <header class="top-bar">
 
-
       <!-- HISTORY -->
 
       <button
@@ -58,7 +57,6 @@
       </button>
 
 
-
       <!-- BRAND -->
 
       <div class="brand">
@@ -78,7 +76,6 @@
         </div>
 
       </div>
-
 
 
       <!-- SETTINGS -->
@@ -117,14 +114,12 @@
     </header>
 
 
-
     <!-- ================= CHAT ================= -->
 
     <main
       class="chat-area"
       id="chatArea"
     >
-
 
       <section
         class="welcome-screen"
@@ -148,11 +143,9 @@
     </main>
 
 
-
     <!-- ================= COMPOSER ================= -->
 
     <div class="composer-wrapper">
-
 
       <div class="composer">
 
@@ -183,7 +176,6 @@
           </svg>
 
         </button>
-
 
 
         <!-- VOICE TO TEXT -->
@@ -224,7 +216,6 @@
         </button>
 
 
-
         <!-- MESSAGE INPUT -->
 
         <textarea
@@ -235,7 +226,6 @@
         ></textarea>
 
 
-
         <!-- AI VOICE / SEND -->
 
         <button
@@ -244,7 +234,6 @@
           type="button"
           aria-label="AI Voice"
         >
-
 
           <!-- AI VOICE ICON -->
 
@@ -280,7 +269,6 @@
           </svg>
 
 
-
           <!-- SEND ICON -->
 
           <svg
@@ -314,7 +302,6 @@
       </div>
 
 
-
       <!-- ================= PLUS POPUP ================= -->
 
       <div
@@ -323,14 +310,12 @@
         hidden
       >
 
-
         <button
           type="button"
           id="cameraBtn"
         >
           <span>Camera</span>
         </button>
-
 
         <button
           type="button"
@@ -339,14 +324,12 @@
           <span>Photo</span>
         </button>
 
-
         <button
           type="button"
           id="fileOption"
         >
           <span>File</span>
         </button>
-
 
         <button
           type="button"
@@ -355,14 +338,12 @@
           <span>Audio</span>
         </button>
 
-
         <button
           type="button"
           id="screenOption"
         >
           <span>Screen</span>
         </button>
-
 
         <button
           type="button"
@@ -372,7 +353,6 @@
         </button>
 
       </div>
-
 
 
       <!-- NOTE -->
@@ -387,7 +367,6 @@
     </div>
 
   </div>
-
 
 
   <!-- ================= FIREBASE AI ================= -->
@@ -407,6 +386,10 @@
     } from
     "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
 
+
+    // ===============================
+    // FIREBASE CONFIG
+    // ===============================
 
     const firebaseConfig = {
 
@@ -434,9 +417,17 @@
     };
 
 
+    // ===============================
+    // INITIALIZE FIREBASE
+    // ===============================
+
     const firebaseApp =
       initializeApp(firebaseConfig);
 
+
+    // ===============================
+    // INITIALIZE FIREBASE AI
+    // ===============================
 
     const ai =
       getAI(firebaseApp, {
@@ -444,20 +435,69 @@
         backend:
           new GoogleAIBackend()
 
-      const model1 = getGenerativeModel(ai, {
-  model: "gemini-3.7-flash"
-});
+      });
 
-const model2 = getGenerativeModel(ai, {
-  model: "gemini-3.5-flash-lite"
-});
 
+    // ===============================
+    // MODEL 1 — PRIMARY
+    // ===============================
+
+    const model1 =
+      getGenerativeModel(ai, {
+
+        model:
+          "gemini-3.7-flash"
+
+      });
+
+
+    // ===============================
+    // MODEL 2 — FALLBACK
+    // ===============================
+
+    const model2 =
+      getGenerativeModel(ai, {
+
+        model:
+          "gemini-3.5-flash-lite"
+
+      });
+
+
+    // ===============================
+    // MODEL 3 — SECOND FALLBACK
+    // ===============================
+
+    const model3 =
+      getGenerativeModel(ai, {
+
+        model:
+          "gemini-3.6-flash"
+
+      });
+
+
+    // ===============================
+    // MAKE ALL MODELS AVAILABLE
+    // ===============================
+
+    window.pingMeAIModel1 =
+      model1;
+
+    window.pingMeAIModel2 =
+      model2;
+
+    window.pingMeAIModel3 =
+      model3;
+
+
+    // Compatibility with old script.js
 
     window.pingMeAIModel =
-      model;
+      model1;
+
 
   </script>
-
 
 
   <!-- UI -->
@@ -465,7 +505,7 @@ const model2 = getGenerativeModel(ai, {
   <script src="chat-ui.js"></script>
 
 
-  <!-- EXISTING AI LOGIC -->
+  <!-- AI LOGIC -->
 
   <script src="script.js"></script>
 
