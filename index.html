@@ -444,16 +444,13 @@
         backend:
           new GoogleAIBackend()
 
-      });
+      const model1 = getGenerativeModel(ai, {
+  model: "gemini-3.7-flash"
+});
 
-
-    const model =
-      getGenerativeModel(ai, {
-
-        model:
-          "gemini-3.7-flash"
-
-      });
+const model2 = getGenerativeModel(ai, {
+  model: "gemini-3.5-flash-lite"
+});
 
 
     window.pingMeAIModel =
