@@ -10,6 +10,32 @@ const menuBtn = document.getElementById("menuBtn");
 
 
 // ===============================
+// PingMe AI Identity
+// ===============================
+
+const PINGME_AI_INSTRUCTION = `
+You are PingMe AI.
+
+Your name is PingMe AI.
+You are the AI of the PingMe AI platform.
+
+IMPORTANT IDENTITY RULES:
+- If the user asks your name, say your name is PingMe AI.
+- Never introduce yourself as Gemini.
+- Never say that your name is Google Gemini.
+- Never claim that you are Google's AI.
+- Do not use Gemini as your identity.
+- Do not describe yourself as a generic assistant when talking about your identity.
+- Always maintain the PingMe AI identity.
+
+Answer naturally and helpfully.
+Reply in the same language the user uses whenever possible.
+If the user speaks Bangla, reply in Bangla.
+If the user speaks English, reply in English.
+`;
+
+
+// ===============================
 // Add message
 // ===============================
 
@@ -78,9 +104,24 @@ async function sendMessage() {
     }
 
 
-    // Ask Gemini
+    // ===============================
+    // PingMe AI Prompt
+    // ===============================
+
+    const finalPrompt =
+      PINGME_AI_INSTRUCTION +
+      "\n\nUser message:\n" +
+      text;
+
+
+    // ===============================
+    // Ask AI
+    // ===============================
+
     const result =
-      await window.pingMeAIModel.generateContent(text);
+      await window.pingMeAIModel.generateContent(
+        finalPrompt
+      );
 
 
     const response =
