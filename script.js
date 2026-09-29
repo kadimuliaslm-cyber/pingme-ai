@@ -5,7 +5,7 @@ const chatArea = document.getElementById("chatArea");
 const messageInput = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 
-let conversation = [];
+let previousInteractionId = null;
 
 function addMessage(text, type) {
     const message = document.createElement("div");
@@ -28,29 +28,25 @@ async function sendMessage() {
 
     const thinkingMessage = addMessage("ভাবছি...", "ai");
 
-    conversation.push({
-        role: "user",
-        parts: [
-            {
-                text: text
-            }
-        ]
-    });
-
     try {
+        const body = {
+            model: MODEL_NAME,
+            input: text
+        };
+
+        if (previousInteractionId) {
+            body.previous_interaction_id = previousInteractionId;
+        }
+
         const response = await fetch(
-            "https://generativelanguage.googleapis.com/v1beta/models/" +
-            MODEL_NAME +
-            ":generateContent",
+            "https://generativelanguage.googleapis.com/v1beta/interactions",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "x-goog-api-key": GEMINI_API_KEY
                 },
-                body: JSON.stringify({
-                    contents: conversation
-                })
+                body: JSON.stringify(body)
             }
         );
 
@@ -67,14 +63,13 @@ async function sendMessage() {
 
         const data = await response.json();
 
+        previousInteractionId = data.id;
+
         const aiText =
-            data.candidates &&
-            data.candidates[0] &&
-            data.candidates[0].content &&
-            data.candidates[0].content.parts &&
-            data.candidates[0].content.parts[0]
-                ? data.candidates[0].content.parts[0].text
-                : null;
+            data.output_text ||
+            data.outputs?.find(
+                item => item.type === "text"
+            )?.text;
 
         if (!aiText) {
             throw new Error("AI কোনো উত্তর দেয়নি।");
@@ -82,20 +77,11 @@ async function sendMessage() {
 
         thinkingMessage.textContent = aiText;
 
-        conversation.push({
-            role: "model",
-            parts: [
-                {
-                    text: aiText
-                }
-            ]
-        });
-
     } catch (error) {
         console.error("Gemini Error:", error);
 
         thinkingMessage.textContent =
-            "দুঃখিত, AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে।\n\n" +
+            "দুঃখিত, AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে.\n\n" +
             error.message;
     }
 
