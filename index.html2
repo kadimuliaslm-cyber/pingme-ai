@@ -1,1 +1,153 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PingMe AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter, sans-serif}
+body{background:#fff;height:100vh;display:flex;flex-direction:column}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee}
+.icon-btn{background:#f4f4f4;border:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#chatArea{flex:1;overflow-y:auto;padding:20px;padding-bottom:100px}
+#welcomeScreen{text-align:center;margin-top:100px;color:#888}
+.message-row{display:flex;flex-direction:column;margin:12px 0;max-width:85%}
+.message-row.user{align-self:flex-end;align-items:flex-end;margin-left:auto}
+.message-row.ai{align-self:flex-start}
+.message{padding:12px 16px;border-radius:18px;line-height:1.5;font-size:15px}
+.user.message{background:#000;color:#fff;border-bottom-right-radius:4px}
+.ai.message{background:#f4f4f4;color:#000;border-bottom-left-radius:4px}
+.ai-actions{display:flex;gap:8px;margin-top:8px;opacity:0.9}
+.ai-icon-btn{background:none;border:1px solid #e5e5e5;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#555}
+.ai-icon-btn:hover{background:#000;color:#fff;border-color:#000}
+.input-area{position:fixed;bottom:0;left:0;right:0;padding:12px 16px 20px;background:#fff}
+.input-wrapper{display:flex;align-items:center;gap:8px;background:#f4f4f5;border-radius:32px;padding:6px 8px 6px 12px;border:1px solid #eee}
+#messageInput{flex:1;background:transparent;border:none;outline:none;font-size:15px;padding:10px 0}
+.input-icon-btn{background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.input-icon-btn:hover{background:#e9e9e9}
+.voice-btn{background:#000;border:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.thinking-message{display:flex;align-items:center}
+.thinking-spinner{width:18px;height:18px;border:2px solid #ddd;border-top-color:#000;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button id="menuBtn" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  <b>PingMe AI</b>
+  <div style="display:flex;gap:8px">
+    <button class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+    <button class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
+  </div>
+</div>
+
+<div id="chatArea">
+  <div id="welcomeScreen">
+    <h2>What can I help with?</h2>
+  </div>
+</div>
+
+<div class="input-area">
+  <div class="input-wrapper">
+    <button id="plusBtn" class="input-icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+    <input id="messageInput" type="text" placeholder="Reply to PingMe AI" />
+    <button id="cameraBtn" class="input-icon-btn" style="display:none"></button>
+    <button id="micBtn" class="input-icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
+    <button id="sendBtn" class="voice-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="2" height="12" rx="1" fill="white"/><rect x="10" y="1" width="2.5" height="16" rx="1" fill="white"/><rect x="15.5" y="5" width="2" height="9" rx="1" fill="white"/><rect x="20" y="8" width="1.5" height="3" rx="1" fill="white"/></svg></button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+const chatArea = document.getElementById("chatArea");
+const welcomeScreen = document.getElementById("welcomeScreen");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const plusBtn = document.getElementById("plusBtn");
+const micBtn = document.getElementById("micBtn");
+const menuBtn = document.getElementById("menuBtn");
+const cameraBtn = document.getElementById("cameraBtn");
+
+const PINGME_AI_INSTRUCTION = `You are PingMe AI. Your name is PingMe AI. You are the AI of the PingMe AI platform. If user asks your name say PingMe AI. Never say Gemini or Google. Reply in same language user uses.`;
+
+function addMessage(text, sender){
+  if(welcomeScreen) welcomeScreen.style.display="none";
+  const row=document.createElement("div");
+  row.className=sender==="user"? "message-row user" : "message-row ai";
+  const msg=document.createElement("div");
+  msg.className="message";
+  msg.innerText=text;
+  row.appendChild(msg);
+
+  if(sender==="ai"){
+    const actions=document.createElement("div");
+    actions.className="ai-actions";
+    actions.innerHTML=`
+      <button class="ai-icon-btn" title="Copy"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v3"/></svg></button>
+      <button class="ai-icon-btn" title="Like"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></button>
+      <button class="ai-icon-btn" title="Dislike"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg></button>
+      <button class="ai-icon-btn" title="Speak"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.08"/></svg></button>
+      <button class="ai-icon-btn" title="Share"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+      <button class="ai-icon-btn" title="More"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
+    `;
+    const copyBtn=actions.children[0];
+    copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(text); copyBtn.innerHTML="✅"; setTimeout(()=>{copyBtn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v3"/></svg>`},1000)});
+    row.appendChild(actions);
+  }
+  chatArea.appendChild(row);
+  chatArea.scrollTop=chatArea.scrollHeight;
+  return row;
+}
+
+function addThinkingMessage(){
+  if(welcomeScreen) welcomeScreen.style.display="none";
+  const row=document.createElement("div");
+  row.className="message-row ai thinking-row";
+  const msg=document.createElement("div");
+  msg.className="message thinking-message";
+  msg.innerHTML=`<div class="thinking-spinner"></div>`;
+  row.appendChild(msg);
+  chatArea.appendChild(row);
+  chatArea.scrollTop=chatArea.scrollHeight;
+  return row;
+}
+
+async function sendMessage(){
+  const text=messageInput.value.trim();
+  if(!text) return;
+  addMessage(text,"user");
+  messageInput.value="";
+  messageInput.style.height="auto";
+  const thinking=addThinkingMessage();
+  try{
+    let attempts=0;
+    while(!window.pingMeAIModel && attempts<50){await new Promise(r=>setTimeout(r,100)); attempts++;}
+    if(!window.pingMeAIModel) throw new Error("MODEL_NOT_FOUND");
+    const finalPrompt=PINGME_AI_INSTRUCTION+"\n\nUser message:\n"+text;
+    const result=await window.pingMeAIModel.generateContent(finalPrompt);
+    const answer=result.response.text();
+    thinking.remove();
+    addMessage(answer || "AI কোনো উত্তর দেয়নি।","ai");
+  }catch(e){
+    thinking.remove();
+    console.error(e);
+    const err=String(e?.message||e||"");
+    if(err.includes("429")||err.includes("quota")){addMessage("AI এখন সাময়িকভাবে ব্যস্ত। একটু পরে আবার চেষ্টা কর।","ai");return;}
+    if(err.includes("MODEL_NOT_FOUND")){addMessage("PingMe AI চালু হতে সমস্যা হচ্ছে।","ai");return;}
+    addMessage("দুঃখিত, সংযোগে সমস্যা হয়েছে।","ai");
+  }
+}
+
+sendBtn.addEventListener("click",sendMessage);
+messageInput.addEventListener("keydown",function(e){if(e.key==="Enter" &&!e.shiftKey){e.preventDefault(); sendMessage();}});
+plusBtn.addEventListener("click",()=>alert("File attachment feature আসছে।"));
+micBtn.addEventListener("click",()=>alert("Voice input feature আসছে।"));
+menuBtn.addEventListener("click",()=>alert("PingMe AI menu আসছে।"));
+
+});
+</script>
+</body>
+</html>
