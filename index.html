@@ -1,24 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffffff">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="theme-color"
+    content="#ffffff">
 
   <title>PingMe AI</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css">
+
 </head>
+
 
 <body>
 
   <div class="app">
 
-    <!-- =========================
+
+    <!-- =====================================================
          HEADER
-    ========================== -->
+    ====================================================== -->
+
     <header class="top-bar">
+
+
+      <!-- BRAND -->
 
       <div class="brand">
 
@@ -27,88 +43,644 @@
         </div>
 
         <div>
-          <h1>PingMe AI</h1>
-          <span>AI Assistant</span>
+
+          <h1>
+            PingMe AI
+          </h1>
+
+          <span>
+            AI Assistant
+          </span>
+
         </div>
 
       </div>
 
+
+
+      <!-- SETTINGS -->
+
       <button
-        class="menu-btn"
+        class="menu-btn settings-btn"
         id="menuBtn"
-        aria-label="Menu">
-        ⋮
+        type="button"
+        aria-label="Settings"
+        title="Settings">
+
+        <svg
+          viewBox="0 0 24 24"
+          width="22"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+
+          <line
+            x1="4"
+            y1="7"
+            x2="20"
+            y2="7">
+          </line>
+
+          <circle
+            cx="9"
+            cy="7"
+            r="1.5"
+            fill="currentColor"
+            stroke="none">
+          </circle>
+
+
+          <line
+            x1="4"
+            y1="12"
+            x2="20"
+            y2="12">
+          </line>
+
+          <circle
+            cx="15"
+            cy="12"
+            r="1.5"
+            fill="currentColor"
+            stroke="none">
+          </circle>
+
+
+          <line
+            x1="4"
+            y1="17"
+            x2="20"
+            y2="17">
+          </line>
+
+          <circle
+            cx="10"
+            cy="17"
+            r="1.5"
+            fill="currentColor"
+            stroke="none">
+          </circle>
+
+        </svg>
+
       </button>
 
     </header>
 
 
-    <!-- =========================
+
+    <!-- =====================================================
+         FUTURE SETTINGS PANEL
+         
+         এখন শুধু UI structure।
+         Functionality পরে হবে।
+    ====================================================== -->
+
+    <aside
+      class="settings-panel"
+      id="settingsPanel"
+      aria-hidden="true">
+
+
+      <div class="settings-header">
+
+        <h2>
+          Settings
+        </h2>
+
+        <button
+          id="closeSettings"
+          type="button"
+          aria-label="Close settings">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <!-- PROFILE -->
+
+      <button
+        class="settings-option"
+        id="profileOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <circle
+              cx="12"
+              cy="8"
+              r="4">
+            </circle>
+
+            <path
+              d="M4 21c0-4 3.6-7 8-7s8 3 8 7">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </button>
+
+
+
+      <!-- MEMORY -->
+
+      <button
+        class="settings-option"
+        id="memoryOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path
+              d="M9 3h6">
+            </path>
+
+            <path
+              d="M8 5h8v4a6 6 0 0 1-3 5.2V18">
+            </path>
+
+            <path
+              d="M8 18h8">
+            </path>
+
+            <path
+              d="M7 21h10">
+            </path>
+
+            <path
+              d="M8 9h8">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          AI Memory
+        </span>
+
+      </button>
+
+
+
+      <!-- CHAT HISTORY -->
+
+      <button
+        class="settings-option"
+        id="historyOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path
+              d="M3 12a9 9 0 1 0 3-6.7">
+            </path>
+
+            <polyline
+              points="3 4 3 9 8 9">
+            </polyline>
+
+            <path
+              d="M12 7v5l3 2">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          Chat History
+        </span>
+
+      </button>
+
+
+
+      <!-- APPEARANCE -->
+
+      <button
+        class="settings-option"
+        id="appearanceOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <circle
+              cx="12"
+              cy="12"
+              r="4">
+            </circle>
+
+            <path
+              d="M12 2v2">
+            </path>
+
+            <path
+              d="M12 20v2">
+            </path>
+
+            <path
+              d="M4.93 4.93l1.41 1.41">
+            </path>
+
+            <path
+              d="M17.66 17.66l1.41 1.41">
+            </path>
+
+            <path
+              d="M2 12h2">
+            </path>
+
+            <path
+              d="M20 12h2">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          Appearance
+        </span>
+
+      </button>
+
+
+
+      <!-- LANGUAGE -->
+
+      <button
+        class="settings-option"
+        id="languageOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <circle
+              cx="12"
+              cy="12"
+              r="9">
+            </circle>
+
+            <path
+              d="M3 12h18">
+            </path>
+
+            <path
+              d="M12 3a14 14 0 0 1 0 18">
+            </path>
+
+            <path
+              d="M12 3a14 14 0 0 0 0 18">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          Language
+        </span>
+
+      </button>
+
+
+
+      <!-- NOTIFICATIONS -->
+
+      <button
+        class="settings-option"
+        id="notificationOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path
+              d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+            </path>
+
+            <path
+              d="M10 21h4">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          Notifications
+        </span>
+
+      </button>
+
+
+
+      <!-- PRIVACY -->
+
+      <button
+        class="settings-option"
+        id="privacyOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <rect
+              x="5"
+              y="10"
+              width="14"
+              height="11"
+              rx="2">
+            </rect>
+
+            <path
+              d="M8 10V7a4 4 0 0 1 8 0v3">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          Privacy & Security
+        </span>
+
+      </button>
+
+
+
+      <!-- AI FEATURES -->
+
+      <button
+        class="settings-option"
+        id="aiFeaturesOption"
+        type="button">
+
+        <span class="settings-option-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            width="21"
+            height="21"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path
+              d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z">
+            </path>
+
+            <path
+              d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7z">
+            </path>
+
+          </svg>
+
+        </span>
+
+        <span>
+          AI Features
+        </span>
+
+      </button>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
          CHAT AREA
-    ========================== -->
+    ====================================================== -->
+
     <main
       class="chat-area"
       id="chatArea">
+
+
+      <!-- WELCOME SCREEN -->
 
       <section
         class="welcome-screen"
         id="welcomeScreen">
 
+
         <div class="welcome-icon">
           ✦
         </div>
 
-        <h2>How can I help you?</h2>
+
+        <h2>
+          How can I help you?
+        </h2>
+
 
         <p>
           Ask me anything. You can chat in বাংলা or English.
         </p>
 
+
+
+        <!-- SUGGESTIONS -->
+
         <div class="suggestions">
 
-          <button class="suggestion">
+
+          <button
+            class="suggestion"
+            type="button">
+
             ✨ Write something for me
+
           </button>
 
-          <button class="suggestion">
+
+          <button
+            class="suggestion"
+            type="button">
+
             💡 Give me an idea
+
           </button>
 
-          <button class="suggestion">
+
+          <button
+            class="suggestion"
+            type="button">
+
             🌐 Translate something
+
           </button>
+
 
         </div>
 
+
       </section>
+
 
     </main>
 
 
-    <!-- =========================
+
+    <!-- =====================================================
+         FUTURE ATTACHMENT PREVIEW AREA
+         
+         ছবি / ভিডিও / ফাইল / অডিও পাঠানোর আগে
+         এখানে preview দেখানো যাবে।
+    ====================================================== -->
+
+    <div
+      class="attachment-preview"
+      id="attachmentPreview"
+      aria-hidden="true">
+
+    </div>
+
+
+
+    <!-- =====================================================
          MESSAGE COMPOSER
-    ========================== -->
+    ====================================================== -->
+
     <div class="composer-wrapper">
+
 
       <div class="composer">
 
 
-        <!-- PLUS / ATTACHMENT BUTTON -->
+        <!-- =================================================
+             PLUS BUTTON
+        ================================================== -->
+
         <button
           class="icon-btn plus-btn"
           id="plusBtn"
+          type="button"
           aria-label="Add attachment"
           aria-expanded="false"
-          type="button">
+          aria-controls="attachmentMenu">
 
-          +
+
+          <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round">
+
+            <line
+              x1="12"
+              y1="5"
+              x2="12"
+              y2="19">
+            </line>
+
+            <line
+              x1="5"
+              y1="12"
+              x2="19"
+              y2="12">
+            </line>
+
+          </svg>
+
 
         </button>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              ATTACHMENT MENU
-        ========================== -->
+             
+             + চাপলে এই ৪টি অপশন খুলবে।
+        ================================================== -->
+
         <div
           class="attachment-menu"
           id="attachmentMenu"
@@ -116,18 +688,18 @@
 
 
           <!-- PHOTO -->
+
           <button
             class="attachment-option"
             id="photoOption"
-            type="button"
-            aria-label="Send photo">
+            type="button">
 
-            <span class="attachment-icon photo-icon">
+            <span class="attachment-icon">
 
               <svg
                 viewBox="0 0 24 24"
-                width="22"
-                height="22"
+                width="23"
+                height="23"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -156,26 +728,27 @@
 
             </span>
 
-            <span class="attachment-label">
+            <span>
               Photo
             </span>
 
           </button>
 
 
+
           <!-- VIDEO -->
+
           <button
             class="attachment-option"
             id="videoOption"
-            type="button"
-            aria-label="Send video">
+            type="button">
 
-            <span class="attachment-icon video-icon">
+            <span class="attachment-icon">
 
               <svg
                 viewBox="0 0 24 24"
-                width="22"
-                height="22"
+                width="23"
+                height="23"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -198,26 +771,27 @@
 
             </span>
 
-            <span class="attachment-label">
+            <span>
               Video
             </span>
 
           </button>
 
 
+
           <!-- FILE -->
+
           <button
             class="attachment-option"
             id="fileOption"
-            type="button"
-            aria-label="Send file">
+            type="button">
 
-            <span class="attachment-icon file-icon">
+            <span class="attachment-icon">
 
               <svg
                 viewBox="0 0 24 24"
-                width="22"
-                height="22"
+                width="23"
+                height="23"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -250,59 +824,64 @@
 
             </span>
 
-            <span class="attachment-label">
+            <span>
               File
             </span>
 
           </button>
 
 
+
           <!-- AUDIO -->
+
           <button
             class="attachment-option"
             id="audioOption"
-            type="button"
-            aria-label="Send audio">
+            type="button">
 
-            <span class="attachment-icon audio-icon">
+            <span class="attachment-icon">
 
               <svg
                 viewBox="0 0 24 24"
-                width="22"
-                height="22"
+                width="23"
+                height="23"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round">
 
-                <path
-                  d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z">
-                </path>
+                <rect
+                  x="9"
+                  y="3"
+                  width="6"
+                  height="11"
+                  rx="3">
+                </rect>
 
                 <path
-                  d="M19 11a7 7 0 0 1-14 0">
+                  d="M5.5 11a6.5 6.5 0 0 0 13 0">
                 </path>
 
                 <line
                   x1="12"
-                  y1="18"
+                  y1="17.5"
                   x2="12"
-                  y2="22">
+                  y2="21">
                 </line>
 
                 <line
-                  x1="8"
-                  y1="22"
-                  x2="16"
-                  y2="22">
+                  x1="8.5"
+                  y1="21"
+                  x2="15.5"
+                  y2="21">
                 </line>
 
               </svg>
 
             </span>
 
-            <span class="attachment-label">
+            <span>
               Audio
             </span>
 
@@ -312,12 +891,49 @@
         </div>
 
 
-        <!-- CAMERA -->
+
+        <!-- =================================================
+             HIDDEN FILE INPUTS
+        ================================================== -->
+
+        <input
+          type="file"
+          id="photoInput"
+          accept="image/*"
+          hidden>
+
+
+        <input
+          type="file"
+          id="videoInput"
+          accept="video/*"
+          hidden>
+
+
+        <input
+          type="file"
+          id="fileInput"
+          hidden>
+
+
+        <input
+          type="file"
+          id="audioInput"
+          accept="audio/*"
+          hidden>
+
+
+
+        <!-- =================================================
+             CAMERA
+        ================================================== -->
+
         <button
           class="icon-btn camera-btn"
           id="cameraBtn"
-          aria-label="Camera"
-          type="button">
+          type="button"
+          aria-label="Camera">
+
 
           <svg
             viewBox="0 0 24 24"
@@ -341,10 +957,15 @@
 
           </svg>
 
+
         </button>
 
 
-        <!-- MESSAGE INPUT -->
+
+        <!-- =================================================
+             MESSAGE INPUT
+        ================================================== -->
+
         <textarea
           id="messageInput"
           rows="1"
@@ -353,12 +974,17 @@
         </textarea>
 
 
-        <!-- VOICE BUTTON -->
+
+        <!-- =================================================
+             VOICE BUTTON
+        ================================================== -->
+
         <button
           class="icon-btn mic-btn"
           id="micBtn"
-          aria-label="Voice input"
-          type="button">
+          type="button"
+          aria-label="Voice input">
+
 
           <svg
             viewBox="0 0 24 24"
@@ -392,15 +1018,21 @@
 
           </svg>
 
+
         </button>
 
 
-        <!-- SEND BUTTON -->
+
+        <!-- =================================================
+             SEND BUTTON
+        ================================================== -->
+
         <button
           class="send-btn"
           id="sendBtn"
-          aria-label="Send message"
-          type="button">
+          type="button"
+          aria-label="Send message">
+
 
           <svg
             viewBox="0 0 24 24"
@@ -422,91 +1054,162 @@
 
           </svg>
 
+
         </button>
 
 
       </div>
 
 
+
       <!-- COMPOSER NOTE -->
+
       <div class="composer-note">
+
         PingMe AI can make mistakes. Check important information.
+
       </div>
 
+
     </div>
+
+
+
+    <!-- =====================================================
+         FUTURE CHAT / AI FEATURES PLACEHOLDER
+
+         পরে এখানে:
+         - AI response
+         - typing animation
+         - voice response
+         - image response
+         - file response
+         - memory
+         - chat history
+         ইত্যাদি কাজ করবে।
+    ====================================================== -->
+
+    <div
+      id="futureFeatures"
+      hidden>
+
+    </div>
+
 
   </div>
 
 
-  <!-- =========================
+
+  <!-- =====================================================
        FIREBASE AI LOGIC
-  ========================== -->
+       
+       আগের Firebase configuration রাখা হয়েছে।
+    ====================================================== -->
+
   <script type="module">
 
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+    import {
+      initializeApp
+    }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
     import {
       getAI,
       getGenerativeModel,
       GoogleAIBackend
     }
-      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
 
 
     const firebaseConfig = {
 
-      apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
+
+      apiKey:
+        "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
+
 
       authDomain:
         "pingme-ai-8d8cc.firebaseapp.com",
 
+
       projectId:
         "pingme-ai-8d8cc",
+
 
       storageBucket:
         "pingme-ai-8d8cc.firebasestorage.app",
 
+
       messagingSenderId:
         "547217020747",
+
 
       appId:
         "1:547217020747:web:62b7d3843672703d8abace",
 
+
       measurementId:
         "G-3WRC64CRDR"
 
+
     };
+
 
 
     const firebaseApp =
       initializeApp(firebaseConfig);
 
 
+
     const ai =
-      getAI(firebaseApp, {
-        backend: new GoogleAIBackend()
-      });
+      getAI(
+        firebaseApp,
+        {
+          backend:
+            new GoogleAIBackend()
+        }
+      );
+
 
 
     const model =
-      getGenerativeModel(ai, {
-        model: "gemini-3.8-flash"
-      });
+      getGenerativeModel(
+        ai,
+        {
+          model:
+            "gemini-3.8-flash"
+        }
+      );
 
 
-    window.pingMeAIModel = model;
+
+    /*
+      PingMe AI Model
+
+      পরে chat system এই model ব্যবহার করবে।
+    */
+
+    window.pingMeAIModel =
+      model;
+
 
   </script>
 
 
-  <!-- =========================
-       PINGME AI JAVASCRIPT
-  ========================== -->
+
+  <!-- =====================================================
+       MAIN JAVASCRIPT
+    ====================================================== -->
+
   <script
     src="script.js"
     defer>
   </script>
 
+
 </body>
+
 </html>
