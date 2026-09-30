@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>PingMe AI</title>
 
   <style>
@@ -17,9 +16,10 @@
     body {
       width: 100%;
       height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
       background: #ffffff;
-      color: #202123;
+      color: #0d0d0d;
     }
 
     body {
@@ -37,17 +37,11 @@
       cursor: pointer;
     }
 
-    /* =========================
-       APP
-       ========================= */
-
     .app {
       width: 100%;
       height: 100dvh;
-
       display: flex;
       flex-direction: column;
-
       background: #ffffff;
     }
 
@@ -56,17 +50,13 @@
        ========================= */
 
     .top-bar {
-      height: 64px;
-      min-height: 64px;
-
+      height: 60px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      padding: 0 14px;
-
-      border-bottom: 1px solid #eeeeee;
-
+      padding: 0 16px;
+      border-bottom: 1px solid #f4f4f4;
       background: #ffffff;
     }
 
@@ -74,143 +64,124 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 10px;
+    }
+
+    .premium-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
     }
 
     .brand h1 {
       font-size: 17px;
       font-weight: 600;
+      letter-spacing: -0.2px;
     }
 
-    /* =========================
-       ROUND ICON BUTTON
-       ========================= */
-
     .icon-btn {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
-
       border-radius: 50%;
-
-      color: #444444;
-
-      background: #f7f7f7;
-
-      transition:
-        background 0.2s,
-        transform 0.15s;
+      color: #212121;
+      background: #ffffff;
+      transition: background 0.15s;
     }
 
     .icon-btn:hover {
-      background: #eeeeee;
-    }
-
-    .icon-btn:active {
-      transform: scale(0.94);
-    }
-
-    .icon-btn[hidden] {
-      display: none !important;
+      background: #f4f4f6;
     }
 
     /* =========================
-       CHAT
+       CHAT AREA
        ========================= */
 
     .chat-area {
       flex: 1;
-
       overflow-y: auto;
-
-      padding: 20px 14px 16px;
-
+      padding: 24px 20px;
       scroll-behavior: smooth;
+      background: #ffffff;
     }
-
-    /* =========================
-       WELCOME
-       ========================= */
 
     .welcome-screen {
       min-height: 100%;
-
       display: flex;
       flex-direction: column;
-
       align-items: center;
       justify-content: center;
-
       text-align: center;
-
-      padding: 20px 14px 60px;
+      padding-bottom: 40px;
     }
 
     .welcome-screen h2 {
-      font-size: 24px;
-      font-weight: 600;
-
-      margin-bottom: 24px;
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 32px;
+      color: #000000;
+      letter-spacing: -0.5px;
     }
 
     .suggestions-list {
       width: 100%;
-      max-width: 390px;
-
+      max-width: 380px;
       display: flex;
       flex-direction: column;
-
-      gap: 9px;
+      gap: 12px;
     }
 
     .suggestion-item {
       width: 100%;
-
       display: flex;
       align-items: center;
-
-      gap: 12px;
-
-      padding: 13px 15px;
-
-      border: 1px solid #e7e7e7;
-
-      border-radius: 14px;
-
+      gap: 14px;
+      padding: 14px 18px;
+      border: 1px solid #e3e3e3;
+      border-radius: 20px;
       background: #ffffff;
-
-      color: #333333;
-
+      color: #424242;
       text-align: left;
-
-      font-size: 13px;
+      font-size: 14px;
+      transition: background 0.2s, border-color 0.2s;
     }
 
     .suggestion-item:hover {
-      background: #f7f7f7;
+      background: #f9f9f9;
+      border-color: #b4b4b4;
     }
 
-    .suggestion-item .icon {
-      font-size: 19px;
+    .suggestion-item .icon-svg {
+      color: #1066e5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .suggestion-item .text {
       flex: 1;
+      font-weight: 400;
     }
 
     /* =========================
-       MESSAGES
+       CHAT MESSAGES
        ========================= */
 
     .message-row {
       width: 100%;
-
       display: flex;
-
-      margin-bottom: 18px;
+      margin-bottom: 24px;
     }
 
     .message-row.user {
@@ -222,35 +193,29 @@
     }
 
     .message-box {
-      max-width: 82%;
+      max-width: 85%;
     }
 
     .message {
       max-width: 100%;
-
-      padding: 12px 14px;
-
-      border-radius: 18px;
-
-      font-size: 15px;
-      line-height: 22px;
-
+      font-size: 16px;
+      line-height: 1.55;
       white-space: pre-wrap;
       word-break: break-word;
     }
 
     .message-row.user .message {
-      background: #111111;
-      color: #ffffff;
-
+      background: #f4f4f6;
+      color: #0d0d0d;
+      padding: 10px 16px;
+      border-radius: 20px;
       border-bottom-right-radius: 5px;
     }
 
     .message-row.ai .message {
-      background: #f3f3f3;
-      color: #202123;
-
-      border-bottom-left-radius: 5px;
+      background: transparent;
+      color: #0d0d0d;
+      padding: 0;
     }
 
     /* =========================
@@ -258,33 +223,16 @@
        ========================= */
 
     .thinking-message {
-      width: 48px;
-      height: 42px;
-
       padding: 0;
-
+      background: transparent !important;
       display: flex;
       align-items: center;
-      justify-content: center;
-
-      background: #f3f3f3 !important;
-
-      border-radius: 18px !important;
-
-      border-bottom-left-radius: 5px !important;
+      gap: 12px;
     }
 
-    .thinking-spinner {
-      width: 18px;
-      height: 18px;
-
-      border: 2.5px solid #dddddd;
-
-      border-top-color: #111111;
-
-      border-radius: 50%;
-
-      animation: pingmeSpin 0.75s linear infinite;
+    .thinking-spinner-svg {
+      color: #1066e5;
+      animation: pingmeSpin 1.1s linear infinite;
     }
 
     @keyframes pingmeSpin {
@@ -297,33 +245,34 @@
       }
     }
 
+    .thinking-text {
+      font-size: 14px;
+      color: #6e6e73;
+      font-weight: 500;
+    }
+
     /* =========================
-       ACTIONS
+       MESSAGE ACTIONS
        ========================= */
 
     .message-actions {
       display: flex;
       align-items: center;
-
-      gap: 5px;
-
-      margin-top: 5px;
-      padding-left: 4px;
+      gap: 14px;
+      margin-top: 12px;
+      padding-left: 2px;
     }
 
     .message-action-btn {
-      padding: 4px 7px;
-
-      border-radius: 7px;
-
-      color: #777777;
-
-      font-size: 11px;
+      color: #b4b4b4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
     }
 
     .message-action-btn:hover {
-      background: #f1f1f1;
-      color: #222222;
+      color: #212121;
     }
 
     /* =========================
@@ -332,140 +281,87 @@
 
     .composer-wrapper {
       width: 100%;
-
-      padding: 8px 10px 10px;
-
+      padding: 10px 16px 20px;
       background: #ffffff;
-
-      border-top: 1px solid #eeeeee;
+      border-top: 1px solid #f4f4f4;
     }
 
     .composer {
       width: 100%;
-
-      min-height: 54px;
-
+      min-height: 52px;
       display: flex;
       align-items: flex-end;
-
-      gap: 2px;
-
-      padding: 6px;
-
-      border: 1px solid #dddddd;
-
+      gap: 4px;
+      padding: 6px 8px;
+      border: 1px solid #e3e3e3;
       border-radius: 28px;
-
       background: #ffffff;
     }
 
-    /* =========================
-       INPUT
-       ========================= */
-
     #messageInput {
       flex: 1;
-
       width: 100%;
-
       min-height: 40px;
       max-height: 120px;
-
-      padding: 9px 5px;
-
+      padding: 9px 8px;
       border: none;
       outline: none;
-
       resize: none;
-
       background: transparent;
-
-      color: #202123;
-
-      font-size: 15px;
-      line-height: 20px;
+      color: #000000;
+      font-size: 16px;
+      line-height: 22px;
     }
 
     #messageInput::placeholder {
-      color: #999999;
+      color: #b4b4b4;
     }
 
-    /* =========================
-       SEND
-       ========================= */
-
     .send-btn {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-
       border-radius: 50%;
-
       background: #000000;
-
       color: #ffffff;
-
-      transition:
-        transform 0.15s,
-        opacity 0.2s;
+      transition: transform 0.1s, opacity 0.2s;
     }
 
     .send-btn:active {
-      transform: scale(0.92);
+      transform: scale(0.94);
     }
 
     .send-btn:disabled {
-      opacity: 0.5;
+      opacity: 0.3;
       cursor: not-allowed;
     }
 
-    .send-btn[hidden] {
-      display: none !important;
-    }
-
-    .send-btn svg {
-      width: 20px;
-      height: 20px;
-    }
-
     /* =========================
-       ATTACHMENT
+       ATTACHMENT MENU
        ========================= */
 
     .attachment-menu {
       width: 190px;
-
       margin-bottom: 8px;
-
       padding: 8px;
-
       border: 1px solid #eeeeee;
-
       border-radius: 16px;
-
       background: #ffffff;
-
-      box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.09);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
     }
 
     .attachment-menu[hidden] {
-      display: none;
+      display: none !important;
     }
 
     .attachment-menu button {
       width: 100%;
-
       padding: 10px;
-
       text-align: left;
-
       border-radius: 9px;
-
       color: #333333;
     }
 
@@ -473,61 +369,21 @@
       background: #f5f5f5;
     }
 
-    /* =========================
-       NOTE
-       ========================= */
-
     .composer-note {
-      padding-top: 6px;
-
+      padding-top: 8px;
       text-align: center;
-
       color: #999999;
-
-      font-size: 9px;
+      font-size: 11px;
     }
 
-    /* =========================
-       MOBILE
-       ========================= */
-
     @media (max-width: 480px) {
-
-      .top-bar {
-        height: 60px;
-        min-height: 60px;
-
-        padding: 0 10px;
-      }
-
-      .brand h1 {
-        font-size: 16px;
-      }
-
       .chat-area {
-        padding-left: 11px;
-        padding-right: 11px;
+        padding-left: 16px;
+        padding-right: 16px;
       }
 
       .message-box {
         max-width: 88%;
-      }
-
-      .composer-wrapper {
-        padding-left: 7px;
-        padding-right: 7px;
-      }
-
-      .icon-btn {
-        width: 38px;
-        height: 38px;
-        min-width: 38px;
-      }
-
-      .send-btn {
-        width: 38px;
-        height: 38px;
-        min-width: 38px;
       }
     }
   </style>
@@ -543,104 +399,126 @@
 
   <header class="top-bar">
 
-    <button
-      class="icon-btn"
-      id="menuBtn"
-      type="button"
-      aria-label="History"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="21"
-        height="21"
-        fill="none"
-      >
+    <button class="icon-btn" id="menuBtn" type="button"
+      aria-label="History">
+
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
         <path
-          d="M4 7h16M4 12h16M4 17h10"
+          d="M4 8h16M4 16h16"
           stroke="currentColor"
           stroke-width="2"
-          stroke-linecap="round"
-        />
+          stroke-linecap="round"/>
       </svg>
+
     </button>
 
-
     <div class="brand">
+      <div class="premium-logo">P</div>
       <h1>PingMe AI</h1>
     </div>
 
+    <button class="icon-btn" id="settingsBtn" type="button"
+      aria-label="Settings">
 
-    <!-- THREE DOT SETTINGS -->
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+        <path
+          d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0
+             M12 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0
+             M12 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"
+          stroke="currentColor"
+          stroke-width="2.5"/>
+      </svg>
 
-    <button
-      class="icon-btn"
-      id="settingsBtn"
-      type="button"
-      aria-label="Settings"
-    >
-      <span
-        style="
-          font-size: 24px;
-          line-height: 1;
-          transform: translateY(-1px);
-        "
-      >⋮</span>
     </button>
 
   </header>
-
 
   <!-- =========================
        CHAT
        ========================= -->
 
-  <main
-    class="chat-area"
-    id="chatArea"
-  >
+  <main class="chat-area" id="chatArea">
 
-    <section
-      class="welcome-screen"
-      id="welcomeScreen"
-    >
+    <section class="welcome-screen" id="welcomeScreen">
 
       <h2>What's on your mind?</h2>
 
       <div class="suggestions-list">
 
-        <button
-          type="button"
-          class="suggestion-item"
-        >
-          <span class="icon">🩺</span>
+        <button type="button" class="suggestion-item">
+
+          <span class="icon-svg">
+            <svg viewBox="0 0 24 24"
+              width="20" height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2">
+
+              <path d="M19 14c1.66 0 3-1.34 3-3V5
+                       c0-1.66-1.34-3-3-3H5
+                       C3.34 2 2 3.34 2 5v6
+                       c0 1.66 1.34 3 3 3h14z
+                       M12 22v-4M8 22h8M6 8h12"/>
+
+            </svg>
+          </span>
 
           <span class="text">
             Prepare for a doctor visit
           </span>
+
         </button>
 
+        <button type="button" class="suggestion-item">
 
-        <button
-          type="button"
-          class="suggestion-item"
-        >
-          <span class="icon">🛋️</span>
+          <span class="icon-svg">
+            <svg viewBox="0 0 24 24"
+              width="20" height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2">
+
+              <path d="M3 9h18M3 15h18
+                       M7 3v18M17 3v18"/>
+
+            </svg>
+          </span>
 
           <span class="text">
             Visualize new home decor
           </span>
+
         </button>
 
-
-        <button
-          type="button"
+        <button type="button"
           class="suggestion-item"
-        >
-          <span class="icon">🐱</span>
+          data-prompt="Create city cat art">
+
+          <span class="icon-svg">
+
+            <svg viewBox="0 0 24 24"
+              width="20" height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+
+              <path d="M4 20l4.5-4.5
+                       M15 4l5 5
+                       M12 7l5 5
+                       M7 12l5 5
+                       M4 4l3 3
+                       M17 17l3 3"/>
+
+            </svg>
+
+          </span>
 
           <span class="text">
             Create city cat art
           </span>
+
         </button>
 
       </div>
@@ -649,167 +527,97 @@
 
   </main>
 
-
   <!-- =========================
        COMPOSER
        ========================= -->
 
   <div class="composer-wrapper">
 
-    <div class="composer">
+    <div
+      class="attachment-menu"
+      id="attachmentMenu"
+      hidden>
 
-      <!-- PLUS -->
+      <button type="button">Camera</button>
+      <button type="button">Photo</button>
+      <button type="button">File</button>
+      <button type="button">Audio</button>
+      <button type="button">Screen</button>
+      <button type="button">Project</button>
+
+    </div>
+
+    <div class="composer">
 
       <button
         class="icon-btn"
         id="plusBtn"
         type="button"
-        aria-label="Add"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          width="21"
-          height="21"
+        aria-label="Attach">
+
+        <svg viewBox="0 0 24 24"
+          width="21" height="21"
           fill="none"
-        >
-          <path
-            d="M12 5v14M5 12h14"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round">
+
+          <path d="M12 5v14M5 12h14"/>
+
         </svg>
+
       </button>
-
-
-      <!-- INPUT -->
 
       <textarea
         id="messageInput"
         rows="1"
-        placeholder="Ask PingMe AI"
-        autocomplete="off"
-      ></textarea>
-
-
-      <!-- VOICE -->
+        placeholder="Message PingMe AI..."
+        aria-label="Message"></textarea>
 
       <button
         class="icon-btn"
         id="micBtn"
         type="button"
-        aria-label="Voice input"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          width="21"
-          height="21"
+        aria-label="Voice input">
+
+        <svg viewBox="0 0 24 24"
+          width="20" height="20"
           fill="none"
-        >
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round">
 
-          <rect
-            x="8"
-            y="3"
-            width="8"
-            height="12"
-            rx="4"
-            stroke="currentColor"
-            stroke-width="1.8"
-          />
-
-          <path
-            d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-          />
+          <rect x="9" y="2" width="6" height="13" rx="3"/>
+          <path d="M5 11a7 7 0 0 0 14 0"/>
+          <path d="M12 18v4M8 22h8"/>
 
         </svg>
+
       </button>
-
-
-      <!-- SEND -->
 
       <button
         class="send-btn"
         id="sendBtn"
         type="button"
-        aria-label="Send message"
-        hidden
-      >
-        <svg
-          viewBox="0 0 24 24"
-          width="20"
-          height="20"
-          fill="none"
-        >
+        aria-label="Send"
+        disabled>
 
-          <path
-            d="M12 19V5M6 11l6-6 6 6"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+        <svg viewBox="0 0 24 24"
+          width="17" height="17"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+
+          <path d="M12 19V5"/>
+          <path d="M6 11l6-6 6 6"/>
 
         </svg>
+
       </button>
 
     </div>
-
-
-    <!-- PLUS MENU -->
-
-    <div
-      class="attachment-menu"
-      id="attachmentMenu"
-      hidden
-    >
-
-      <button
-        type="button"
-        id="cameraBtn"
-      >
-        Camera
-      </button>
-
-      <button
-        type="button"
-        id="photoOption"
-      >
-        Photo
-      </button>
-
-      <button
-        type="button"
-        id="fileOption"
-      >
-        File
-      </button>
-
-      <button
-        type="button"
-        id="audioOption"
-      >
-        Audio
-      </button>
-
-      <button
-        type="button"
-        id="screenOption"
-      >
-        Screen
-      </button>
-
-      <button
-        type="button"
-        id="projectOption"
-      >
-        Project
-      </button>
-
-    </div>
-
 
     <div class="composer-note">
       PingMe AI can make mistakes. Check important information.
@@ -819,100 +627,115 @@
 
 </div>
 
-
-<!-- ==================================================
-     FIREBASE + PINGME AI
-     ================================================== -->
+<!-- ==========================================================
+     FIREBASE + FIREBASE AI LOGIC
+     Official Firebase browser CDN modules
+     ========================================================== -->
 
 <script type="module">
 
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
   import {
     getAI,
     getGenerativeModel,
     GoogleAIBackend
-  }
-    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
 
 
-  /* =========================
-     FIREBASE CONFIG
-     ========================= */
+  /* ==========================================================
+     FIREBASE CONFIGURATION
+     ========================================================== */
 
   const firebaseConfig = {
 
-    apiKey:"AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
-      
+    /*
+      IMPORTANT:
+      এখানে নতুন/নিরাপদ API key বসাবি।
 
-    authDomain:
-      "pingme-ai-8d8cc.firebaseapp.com",
+      তুই যে key আগে এখানে পাঠিয়েছিস সেটা ব্যবহার করিস না।
+    */
 
-    projectId:
-      "pingme-ai-8d8cc",
+    apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
 
-    storageBucket:
-      "pingme-ai-8d8cc.firebasestorage.app",
+    authDomain: "pingme-ai-8d8cc.firebaseapp.com",
 
-    messagingSenderId:
-      "547217020747",
+    projectId: "pingme-ai-8d8cc",
 
-    appId:
-      "1:547217020747:web:62b7d3843672703d8abace",
+    storageBucket: "pingme-ai-8d8cc.firebasestorage.app",
 
-    measurementId:
-      "G-3WRC64CRDR"
+    messagingSenderId: "547217020747",
 
+    appId: "1:547217020747:web:62b7d3843672703d8abace",
+
+    measurementId: "G-3WRC64CRDR"
   };
 
 
-  /* =========================
-     FIREBASE
-     ========================= */
+  /* ==========================================================
+     INITIALIZE FIREBASE
+     ========================================================== */
 
-  const firebaseApp =
-    initializeApp(firebaseConfig);
+  const firebaseApp = initializeApp(firebaseConfig);
 
-
-  const ai =
-    getAI(firebaseApp, {
-      backend: new GoogleAIBackend()
-    });
+  const ai = getAI(firebaseApp, {
+    backend: new GoogleAIBackend()
+  });
 
 
-  /* =========================
-     MODELS
-     ========================= */
+  /* ==========================================================
+     PINGME AI SYSTEM INSTRUCTION
+     ========================================================== */
+
+  const PINGME_AI_PROMPT = {
+
+    systemInstruction:
+      "Your name is PingMe AI. " +
+      "You are a helpful AI assistant. " +
+      "Never say that your name is Gemini. " +
+      "Never introduce yourself as Google Gemini. " +
+      "If anyone asks your name, reply exactly: " +
+      "'My name is PingMe AI'."
+  };
+
+
+  /* ==========================================================
+     THREE GEMINI MODELS
+     ========================================================== */
 
   const models = [
 
     getGenerativeModel(ai, {
-      model: "gemini-3.7-flash"
+      model: "gemini-3.7-flash",
+      config: PINGME_AI_PROMPT
     }),
 
     getGenerativeModel(ai, {
-      model: "gemini-3.5-flash-lite"
+      model: "gemini-3.6-flash",
+      config: PINGME_AI_PROMPT
     }),
 
     getGenerativeModel(ai, {
-      model: "gemini-3.6-flash"
+      model: "gemini-3.5-flash-lite",
+      config: PINGME_AI_PROMPT
     })
 
   ];
 
 
-  /* =========================
-     PINGME AI INSTRUCTION
-     ========================= */
+  /* ==========================================================
+     OPTIONAL GLOBAL INSTRUCTION
+     ========================================================== */
 
   const PINGME_AI_INSTRUCTION =
-    window.PINGME_AI_INSTRUCTION;
+    window.PINGME_AI_INSTRUCTION || "";
 
 
-  /* =========================
-     ELEMENTS
-     ========================= */
+  /* ==========================================================
+     ELEMENT CONNECTIONS
+     ========================================================== */
 
   const chatArea =
     document.getElementById("chatArea");
@@ -942,16 +765,15 @@
     document.getElementById("attachmentMenu");
 
 
-  /* =========================
+  /* ==========================================================
      ADD MESSAGE
-     ========================= */
+     ========================================================== */
 
-  function addMessage(text, sender) {
+  window.addMessage = function(text, sender) {
 
     if (welcomeScreen) {
       welcomeScreen.style.display = "none";
     }
-
 
     const row =
       document.createElement("div");
@@ -961,29 +783,23 @@
         ? "message-row user"
         : "message-row ai";
 
-
     const box =
       document.createElement("div");
 
-    box.className =
-      "message-box";
-
+    box.className = "message-box";
 
     const message =
       document.createElement("div");
 
-    message.className =
-      "message";
+    message.className = "message";
 
-    message.textContent =
-      text;
-
+    message.textContent = text;
 
     box.appendChild(message);
 
 
     /* =========================
-       AI ACTIONS
+       AI ACTION BUTTONS
        ========================= */
 
     if (sender === "ai") {
@@ -995,20 +811,37 @@
         "message-actions";
 
 
-      /* COPY */
+      /* COPY BUTTON */
 
       const copyBtn =
         document.createElement("button");
 
-      copyBtn.type =
-        "button";
+      copyBtn.type = "button";
 
       copyBtn.className =
         "message-action-btn";
 
-      copyBtn.textContent =
-        "📋 Copy";
+      copyBtn.innerHTML = `
+        <svg viewBox="0 0 24 24"
+          width="16" height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
 
+          <rect x="9" y="9"
+            width="13" height="13"
+            rx="2"></rect>
+
+          <path d="M5 15H4a2 2 0 0 1-2-2V4
+                   a2 2 0 0 1 2-2h9
+                   a2 2 0 0 1 2 2v1"></path>
+
+        </svg>
+      `;
+
+      copyBtn.title = "Copy Text";
 
       copyBtn.addEventListener(
         "click",
@@ -1016,24 +849,25 @@
 
           try {
 
-            await navigator.clipboard.writeText(
-              text
-            );
+            await navigator.clipboard
+              .writeText(text);
 
-            copyBtn.textContent =
-              "✓ Copied";
+            copyBtn.style.color =
+              "#1066e5";
 
             setTimeout(() => {
 
-              copyBtn.textContent =
-                "📋 Copy";
+              copyBtn.style.color =
+                "#b4b4b4";
 
             }, 1500);
 
-          } catch {
+          } catch (error) {
 
-            copyBtn.textContent =
-              "Copy failed";
+            console.log(
+              "Copy failed",
+              error
+            );
 
           }
 
@@ -1041,20 +875,35 @@
       );
 
 
-      /* COPY LINK */
+      /* LINK BUTTON */
 
       const linkBtn =
         document.createElement("button");
 
-      linkBtn.type =
-        "button";
+      linkBtn.type = "button";
 
       linkBtn.className =
         "message-action-btn";
 
-      linkBtn.textContent =
-        "🔗 Copy Link";
+      linkBtn.innerHTML = `
+        <svg viewBox="0 0 24 24"
+          width="16" height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
 
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3
+                   a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3
+                   a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+
+        </svg>
+      `;
+
+      linkBtn.title = "Copy Link";
 
       linkBtn.addEventListener(
         "click",
@@ -1065,44 +914,31 @@
               /https?:\/\/[^\s]+/i
             );
 
-
           if (!match) {
-
-            linkBtn.textContent =
-              "No link";
-
-            setTimeout(() => {
-
-              linkBtn.textContent =
-                "🔗 Copy Link";
-
-            }, 1500);
-
             return;
-
           }
-
 
           try {
 
-            await navigator.clipboard.writeText(
-              match[0]
-            );
+            await navigator.clipboard
+              .writeText(match[0]);
 
-            linkBtn.textContent =
-              "✓ Link Copied";
+            linkBtn.style.color =
+              "#1066e5";
 
             setTimeout(() => {
 
-              linkBtn.textContent =
-                "🔗 Copy Link";
+              linkBtn.style.color =
+                "#b4b4b4";
 
             }, 1500);
 
-          } catch {
+          } catch (error) {
 
-            linkBtn.textContent =
-              "Copy failed";
+            console.log(
+              "Link copy failed",
+              error
+            );
 
           }
 
@@ -1114,7 +950,6 @@
       actions.appendChild(linkBtn);
 
       box.appendChild(actions);
-
     }
 
 
@@ -1125,22 +960,19 @@
     chatArea.scrollTop =
       chatArea.scrollHeight;
 
-
     return row;
+  };
 
-  }
 
+  /* ==========================================================
+     THINKING MESSAGE
+     ========================================================== */
 
-  /* =========================
-     THINKING
-     ========================= */
-
-  function addThinkingMessage() {
+  window.addThinkingMessage = function() {
 
     if (welcomeScreen) {
       welcomeScreen.style.display = "none";
     }
-
 
     const row =
       document.createElement("div");
@@ -1148,22 +980,49 @@
     row.className =
       "message-row ai";
 
-
     const message =
       document.createElement("div");
 
     message.className =
       "message thinking-message";
 
-
     const spinner =
       document.createElement("div");
 
     spinner.className =
-      "thinking-spinner";
+      "thinking-spinner-svg";
 
+    spinner.innerHTML = `
+      <svg viewBox="0 0 24 24"
+        width="22" height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round">
+
+        <path d="M12 2v4"/>
+        <path d="M12 18v4"/>
+        <path d="M4.93 4.93l2.83 2.83"/>
+        <path d="M16.24 16.24l2.83 2.83"/>
+        <path d="M2 12h4"/>
+        <path d="M18 12h4"/>
+        <path d="M4.93 19.07l2.83-2.83"/>
+        <path d="M16.24 7.76l2.83-2.83"/>
+
+      </svg>
+    `;
+
+    const textSpan =
+      document.createElement("span");
+
+    textSpan.className =
+      "thinking-text";
+
+    textSpan.textContent =
+      "Thinking...";
 
     message.appendChild(spinner);
+    message.appendChild(textSpan);
 
     row.appendChild(message);
 
@@ -1172,240 +1031,192 @@
     chatArea.scrollTop =
       chatArea.scrollHeight;
 
-
     return row;
-
-  }
-
-
-  /* =========================
-     GENERATE RESPONSE
-     ========================= */
-
-  async function generateAIResponse(userText) {
-
-    const prompt =
-      PINGME_AI_INSTRUCTION +
-      "\n\nUSER MESSAGE:\n" +
-      userText;
+  };
 
 
-    let lastError = null;
+  /* ==========================================================
+     GENERATE AI RESPONSE
+     ========================================================== */
+
+  window.generateAIResponse =
+    async function(userText) {
+
+      const prompt =
+        PINGME_AI_INSTRUCTION +
+        "\n\nUSER MESSAGE:\n" +
+        userText;
+
+      let lastError = null;
 
 
-    for (const model of models) {
+      /*
+        Try model 1.
+        If it fails, automatically try model 2.
+        If model 2 fails, try model 3.
+      */
 
-      try {
+      for (const model of models) {
 
-        const result =
-          await model.generateContent(prompt);
+        try {
 
+          const result =
+            await model.generateContent(prompt);
 
-        const response =
-          result.response;
+          const response =
+            result.response;
 
+          const answer =
+            response.text();
 
-        const answer =
-          response.text();
+          if (
+            answer &&
+            answer.trim()
+          ) {
 
+            return answer.trim();
 
-        if (
-          answer &&
-          answer.trim()
-        ) {
+          }
 
-          return answer.trim();
+        } catch (error) {
+
+          lastError = error;
+
+          console.error(
+            "PingMe model failed:",
+            error
+          );
 
         }
 
-      } catch (error) {
-
-        lastError = error;
-
-        console.error(
-          "PingMe model failed:",
-          error
-        );
-
       }
 
-    }
+      throw (
+        lastError ||
+        new Error("ALL_MODELS_FAILED")
+      );
+    };
 
 
-    throw (
-      lastError ||
-      new Error("ALL_MODELS_FAILED")
-    );
-
-  }
-
-
-  /* =========================
-     VOICE / SEND TOGGLE
-     ========================= */
-
-  function updateSendVoiceButton() {
-
-    const hasText =
-      messageInput.value.trim().length > 0;
-
-
-    if (hasText) {
-
-      micBtn.hidden =
-        true;
-
-      sendBtn.hidden =
-        false;
-
-    } else {
-
-      micBtn.hidden =
-        false;
-
-      sendBtn.hidden =
-        true;
-
-    }
-
-  }
-
-
-  /* =========================
-     SEND
-     ========================= */
+  /* ==========================================================
+     SEND MESSAGE
+     ========================================================== */
 
   async function sendMessage() {
 
-    const text =
+    const userText =
       messageInput.value.trim();
 
-
-    if (!text) {
-
-      updateSendVoiceButton();
-
+    if (!userText) {
       return;
-
     }
 
+    addUserMessage(userText);
 
-    sendBtn.disabled =
-      true;
+    messageInput.value = "";
 
+    autoResize();
 
-    addMessage(
-      text,
-      "user"
-    );
+    sendBtn.disabled = true;
 
-
-    messageInput.value =
-      "";
-
-    messageInput.style.height =
-      "auto";
-
-
-    updateSendVoiceButton();
-
-
-    const thinking =
-      addThinkingMessage();
+    const thinkingRow =
+      window.addThinkingMessage();
 
 
     try {
 
       const answer =
-        await generateAIResponse(text);
+        await window.generateAIResponse(
+          userText
+        );
 
+      thinkingRow.remove();
 
-      if (thinking) {
-        thinking.remove();
-      }
-
-
-      addMessage(
+      window.addMessage(
         answer,
         "ai"
       );
 
-
     } catch (error) {
 
-      console.error(
-        "PingMe AI error:",
-        error
+      console.error(error);
+
+      thinkingRow.remove();
+
+      window.addMessage(
+        "Sorry, I couldn't connect to the AI right now. Please check your Firebase/API configuration and try again.",
+        "ai"
       );
-
-
-      if (thinking) {
-        thinking.remove();
-      }
-
-
-      const errorText =
-        String(
-          error?.message ||
-          error ||
-          ""
-        );
-
-
-      if (
-        errorText.includes("429") ||
-        errorText
-          .toLowerCase()
-          .includes("quota")
-      ) {
-
-        addMessage(
-          "AI এখন একটু ব্যস্ত আছে। একটু পর আবার পাঠা।",
-          "ai"
-        );
-
-      } else {
-
-        addMessage(
-          "এই মুহূর্তে AI-এর সাথে কানেক্ট হতে পারলাম না। একটু পর আবার চেষ্টা কর।",
-          "ai"
-        );
-
-      }
 
     } finally {
 
-      sendBtn.disabled =
-        false;
-
-      updateSendVoiceButton();
-
-      messageInput.focus();
+      updateSendButton();
 
     }
+  }
+
+
+  /* ==========================================================
+     USER MESSAGE
+     ========================================================== */
+
+  function addUserMessage(text) {
+
+    window.addMessage(
+      text,
+      "user"
+    );
 
   }
 
 
-  /* =========================
-     SEND BUTTON
-     ========================= */
+  /* ==========================================================
+     SEND BUTTON STATE
+     ========================================================== */
 
-  sendBtn.addEventListener(
-    "click",
-    (event) => {
+  function updateSendButton() {
 
-      event.preventDefault();
+    const hasText =
+      messageInput.value.trim().length > 0;
 
-      sendMessage();
+    sendBtn.disabled =
+      !hasText;
+  }
+
+
+  /* ==========================================================
+     TEXTAREA AUTO RESIZE
+     ========================================================== */
+
+  function autoResize() {
+
+    messageInput.style.height =
+      "auto";
+
+    messageInput.style.height =
+      Math.min(
+        messageInput.scrollHeight,
+        120
+      ) + "px";
+
+  }
+
+
+  /* ==========================================================
+     INPUT EVENTS
+     ========================================================== */
+
+  messageInput.addEventListener(
+    "input",
+    () => {
+
+      autoResize();
+
+      updateSendButton();
 
     }
   );
 
-
-  /* =========================
-     ENTER
-     ========================= */
 
   messageInput.addEventListener(
     "keydown",
@@ -1426,76 +1237,15 @@
   );
 
 
-  /* =========================
-     INPUT
-     ========================= */
-
-  messageInput.addEventListener(
-    "input",
-    function () {
-
-      this.style.height =
-        "auto";
-
-
-      this.style.height =
-        Math.min(
-          this.scrollHeight,
-          120
-        ) + "px";
-
-
-      updateSendVoiceButton();
-
-    }
+  sendBtn.addEventListener(
+    "click",
+    sendMessage
   );
 
 
-  /* =========================
-     INITIAL BUTTON STATE
-     ========================= */
-
-  updateSendVoiceButton();
-
-
-  /* =========================
-     SUGGESTIONS
-     ========================= */
-
-  document
-    .querySelectorAll(".suggestion-item")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const text =
-            button.querySelector(".text");
-
-
-          messageInput.value =
-            text
-              ? text.textContent.trim()
-              : button.textContent.trim();
-
-
-          messageInput.focus();
-
-
-          messageInput.dispatchEvent(
-            new Event("input")
-          );
-
-        }
-      );
-
-    });
-
-
-  /* =========================
-     PLUS
-     ========================= */
+  /* ==========================================================
+     ATTACHMENT MENU
+     ========================================================== */
 
   plusBtn.addEventListener(
     "click",
@@ -1508,109 +1258,156 @@
   );
 
 
-  /* =========================
-     ATTACHMENTS
-     ========================= */
+  /* ==========================================================
+     SUGGESTION BUTTONS
+     ========================================================== */
 
-  [
-    "cameraBtn",
-    "photoOption",
-    "fileOption",
-    "audioOption",
-    "screenOption",
-    "projectOption"
-  ]
-    .forEach(id => {
+  document
+    .querySelectorAll(".suggestion-item")
+    .forEach(button => {
 
-      const button =
-        document.getElementById(id);
+      button.addEventListener(
+        "click",
+        () => {
 
+          const prompt =
+            button.dataset.prompt ||
+            button.querySelector(".text")
+              ?.textContent
+              .trim();
 
-      if (button) {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            alert(
-              "এই ফিচারটা পরে যোগ করা হবে।"
-            );
-
+          if (!prompt) {
+            return;
           }
-        );
 
-      }
+          messageInput.value =
+            prompt;
+
+          autoResize();
+
+          updateSendButton();
+
+          sendMessage();
+
+        }
+      );
 
     });
 
 
-  /* =========================
-     MIC
-     ========================= */
-
-  micBtn.addEventListener(
-    "click",
-    () => {
-
-      alert(
-        "Voice feature পরে যোগ করা হবে।"
-      );
-
-    }
-  );
-
-
-  /* =========================
-     HISTORY
-     ========================= */
+  /* ==========================================================
+     MENU BUTTON
+     ========================================================== */
 
   menuBtn.addEventListener(
     "click",
     () => {
 
-      alert(
-        "History পরে যোগ করা হবে।"
+      window.addMessage(
+        "History feature is ready to be connected.",
+        "ai"
       );
 
     }
   );
 
 
-  /* =========================
-     SETTINGS
-     ========================= */
+  /* ==========================================================
+     SETTINGS BUTTON
+     ========================================================== */
 
   settingsBtn.addEventListener(
     "click",
     () => {
 
-      alert(
-        "Settings পরে যোগ করা হবে।"
+      window.addMessage(
+        "Settings panel is ready to be connected.",
+        "ai"
       );
 
     }
   );
 
 
-  /* =========================
-     READY
-     ========================= */
+  /* ==========================================================
+     MIC BUTTON
+     ========================================================== */
 
-  console.log(
-    "PingMe AI is ready."
+  micBtn.addEventListener(
+    "click",
+    () => {
+
+      if (
+        !("webkitSpeechRecognition" in window) &&
+        !("SpeechRecognition" in window)
+      ) {
+
+        window.addMessage(
+          "Voice input is not supported in this browser.",
+          "ai"
+        );
+
+        return;
+      }
+
+
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+      const recognition =
+        new SpeechRecognition();
+
+      recognition.lang =
+        "en-US";
+
+      recognition.interimResults =
+        false;
+
+      recognition.maxAlternatives =
+        1;
+
+
+      recognition.onresult =
+        event => {
+
+          const transcript =
+            event.results[0][0].transcript;
+
+          messageInput.value =
+            transcript;
+
+          autoResize();
+
+          updateSendButton();
+
+        };
+
+
+      recognition.onerror =
+        error => {
+
+          console.error(
+            "Speech recognition error:",
+            error
+          );
+
+        };
+
+
+      recognition.start();
+
+    }
   );
 
+
+  /* ==========================================================
+     STARTUP
+     ========================================================== */
+
+  updateSendButton();
+
 </script>
-
-
-<!-- =========================
-     EXTERNAL PINGME SYSTEMS
-     ========================= -->
-
-<script src="ai-instructions.js"></script>
-<script src="conversation-memory.js"></script>
-<script src="smart-followup.js"></script>
-
 
 </body>
 </html>
