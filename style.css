@@ -28,7 +28,6 @@ button {
   cursor: pointer;
 }
 
-
 /* ===============================
    APP
    =============================== */
@@ -40,7 +39,6 @@ button {
   flex-direction: column;
   background: #ffffff;
 }
-
 
 /* ===============================
    HEADER
@@ -87,7 +85,6 @@ button {
   font-size: 21px;
 }
 
-
 /* ===============================
    CHAT AREA
    =============================== */
@@ -99,7 +96,6 @@ button {
 
   padding: 20px 15px 15px;
 }
-
 
 /* ===============================
    WELCOME
@@ -123,7 +119,6 @@ button {
   font-size: 24px;
   margin-bottom: 25px;
 }
-
 
 /* ===============================
    SUGGESTIONS
@@ -169,7 +164,6 @@ button {
   flex: 1;
 }
 
-
 /* ===============================
    MESSAGE ROW
    =============================== */
@@ -182,13 +176,11 @@ button {
   margin-bottom: 18px;
 }
 
-
 /* USER = RIGHT */
 
 .message-row.user {
   justify-content: flex-end;
 }
-
 
 /* AI = LEFT */
 
@@ -196,6 +188,17 @@ button {
   justify-content: flex-start;
 }
 
+/* ===============================
+   MESSAGE BOX
+   =============================== */
+
+.message-box {
+  max-width: 82%;
+}
+
+.message-box .message {
+  max-width: 100%;
+}
 
 /* ===============================
    MESSAGE
@@ -216,7 +219,6 @@ button {
   word-break: break-word;
 }
 
-
 /* USER BUBBLE */
 
 .message-row.user .message {
@@ -227,7 +229,6 @@ button {
   border-bottom-right-radius: 5px;
 }
 
-
 /* AI BUBBLE */
 
 .message-row.ai .message {
@@ -237,7 +238,6 @@ button {
 
   border-bottom-left-radius: 5px;
 }
-
 
 /* ===============================
    THINKING SPINNER
@@ -274,15 +274,10 @@ button {
 
   border-radius: 50%;
 
-  animation:
-    pingmeSpin
-    0.75s
-    linear
-    infinite;
+  animation: pingmeSpin 0.75s linear infinite;
 }
 
 @keyframes pingmeSpin {
-
   from {
     transform: rotate(0deg);
   }
@@ -290,9 +285,49 @@ button {
   to {
     transform: rotate(360deg);
   }
-
 }
 
+/* ===============================
+   MESSAGE ACTIONS
+   =============================== */
+
+.message-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 5px;
+
+  padding-left: 4px;
+}
+
+.message-action-btn {
+  padding: 4px 7px;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #777777;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.message-action-btn:hover {
+  background: #f1f1f1;
+  color: #222222;
+}
+
+.message-action-btn:active {
+  transform: scale(0.96);
+}
 
 /* ===============================
    COMPOSER
@@ -326,7 +361,6 @@ button {
 
   background: #ffffff;
 }
-
 
 /* ===============================
    INPUT
@@ -362,7 +396,6 @@ button {
   color: #999999;
 }
 
-
 /* ===============================
    SEND BUTTON
    =============================== */
@@ -383,13 +416,19 @@ button {
   color: #ffffff;
 
   padding: 0;
+
+  cursor: pointer;
+}
+
+.send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .send-btn svg {
   width: 21px;
   height: 21px;
 }
-
 
 /* ===============================
    PLUS MENU
@@ -409,8 +448,7 @@ button {
   background: #ffffff;
 
   box-shadow:
-    0 8px 25px
-    rgba(0, 0, 0, 0.08);
+    0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 .attachment-menu[hidden] {
@@ -433,7 +471,6 @@ button {
   background: #f5f5f5;
 }
 
-
 /* ===============================
    FOOTER NOTE
    =============================== */
@@ -448,13 +485,11 @@ button {
   font-size: 9px;
 }
 
-
 /* ===============================
    MOBILE
    =============================== */
 
 @media (max-width: 480px) {
-
   .top-bar {
     height: 60px;
     min-height: 60px;
@@ -479,6 +514,10 @@ button {
     max-width: 86%;
   }
 
+  .message-box {
+    max-width: 86%;
+  }
+
   .composer-wrapper {
     padding-left: 8px;
     padding-right: 8px;
@@ -490,51 +529,8 @@ button {
     min-width: 36px;
   }
 
-}
-.message-box {
-  max-width: 82%;
-}
-
-.message-box .message {
-  max-width: 100%;
-}
-
-.message-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 5px;
-  padding-left: 4px;
-}
-
-.message-action-btn {
-  padding: 4px 7px;
-  border-radius: 7px;
-  background: transparent;
-  color: #777777;
-  font-size: 11px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.message-action-btn:hover {
-  background: #f1f1f1;
-  color: #222222;
-}
-
-.message-action-btn:active {
-  transform: scale(0.96);
-}
-
-@media (max-width: 480px) {
-  .message-box {
-    max-width: 86%;
-  }
-
   .message-action-btn {
     font-size: 10px;
     padding: 4px 6px;
   }
 }
-
-
