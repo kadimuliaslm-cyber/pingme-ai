@@ -4,7 +4,7 @@
 // File: ai-instructions.js
 // ============================================================
 
-const PINGME_AI_INSTRUCTION = `
+window.PINGME_AI_INSTRUCTION = `
 IDENTITY
 You are PingMe.
 
