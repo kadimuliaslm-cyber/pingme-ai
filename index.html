@@ -3,27 +3,667 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>PingMe AI</title>
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #202123;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    button,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    /* =========================
+       APP
+       ========================= */
+
+    .app {
+      width: 100%;
+      height: 100dvh;
+
+      display: flex;
+      flex-direction: column;
+
+      background: #ffffff;
+    }
+
+    /* =========================
+       HEADER
+       ========================= */
+
+    .top-bar {
+      height: 64px;
+      min-height: 64px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 14px;
+
+      border-bottom: 1px solid #eeeeee;
+
+      background: #ffffff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand h1 {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    /* গোল History / Settings */
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      color: #444444;
+
+      background: #f7f7f7;
+
+      transition:
+        background 0.2s,
+        transform 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: #eeeeee;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* =========================
+       CHAT
+       ========================= */
+
+    .chat-area {
+      flex: 1;
+
+      overflow-y: auto;
+
+      padding: 20px 14px 16px;
+
+      scroll-behavior: smooth;
+    }
+
+    /* =========================
+       WELCOME
+       ========================= */
+
+    .welcome-screen {
+      min-height: 100%;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 20px 14px 60px;
+    }
+
+    .welcome-screen h2 {
+      font-size: 24px;
+      font-weight: 600;
+
+      margin-bottom: 24px;
+    }
+
+    .suggestions-list {
+      width: 100%;
+      max-width: 390px;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 9px;
+    }
+
+    .suggestion-item {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 13px 15px;
+
+      border: 1px solid #e7e7e7;
+
+      border-radius: 14px;
+
+      background: #ffffff;
+
+      color: #333333;
+
+      text-align: left;
+
+      font-size: 13px;
+    }
+
+    .suggestion-item:hover {
+      background: #f7f7f7;
+    }
+
+    .suggestion-item .icon {
+      font-size: 19px;
+    }
+
+    .suggestion-item .text {
+      flex: 1;
+    }
+
+    /* =========================
+       MESSAGES
+       ========================= */
+
+    .message-row {
+      width: 100%;
+
+      display: flex;
+
+      margin-bottom: 18px;
+    }
+
+    .message-row.user {
+      justify-content: flex-end;
+    }
+
+    .message-row.ai {
+      justify-content: flex-start;
+    }
+
+    .message-box {
+      max-width: 82%;
+    }
+
+    .message {
+      max-width: 100%;
+
+      padding: 12px 14px;
+
+      border-radius: 18px;
+
+      font-size: 15px;
+      line-height: 22px;
+
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* USER */
+
+    .message-row.user .message {
+      background: #111111;
+      color: #ffffff;
+
+      border-bottom-right-radius: 5px;
+    }
+
+    /* AI */
+
+    .message-row.ai .message {
+      background: #f3f3f3;
+      color: #202123;
+
+      border-bottom-left-radius: 5px;
+    }
+
+    /* =========================
+       THINKING
+       ========================= */
+
+    .thinking-message {
+      width: 48px;
+      height: 42px;
+
+      padding: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #f3f3f3 !important;
+
+      border-radius: 18px !important;
+
+      border-bottom-left-radius: 5px !important;
+    }
+
+    .thinking-spinner {
+      width: 18px;
+      height: 18px;
+
+      border: 2.5px solid #dddddd;
+
+      border-top-color: #111111;
+
+      border-radius: 50%;
+
+      animation: pingmeSpin 0.75s linear infinite;
+    }
+
+    @keyframes pingmeSpin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       ACTIONS
+       ========================= */
+
+    .message-actions {
+      display: flex;
+      align-items: center;
+
+      gap: 5px;
+
+      margin-top: 5px;
+      padding-left: 4px;
+    }
+
+    .message-action-btn {
+      padding: 4px 7px;
+
+      border-radius: 7px;
+
+      color: #777777;
+
+      font-size: 11px;
+    }
+
+    .message-action-btn:hover {
+      background: #f1f1f1;
+      color: #222222;
+    }
+
+    /* =========================
+       COMPOSER
+       ========================= */
+
+    .composer-wrapper {
+      width: 100%;
+
+      padding: 8px 10px 10px;
+
+      background: #ffffff;
+
+      border-top: 1px solid #eeeeee;
+    }
+
+    .composer {
+      width: 100%;
+
+      min-height: 54px;
+
+      display: flex;
+      align-items: flex-end;
+
+      gap: 2px;
+
+      padding: 6px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 28px;
+
+      background: #ffffff;
+    }
+
+    /* =========================
+       INPUT
+       ========================= */
+
+    #messageInput {
+      flex: 1;
+
+      width: 100%;
+
+      min-height: 40px;
+      max-height: 120px;
+
+      padding: 9px 5px;
+
+      border: none;
+      outline: none;
+
+      resize: none;
+
+      background: transparent;
+
+      color: #202123;
+
+      font-size: 15px;
+      line-height: 20px;
+    }
+
+    #messageInput::placeholder {
+      color: #999999;
+    }
+
+    /* =========================
+       SEND
+       ========================= */
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: #000000;
+
+      color: #ffffff;
+
+      transition:
+        transform 0.15s,
+        opacity 0.2s;
+    }
+
+    .send-btn:active {
+      transform: scale(0.92);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .send-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* =========================
+       ATTACHMENT
+       ========================= */
+
+    .attachment-menu {
+      width: 190px;
+
+      margin-bottom: 8px;
+
+      padding: 8px;
+
+      border: 1px solid #eeeeee;
+
+      border-radius: 16px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.09);
+    }
+
+    .attachment-menu[hidden] {
+      display: none;
+    }
+
+    .attachment-menu button {
+      width: 100%;
+
+      padding: 10px;
+
+      text-align: left;
+
+      border-radius: 9px;
+
+      color: #333333;
+    }
+
+    .attachment-menu button:hover {
+      background: #f5f5f5;
+    }
+
+    /* =========================
+       NOTE
+       ========================= */
+
+    .composer-note {
+      padding-top: 6px;
+
+      text-align: center;
+
+      color: #999999;
+
+      font-size: 9px;
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 480px) {
+
+      .top-bar {
+        height: 60px;
+        min-height: 60px;
+
+        padding: 0 10px;
+      }
+
+      .brand h1 {
+        font-size: 16px;
+      }
+
+      .chat-area {
+        padding-left: 11px;
+        padding-right: 11px;
+      }
+
+      .message-box {
+        max-width: 88%;
+      }
+
+      .composer-wrapper {
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+
+      .icon-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+      }
+
+      .send-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <!-- HEADER -->
-    <header class="top-bar">
+  <!-- =========================
+       HEADER
+       ========================= -->
+
+  <header class="top-bar">
+
+    <button
+      class="icon-btn"
+      id="menuBtn"
+      type="button"
+      aria-label="History"
+    >
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none">
+        <path
+          d="M4 7h16M4 12h16M4 17h10"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+
+    <div class="brand">
+      <h1>PingMe AI</h1>
+    </div>
+
+
+    <!-- গোল Settings -->
+
+    <button
+      class="icon-btn"
+      id="settingsBtn"
+      type="button"
+      aria-label="Settings"
+    >
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none">
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3.2"
+          stroke="currentColor"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M19 13.2v-2.4l-2-.7a7 7 0 0 0-.7-1.7l.9-1.9-1.7-1.7-1.9.9a7 7 0 0 0-1.7-.7L11.2 3H8.8l-.7 2a7 7 0 0 0-1.7.7l-1.9-.9-1.7 1.7.9 1.9a7 7 0 0 0-.7 1.7l-2 .7v2.4l2 .7c.2.6.4 1.2.7 1.7l-.9 1.9 1.7 1.7 1.9-.9c.5.3 1.1.5 1.7.7l.7 2h2.4l.7-2c.6-.2 1.2-.4 1.7-.7l1.9.9 1.7-1.7-.9-1.9c.3-.5.5-1.1.7-1.7l2-.7Z"
+          stroke="currentColor"
+          stroke-width="1.35"
+          stroke-linejoin="round"
+        />
+
+      </svg>
+    </button>
+
+  </header>
+
+
+  <!-- =========================
+       CHAT
+       ========================= -->
+
+  <main
+    class="chat-area"
+    id="chatArea"
+  >
+
+    <section
+      class="welcome-screen"
+      id="welcomeScreen"
+    >
+
+      <h2>What's on your mind?</h2>
+
+      <div class="suggestions-list">
+
+        <button
+          type="button"
+          class="suggestion-item"
+        >
+          <span class="icon">🩺</span>
+          <span class="text">
+            Prepare for a doctor visit
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="suggestion-item"
+        >
+          <span class="icon">🛋️</span>
+          <span class="text">
+            Visualize new home decor
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="suggestion-item"
+        >
+          <span class="icon">🐱</span>
+          <span class="text">
+            Create city cat art
+          </span>
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       COMPOSER
+       ========================= -->
+
+  <div class="composer-wrapper">
+
+    <div class="composer">
+
+      <!-- PLUS -->
 
       <button
         class="icon-btn"
-        id="menuBtn"
+        id="plusBtn"
         type="button"
-        aria-label="History"
+        aria-label="Add"
       >
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none">
           <path
-            d="M4 7h16M4 12h16M4 17h10"
+            d="M12 5v14M5 12h14"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
@@ -31,257 +671,950 @@
         </svg>
       </button>
 
-      <div class="brand">
-        <h1>PingMe AI</h1>
-      </div>
+
+      <!-- INPUT -->
+
+      <textarea
+        id="messageInput"
+        rows="1"
+        placeholder="Ask PingMe AI"
+        autocomplete="off"
+      ></textarea>
+
+
+      <!-- MIC -->
 
       <button
         class="icon-btn"
-        id="settingsBtn"
+        id="micBtn"
         type="button"
-        aria-label="Settings"
+        aria-label="Voice input"
       >
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-          <path
-            d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+
+        <svg
+          viewBox="0 0 24 24"
+          width="21"
+          height="21"
+          fill="none"
+        >
+
+          <rect
+            x="8"
+            y="3"
+            width="8"
+            height="12"
+            rx="4"
             stroke="currentColor"
             stroke-width="1.8"
           />
+
           <path
-            d="M19 13.5v-3l-2-.7a7.4 7.4 0 0 0-.7-1.7l.9-1.9-2.1-2.1-1.9.9a7.4 7.4 0 0 0-1.7-.7L10.8 2h-3l-.7 2.3a7.4 7.4 0 0 0-1.7.7l-1.9-.9-2.1 2.1.9 1.9a7.4 7.4 0 0 0-.7 1.7l-2 .7v3l2 .7c.2.6.4 1.2.7 1.7l-.9 1.9 2.1 2.1 1.9-.9c.5.3 1.1.5 1.7.7l.7 2.3h3l.7-2.3c.6-.2 1.2-.4 1.7-.7l1.9.9 2.1-2.1-.9-1.9c.3-.5.5-1.1.7-1.7l2-.7Z"
+            d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"
             stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linejoin="round"
+            stroke-width="1.8"
+            stroke-linecap="round"
           />
+
         </svg>
+
       </button>
 
-    </header>
 
+      <!-- SEND -->
 
-    <!-- CHAT -->
-    <main class="chat-area" id="chatArea">
-
-      <section class="welcome-screen" id="welcomeScreen">
-
-        <h2>What's on your mind?</h2>
-
-        <div class="suggestions-list">
-
-          <button type="button" class="suggestion-item">
-            <span class="icon">🩺</span>
-            <span class="text">Prepare for a doctor visit</span>
-          </button>
-
-          <button type="button" class="suggestion-item">
-            <span class="icon">🛋️</span>
-            <span class="text">Visualize new home decor</span>
-          </button>
-
-          <button type="button" class="suggestion-item">
-            <span class="icon">🐱</span>
-            <span class="text">Create city cat art</span>
-          </button>
-
-        </div>
-
-      </section>
-
-    </main>
-
-
-    <!-- COMPOSER -->
-    <div class="composer-wrapper">
-
-      <div class="composer">
-
-        <!-- PLUS -->
-        <button
-          class="icon-btn"
-          id="plusBtn"
-          type="button"
-          aria-label="Add"
-        >
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-            <path
-              d="M12 5v14M5 12h14"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-        </button>
-
-
-        <!-- INPUT -->
-        <textarea
-          id="messageInput"
-          rows="1"
-          placeholder="Ask PingMe AI"
-          autocomplete="off"
-        ></textarea>
-
-
-        <!-- MIC -->
-        <button
-          class="icon-btn"
-          id="micBtn"
-          type="button"
-          aria-label="Voice input"
-        >
-          <svg viewBox="0 0 24 24" width="21" height="21" fill="none">
-            <rect
-              x="8"
-              y="3"
-              width="8"
-              height="12"
-              rx="4"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-            <path
-              d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-          </svg>
-        </button>
-
-
-        <!-- SEND -->
-        <button
-          class="send-btn"
-          id="sendBtn"
-          type="button"
-          aria-label="Send message"
-        >
-
-          <svg
-            id="sendIcon"
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-          >
-            <path
-              d="M12 19V5M6 11l6-6 6 6"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-
-        </button>
-
-      </div>
-
-
-      <!-- ATTACHMENT MENU -->
-      <div
-        class="attachment-menu"
-        id="attachmentMenu"
-        hidden
+      <button
+        class="send-btn"
+        id="sendBtn"
+        type="button"
+        aria-label="Send message"
       >
 
-        <button type="button" id="cameraBtn">Camera</button>
-        <button type="button" id="photoOption">Photo</button>
-        <button type="button" id="fileOption">File</button>
-        <button type="button" id="audioOption">Audio</button>
-        <button type="button" id="screenOption">Screen</button>
-        <button type="button" id="projectOption">Project</button>
+        <svg
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+        >
 
-      </div>
+          <path
+            d="M12 19V5M6 11l6-6 6 6"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+        </svg>
+
+      </button>
+
+    </div>
 
 
-      <div class="composer-note">
-        PingMe AI can make mistakes. Check important information.
-      </div>
+    <!-- PLUS MENU -->
 
+    <div
+      class="attachment-menu"
+      id="attachmentMenu"
+      hidden
+    >
+
+      <button
+        type="button"
+        id="cameraBtn"
+      >
+        Camera
+      </button>
+
+      <button
+        type="button"
+        id="photoOption"
+      >
+        Photo
+      </button>
+
+      <button
+        type="button"
+        id="fileOption"
+      >
+        File
+      </button>
+
+      <button
+        type="button"
+        id="audioOption"
+      >
+        Audio
+      </button>
+
+      <button
+        type="button"
+        id="screenOption"
+      >
+        Screen
+      </button>
+
+      <button
+        type="button"
+        id="projectOption"
+      >
+        Project
+      </button>
+
+    </div>
+
+
+    <div class="composer-note">
+      PingMe AI can make mistakes. Check important information.
     </div>
 
   </div>
 
+</div>
 
-  <!-- FIREBASE AI -->
-  <script type="module">
 
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+<!-- ==================================================
+     FIREBASE + PINGME AI
+     সব একই module-এর মধ্যে
+     ================================================== -->
 
-    import {
-      getAI,
-      getGenerativeModel,
-      GoogleAIBackend
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+  import {
+    getAI,
+    getGenerativeModel,
+    GoogleAIBackend
+  }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
+
+  /* =========================
+     FIREBASE CONFIG
+     ========================= */
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
+
+    authDomain:
+      "pingme-ai-8d8cc.firebaseapp.com",
+
+    projectId:
+      "pingme-ai-8d8cc",
+
+    storageBucket:
+      "pingme-ai-8d8cc.firebasestorage.app",
+
+    messagingSenderId:
+      "547217020747",
+
+    appId:
+      "1:547217020747:web:62b7d3843672703d8abace",
+
+    measurementId:
+      "G-3WRC64CRDR"
+
+  };
+
+
+  /* =========================
+     FIREBASE
+     ========================= */
+
+  const firebaseApp =
+    initializeApp(firebaseConfig);
+
+
+  const ai =
+    getAI(firebaseApp, {
+      backend: new GoogleAIBackend()
+    });
+
+
+  /* =========================
+     MODELS
+     ========================= */
+
+  const models = [
+
+    getGenerativeModel(ai, {
+      model: "gemini-3.7-flash"
+    }),
+
+    getGenerativeModel(ai, {
+      model: "gemini-3.5-flash-lite"
+    }),
+
+    getGenerativeModel(ai, {
+      model: "gemini-3.6-flash"
+    })
+
+  ];
+
+
+  /* =========================
+     PINGME AI INSTRUCTION
+     ========================= */
+
+  const PINGME_AI_INSTRUCTION = `
+
+You are PingMe AI.
+
+Your name is PingMe AI.
+
+Never introduce yourself as Gemini.
+
+Never say your name is Google Gemini.
+
+Always maintain the identity of PingMe AI.
+
+GENERAL BEHAVIOR:
+
+- Understand the user's message before answering.
+- Reply naturally.
+- Do not sound robotic.
+- Do not unnecessarily repeat the user's words.
+- Do not use overly formal language unless the user wants it.
+- Keep simple questions short.
+- Give detailed answers when the user asks for details.
+- Remember the context of the current conversation.
+- Use previous messages in the conversation when relevant.
+
+LANGUAGE:
+
+- Reply in the language the user is using.
+- Understand Bangla, English, Hindi, Urdu, Arabic, Spanish, French, German, Portuguese, Turkish, Indonesian, Malay and other supported languages.
+- If the user mixes Bangla and English, naturally understand the mixture.
+- Do not translate automatically unless requested.
+
+BANGLA CONVERSATION STYLE:
+
+When the user speaks Bangla, prefer natural modern Bangladeshi conversational Bangla.
+
+Do not sound like a textbook.
+
+Do not sound like a formal customer-service robot.
+
+When appropriate, use natural conversational expressions commonly used by Bangladeshi people.
+
+If the user uses casual Bangla, respond casually.
+
+If the user uses Dhakaiya-style conversational Bangla, you may naturally match that style.
+
+Do not force regional slang into every sentence.
+
+The goal is natural conversation, not exaggerated slang.
+
+CONVERSATION AWARENESS:
+
+Pay attention to the emotional tone and context of the conversation.
+
+If the user seems quiet, uncertain, confused or hesitant, respond naturally.
+
+Do not assume that the user is anxious or upset without evidence.
+
+If a follow-up is appropriate, keep it short and natural.
+
+Do not repeatedly interrupt the user with unnecessary questions.
+
+HONESTY:
+
+If you do not know something, say so.
+
+Do not invent facts.
+
+If information may be uncertain or changing, clearly say that it may need verification.
+
+CODING:
+
+When helping with code:
+
+- Understand the existing code first.
+- Do not unnecessarily rewrite unrelated parts.
+- Explain what needs to change.
+- Keep code compatible with the user's existing project whenever possible.
+
+WRITING:
+
+When the user asks for writing, provide natural copy-ready writing.
+
+MATH:
+
+Solve calculations carefully and show useful steps when needed.
+
+SAFETY:
+
+Do not encourage dangerous or harmful activities.
+
+If a request is unsafe, respond safely and redirect to a safer alternative.
+
+`;
+
+  /* =========================
+     ELEMENTS
+     ========================= */
+
+  const chatArea =
+    document.getElementById("chatArea");
+
+  const welcomeScreen =
+    document.getElementById("welcomeScreen");
+
+  const messageInput =
+    document.getElementById("messageInput");
+
+  const sendBtn =
+    document.getElementById("sendBtn");
+
+  const plusBtn =
+    document.getElementById("plusBtn");
+
+  const micBtn =
+    document.getElementById("micBtn");
+
+  const menuBtn =
+    document.getElementById("menuBtn");
+
+  const settingsBtn =
+    document.getElementById("settingsBtn");
+
+  const attachmentMenu =
+    document.getElementById("attachmentMenu");
+
+
+  /* =========================
+     ADD MESSAGE
+     ========================= */
+
+  function addMessage(text, sender) {
+
+    if (welcomeScreen) {
+      welcomeScreen.style.display = "none";
     }
-      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
 
 
-    const firebaseConfig = {
+    const row =
+      document.createElement("div");
 
-      apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
-
-      authDomain:
-        "pingme-ai-8d8cc.firebaseapp.com",
-
-      projectId:
-        "pingme-ai-8d8cc",
-
-      storageBucket:
-        "pingme-ai-8d8cc.firebasestorage.app",
-
-      messagingSenderId:
-        "547217020747",
-
-      appId:
-        "1:547217020747:web:62b7d3843672703d8abace",
-
-      measurementId:
-        "G-3WRC64CRDR"
-
-    };
+    row.className =
+      sender === "user"
+        ? "message-row user"
+        : "message-row ai";
 
 
-    const firebaseApp =
-      initializeApp(firebaseConfig);
+    const box =
+      document.createElement("div");
+
+    box.className =
+      "message-box";
 
 
-    const ai =
-      getAI(firebaseApp, {
-        backend: new GoogleAIBackend()
-      });
+    const message =
+      document.createElement("div");
+
+    message.className =
+      "message";
+
+    message.textContent =
+      text;
 
 
-    const model1 =
-      getGenerativeModel(ai, {
-        model: "gemini-3.7-flash"
-      });
+    box.appendChild(message);
 
 
-    const model2 =
-      getGenerativeModel(ai, {
-        model: "gemini-3.5-flash-lite"
-      });
+    /* AI actions */
+
+    if (sender === "ai") {
+
+      const actions =
+        document.createElement("div");
+
+      actions.className =
+        "message-actions";
 
 
-    const model3 =
-      getGenerativeModel(ai, {
-        model: "gemini-3.6-flash"
-      });
+      const copyBtn =
+        document.createElement("button");
+
+      copyBtn.type = "button";
+
+      copyBtn.className =
+        "message-action-btn";
+
+      copyBtn.textContent =
+        "📋 Copy";
 
 
-    window.pingMeAIModel1 = model1;
-    window.pingMeAIModel2 = model2;
-    window.pingMeAIModel3 = model3;
+      copyBtn.addEventListener(
+        "click",
+        async () => {
 
-    window.pingMeAIModel = model1;
+          try {
 
-  </script>
+            await navigator.clipboard.writeText(
+              text
+            );
+
+            copyBtn.textContent =
+              "✓ Copied";
+
+            setTimeout(() => {
+
+              copyBtn.textContent =
+                "📋 Copy";
+
+            }, 1500);
+
+          } catch {
+
+            copyBtn.textContent =
+              "Copy failed";
+
+          }
+
+        }
+      );
 
 
-  <!-- MAIN JAVASCRIPT -->
-  <script src="script.js"></script>
+      const linkBtn =
+        document.createElement("button");
+
+      linkBtn.type = "button";
+
+      linkBtn.className =
+        "message-action-btn";
+
+      linkBtn.textContent =
+        "🔗 Copy Link";
+
+
+      linkBtn.addEventListener(
+        "click",
+        async () => {
+
+          const match =
+            text.match(
+              /https?:\/\/[^\s]+/i
+            );
+
+
+          if (!match) {
+
+            linkBtn.textContent =
+              "No link";
+
+            setTimeout(() => {
+
+              linkBtn.textContent =
+                "🔗 Copy Link";
+
+            }, 1500);
+
+            return;
+          }
+
+
+          try {
+
+            await navigator.clipboard.writeText(
+              match[0]
+            );
+
+            linkBtn.textContent =
+              "✓ Link Copied";
+
+            setTimeout(() => {
+
+              linkBtn.textContent =
+                "🔗 Copy Link";
+
+            }, 1500);
+
+          } catch {
+
+            linkBtn.textContent =
+              "Copy failed";
+
+          }
+
+        }
+      );
+
+
+      actions.appendChild(copyBtn);
+      actions.appendChild(linkBtn);
+
+      box.appendChild(actions);
+
+    }
+
+
+    row.appendChild(box);
+
+    chatArea.appendChild(row);
+
+    chatArea.scrollTop =
+      chatArea.scrollHeight;
+
+
+    return row;
+  }
+
+
+  /* =========================
+     THINKING
+     ========================= */
+
+  function addThinkingMessage() {
+
+    if (welcomeScreen) {
+      welcomeScreen.style.display = "none";
+    }
+
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "message-row ai";
+
+
+    const message =
+      document.createElement("div");
+
+    message.className =
+      "message thinking-message";
+
+
+    const spinner =
+      document.createElement("div");
+
+    spinner.className =
+      "thinking-spinner";
+
+
+    message.appendChild(spinner);
+
+    row.appendChild(message);
+
+    chatArea.appendChild(row);
+
+    chatArea.scrollTop =
+      chatArea.scrollHeight;
+
+
+    return row;
+  }
+
+
+  /* =========================
+     GENERATE RESPONSE
+     ========================= */
+
+  async function generateAIResponse(userText) {
+
+    const prompt =
+      PINGME_AI_INSTRUCTION +
+      "\n\nUSER MESSAGE:\n" +
+      userText;
+
+
+    let lastError = null;
+
+
+    for (const model of models) {
+
+      try {
+
+        const result =
+          await model.generateContent(prompt);
+
+
+        const response =
+          result.response;
+
+
+        const answer =
+          response.text();
+
+
+        if (
+          answer &&
+          answer.trim()
+        ) {
+
+          return answer.trim();
+
+        }
+
+      } catch (error) {
+
+        lastError = error;
+
+        console.error(
+          "PingMe model failed:",
+          error
+        );
+
+      }
+
+    }
+
+
+    throw (
+      lastError ||
+      new Error("ALL_MODELS_FAILED")
+    );
+
+  }
+
+
+  /* =========================
+     SEND
+     ========================= */
+
+  async function sendMessage() {
+
+    const text =
+      messageInput.value.trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    sendBtn.disabled = true;
+
+
+    addMessage(
+      text,
+      "user"
+    );
+
+
+    messageInput.value = "";
+
+    messageInput.style.height =
+      "auto";
+
+
+    const thinking =
+      addThinkingMessage();
+
+
+    try {
+
+      const answer =
+        await generateAIResponse(text);
+
+
+      if (thinking) {
+        thinking.remove();
+      }
+
+
+      addMessage(
+        answer,
+        "ai"
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "PingMe AI error:",
+        error
+      );
+
+
+      if (thinking) {
+        thinking.remove();
+      }
+
+
+      const errorText =
+        String(
+          error?.message ||
+          error ||
+          ""
+        );
+
+
+      if (
+        errorText.includes("429") ||
+        errorText.toLowerCase().includes("quota")
+      ) {
+
+        addMessage(
+          "AI এখন একটু ব্যস্ত আছে। একটু পর আবার পাঠা।",
+          "ai"
+        );
+
+      } else {
+
+        addMessage(
+          "এই মুহূর্তে AI-এর সাথে কানেক্ট হতে পারলাম না। একটু পর আবার চেষ্টা কর।",
+          "ai"
+        );
+
+      }
+
+    } finally {
+
+      sendBtn.disabled = false;
+
+      messageInput.focus();
+
+    }
+
+  }
+
+
+  /* =========================
+     SEND BUTTON
+     ========================= */
+
+  sendBtn.addEventListener(
+    "click",
+    (event) => {
+
+      event.preventDefault();
+
+      sendMessage();
+
+    }
+  );
+
+
+  /* =========================
+     ENTER
+     ========================= */
+
+  messageInput.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     AUTO RESIZE
+     ========================= */
+
+  messageInput.addEventListener(
+    "input",
+    function () {
+
+      this.style.height =
+        "auto";
+
+      this.style.height =
+        Math.min(
+          this.scrollHeight,
+          120
+        ) + "px";
+
+    }
+  );
+
+
+  /* =========================
+     SUGGESTIONS
+     ========================= */
+
+  document
+    .querySelectorAll(".suggestion-item")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const text =
+            button.querySelector(".text");
+
+          messageInput.value =
+            text
+              ? text.textContent
+              : button.textContent;
+
+
+          messageInput.focus();
+
+          messageInput.dispatchEvent(
+            new Event("input")
+          );
+
+        }
+      );
+
+    });
+
+
+  /* =========================
+     PLUS
+     ========================= */
+
+  plusBtn.addEventListener(
+    "click",
+    () => {
+
+      attachmentMenu.hidden =
+        !attachmentMenu.hidden;
+
+    }
+  );
+
+
+  /* =========================
+     CAMERA / ATTACHMENTS
+     ========================= */
+
+  [
+    "cameraBtn",
+    "photoOption",
+    "fileOption",
+    "audioOption",
+    "screenOption",
+    "projectOption"
+  ]
+    .forEach(id => {
+
+      const button =
+        document.getElementById(id);
+
+
+      if (button) {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            alert(
+              "এই ফিচারটা পরে যোগ করা হবে।"
+            );
+
+          }
+        );
+
+      }
+
+    });
+
+
+  /* =========================
+     MIC
+     ========================= */
+
+  micBtn.addEventListener(
+    "click",
+    () => {
+
+      alert(
+        "Voice feature পরে যোগ করা হবে।"
+      );
+
+    }
+  );
+
+
+  /* =========================
+     HISTORY
+     ========================= */
+
+  menuBtn.addEventListener(
+    "click",
+    () => {
+
+      alert(
+        "History পরে যোগ করা হবে।"
+      );
+
+    }
+  );
+
+
+  /* =========================
+     SETTINGS
+     ========================= */
+
+  settingsBtn.addEventListener(
+    "click",
+    () => {
+
+      alert(
+        "Settings পরে যোগ করা হবে।"
+      );
+
+    }
+  );
+
+
+  /* =========================
+     READY
+     ========================= */
+
+  console.log(
+    "PingMe AI is ready."
+  );
+
+</script>
 
 </body>
 </html>
