@@ -1,4 +1,3 @@
-
 const chatArea =
   document.getElementById("chatArea");
 
@@ -65,10 +64,8 @@ function addMessage(text, sender) {
     welcomeScreen.style.display = "none";
   }
 
-
   const row =
     document.createElement("div");
-
 
   row.className =
     sender === "user"
@@ -76,20 +73,205 @@ function addMessage(text, sender) {
       : "message-row ai";
 
 
+  // ===============================
+  // Message Box
+  // ===============================
+
+  const messageBox =
+    document.createElement("div");
+
+  messageBox.className =
+    "message-box";
+
+
+  // ===============================
+  // Message
+  // ===============================
+
   const message =
     document.createElement("div");
 
+  message.className =
+    "message";
 
-  message.className = "message";
-
-
-  message.innerText = text;
-
-
-  row.appendChild(message);
+  message.innerText =
+    text;
 
 
-  chatArea.appendChild(row);
+  messageBox.appendChild(
+    message
+  );
+
+
+  // ===============================
+  // AI Actions
+  // ===============================
+
+  if (sender === "ai") {
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "message-actions";
+
+
+    // ===============================
+    // Copy Button
+    // ===============================
+
+    const copyBtn =
+      document.createElement("button");
+
+    copyBtn.type =
+      "button";
+
+    copyBtn.className =
+      "message-action-btn";
+
+    copyBtn.innerHTML =
+      "📋 Copy";
+
+
+    copyBtn.addEventListener(
+      "click",
+      async function() {
+
+        try {
+
+          await navigator.clipboard.writeText(
+            text
+          );
+
+          copyBtn.innerHTML =
+            "✓ Copied";
+
+          setTimeout(
+            function() {
+
+              copyBtn.innerHTML =
+                "📋 Copy";
+
+            },
+            1500
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Copy failed:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    actions.appendChild(
+      copyBtn
+    );
+
+
+    // ===============================
+    // Copy Link Button
+    // ===============================
+
+    const linkBtn =
+      document.createElement("button");
+
+    linkBtn.type =
+      "button";
+
+    linkBtn.className =
+      "message-action-btn";
+
+    linkBtn.innerHTML =
+      "🔗 Copy Link";
+
+
+    linkBtn.addEventListener(
+      "click",
+      async function() {
+
+        const urlMatch =
+          text.match(
+            /https?:\/\/[^\s]+/i
+          );
+
+
+        if (!urlMatch) {
+
+          linkBtn.innerHTML =
+            "No link";
+
+          setTimeout(
+            function() {
+
+              linkBtn.innerHTML =
+                "🔗 Copy Link";
+
+            },
+            1500
+          );
+
+          return;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            urlMatch[0]
+          );
+
+          linkBtn.innerHTML =
+            "✓ Link Copied";
+
+          setTimeout(
+            function() {
+
+              linkBtn.innerHTML =
+                "🔗 Copy Link";
+
+            },
+            1500
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Link copy failed:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    actions.appendChild(
+      linkBtn
+    );
+
+
+    messageBox.appendChild(
+      actions
+    );
+
+  }
+
+
+  row.appendChild(
+    messageBox
+  );
+
+
+  chatArea.appendChild(
+    row
+  );
 
 
   chatArea.scrollTop =
@@ -114,14 +296,12 @@ function addThinkingMessage() {
   const row =
     document.createElement("div");
 
-
   row.className =
     "message-row ai thinking-row";
 
 
   const message =
     document.createElement("div");
-
 
   message.className =
     "message thinking-message";
@@ -132,10 +312,14 @@ function addThinkingMessage() {
   `;
 
 
-  row.appendChild(message);
+  row.appendChild(
+    message
+  );
 
 
-  chatArea.appendChild(row);
+  chatArea.appendChild(
+    row
+  );
 
 
   chatArea.scrollTop =
@@ -147,10 +331,162 @@ function addThinkingMessage() {
 
 
 // ===============================
+// Wait For Models
+// ===============================
+
+async function waitForModels() {
+
+  let attempts = 0;
+
+
+  while (
+    !window.pingMeAIModel1 &&
+    !window.pingMeAIModel2 &&
+    !window.pingMeAIModel3 &&
+    !window.pingMeAIModel &&
+    attempts < 100
+  ) {
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          100
+        )
+    );
+
+    attempts++;
+  }
+
+
+  const models = [
+
+    window.pingMeAIModel1,
+
+    window.pingMeAIModel2,
+
+    window.pingMeAIModel3,
+
+    window.pingMeAIModel
+
+  ].filter(Boolean);
+
+
+  if (!models.length) {
+
+    throw new Error(
+      "MODEL_NOT_FOUND"
+    );
+
+  }
+
+
+  return models;
+}
+
+
+// ===============================
+// Generate AI Response
+// ===============================
+
+async function generateAIResponse(
+  prompt
+) {
+
+  const models =
+    await waitForModels();
+
+
+  let lastError =
+    null;
+
+
+  for (
+    let i = 0;
+    i < models.length;
+    i++
+  ) {
+
+    try {
+
+      console.log(
+        "Trying PingMe AI model:",
+        i + 1
+      );
+
+
+      const result =
+        await models[i]
+          .generateContent(
+            prompt
+          );
+
+
+      const response =
+        result.response;
+
+
+      const answer =
+        response.text();
+
+
+      if (
+        answer &&
+        answer.trim()
+      ) {
+
+        console.log(
+          "PingMe AI model",
+          i + 1,
+          "success"
+        );
+
+
+        return answer.trim();
+
+      }
+
+
+    } catch (error) {
+
+      lastError =
+        error;
+
+
+      console.error(
+        "PingMe AI model",
+        i + 1,
+        "failed:",
+        error
+      );
+
+    }
+
+  }
+
+
+  throw (
+    lastError ||
+    new Error(
+      "ALL_MODELS_FAILED"
+    )
+  );
+}
+
+
+// ===============================
 // Send Message
 // ===============================
 
 async function sendMessage() {
+
+  if (
+    !messageInput ||
+    !sendBtn
+  ) {
+    return;
+  }
+
 
   const text =
     messageInput.value.trim();
@@ -161,60 +497,41 @@ async function sendMessage() {
   }
 
 
-  // User message
+  // Prevent double sending
+  sendBtn.disabled =
+    true;
+
+
+  // ===============================
+  // User Message
+  // ===============================
+
   addMessage(
     text,
     "user"
   );
 
 
-  // Clear input
-  messageInput.value = "";
+  // ===============================
+  // Clear Input
+  // ===============================
+
+  messageInput.value =
+    "";
 
   messageInput.style.height =
     "auto";
 
 
-  // Thinking spinner
+  // ===============================
+  // Thinking
+  // ===============================
+
   const thinkingMessage =
     addThinkingMessage();
 
 
   try {
-
-    // ===============================
-    // Wait for AI Model
-    // ===============================
-
-    let attempts = 0;
-
-
-    while (
-      !window.pingMeAIModel &&
-      attempts < 50
-    ) {
-
-      await new Promise(
-        resolve =>
-          setTimeout(resolve, 100)
-      );
-
-      attempts++;
-    }
-
-
-    if (!window.pingMeAIModel) {
-
-      throw new Error(
-        "MODEL_NOT_FOUND"
-      );
-
-    }
-
-
-    // ===============================
-    // Prompt
-    // ===============================
 
     const finalPrompt =
       PINGME_AI_INSTRUCTION +
@@ -223,39 +540,38 @@ async function sendMessage() {
 
 
     // ===============================
-    // AI Request
+    // AI Response
     // ===============================
 
-    const result =
-      await window
-        .pingMeAIModel
-        .generateContent(
-          finalPrompt
-        );
-
-
-    const response =
-      result.response;
-
-
     const answer =
-      response.text();
+      await generateAIResponse(
+        finalPrompt
+      );
 
 
     // Remove spinner
-    thinkingMessage.remove();
+    if (
+      thinkingMessage &&
+      thinkingMessage.parentNode
+    ) {
+
+      thinkingMessage.remove();
+
+    }
 
 
-    // AI message
+    // ===============================
+    // AI Message
+    // ===============================
+
     addMessage(
       answer ||
       "AI কোনো উত্তর দেয়নি।",
       "ai"
     );
 
-  }
 
-  catch (error) {
+  } catch (error) {
 
     console.error(
       "PingMe AI Error:",
@@ -264,7 +580,14 @@ async function sendMessage() {
 
 
     // Remove spinner
-    thinkingMessage.remove();
+    if (
+      thinkingMessage &&
+      thinkingMessage.parentNode
+    ) {
+
+      thinkingMessage.remove();
+
+    }
 
 
     const errorText =
@@ -276,13 +599,15 @@ async function sendMessage() {
 
 
     // ===============================
-    // Quota
+    // Quota Error
     // ===============================
 
     if (
       errorText.includes("429") ||
       errorText.includes("quota") ||
-      errorText.includes("Quota exceeded") ||
+      errorText.includes(
+        "Quota exceeded"
+      ) ||
       errorText.includes(
         "generate_content_free_tier_requests"
       )
@@ -293,37 +618,43 @@ async function sendMessage() {
         "ai"
       );
 
-      return;
-    }
-
 
     // ===============================
     // Model Error
     // ===============================
 
-    if (
+    } else if (
       errorText.includes(
         "MODEL_NOT_FOUND"
       )
     ) {
 
       addMessage(
-        "PingMe AI এখন চালু হতে একটু সমস্যা হচ্ছে। একটু পরে আবার চেষ্টা কর।",
+        "PingMe AI এখন চালু হতে সমস্যা হচ্ছে। একটু পরে চেষ্টা কর।",
         "ai"
       );
-
-      return;
-    }
 
 
     // ===============================
     // Other Error
     // ===============================
 
-    addMessage(
-      "দুঃখিত, এই মুহূর্তে AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে। একটু পরে আবার চেষ্টা কর।",
-      "ai"
-    );
+    } else {
+
+      addMessage(
+        "দুঃখিত, এই মুহূর্তে AI-এর সাথে সংযোগ করতে সমস্যা হয়েছে। একটু পরে আবার চেষ্টা কর।",
+        "ai"
+      );
+
+    }
+
+
+  } finally {
+
+    sendBtn.disabled =
+      false;
+
+    messageInput.focus();
 
   }
 }
@@ -333,55 +664,69 @@ async function sendMessage() {
 // Send Button
 // ===============================
 
-sendBtn.addEventListener(
-  "click",
-  sendMessage
-);
+if (sendBtn) {
 
-
-// ===============================
-// Enter
-// ===============================
-
-messageInput.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+  sendBtn.addEventListener(
+    "click",
+    function(event) {
 
       event.preventDefault();
 
       sendMessage();
 
     }
+  );
 
-  }
-);
+}
 
 
 // ===============================
-// Auto Resize
+// Enter Key
 // ===============================
 
-messageInput.addEventListener(
-  "input",
-  function() {
+if (messageInput) {
 
-    this.style.height =
-      "auto";
+  messageInput.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
+    }
+  );
 
 
-    this.style.height =
-      Math.min(
-        this.scrollHeight,
-        140
-      ) + "px";
+  // ===============================
+  // Auto Resize
+  // ===============================
 
-  }
-);
+  messageInput.addEventListener(
+    "input",
+    function() {
+
+      this.style.height =
+        "auto";
+
+
+      this.style.height =
+        Math.min(
+          this.scrollHeight,
+          140
+        ) + "px";
+
+    }
+  );
+
+}
 
 
 // ===============================
@@ -392,91 +737,162 @@ document
   .querySelectorAll(
     ".suggestion-item"
   )
-  .forEach(button => {
+  .forEach(
+    button => {
 
-    button.addEventListener(
-      "click",
-      function() {
+      button.addEventListener(
+        "click",
+        function() {
 
-        messageInput.value =
-          this.querySelector(
-            ".text"
-          )?.innerText ||
-          this.innerText;
-
-
-        messageInput.focus();
+          const textElement =
+            this.querySelector(
+              ".text"
+            );
 
 
-        messageInput.dispatchEvent(
-          new Event("input")
-        );
+          messageInput.value =
+            textElement
+              ? textElement.innerText
+              : this.innerText;
 
-      }
-    );
 
-  });
+          messageInput.focus();
+
+
+          messageInput.dispatchEvent(
+            new Event("input")
+          );
+
+        }
+      );
+
+    }
+  );
 
 
 // ===============================
 // Plus Button
 // ===============================
 
-plusBtn.addEventListener(
-  "click",
-  function() {
+if (plusBtn) {
 
-    alert(
-      "File attachment feature আসছে।"
-    );
+  plusBtn.addEventListener(
+    "click",
+    function() {
 
-  }
-);
+      const menu =
+        document.getElementById(
+          "attachmentMenu"
+        );
+
+
+      if (menu) {
+
+        menu.hidden =
+          !menu.hidden;
+
+      }
+
+    }
+  );
+
+}
 
 
 // ===============================
 // Camera
 // ===============================
 
-cameraBtn.addEventListener(
-  "click",
-  function() {
+if (cameraBtn) {
 
-    alert(
-      "Camera feature আসছে।"
-    );
+  cameraBtn.addEventListener(
+    "click",
+    function() {
 
-  }
-);
+      alert(
+        "Camera feature আসছে।"
+      );
+
+    }
+  );
+
+}
 
 
 // ===============================
 // Microphone
 // ===============================
 
-micBtn.addEventListener(
-  "click",
-  function() {
+if (micBtn) {
 
-    alert(
-      "Voice input feature আসছে।"
-    );
+  micBtn.addEventListener(
+    "click",
+    function() {
 
-  }
-);
+      alert(
+        "Voice input feature আসছে।"
+      );
+
+    }
+  );
+
+}
 
 
 // ===============================
 // Menu
 // ===============================
 
-menuBtn.addEventListener(
-  "click",
-  function() {
+if (menuBtn) {
 
-    alert(
-      "PingMe AI menu আসছে।"
-    );
+  menuBtn.addEventListener(
+    "click",
+    function() {
+
+      alert(
+        "PingMe AI menu আসছে।"
+      );
+
+    }
+  );
+
+}
+
+
+// ===============================
+// Attachment Options
+// ===============================
+
+const attachmentOptions = [
+  "photoOption",
+  "fileOption",
+  "audioOption",
+  "screenOption",
+  "projectOption"
+];
+
+
+attachmentOptions.forEach(
+  function(id) {
+
+    const button =
+      document.getElementById(id);
+
+
+    if (button) {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          alert(
+            "এই ফিচারটি শিগগিরই আসছে।"
+          );
+
+        }
+      );
+
+    }
 
   }
 );
