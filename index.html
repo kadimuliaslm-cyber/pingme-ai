@@ -6,26 +6,10 @@
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0,
-        maximum-scale=1.0, user-scalable=no,
-        viewport-fit=cover"
+        maximum-scale=1.0, user-scalable=no"
     >
 
     <title>PingMe AI Chat System</title>
-
-    <meta
-        name="apple-mobile-web-app-capable"
-        content="yes"
-    >
-
-    <meta
-        name="apple-mobile-web-app-status-bar-style"
-        content="default"
-    >
-
-    <meta
-        name="mobile-web-app-capable"
-        content="yes"
-    >
 
     <style>
 
@@ -39,9 +23,9 @@
 
         html,
         body {
-            background: #ffffff;
             width: 100%;
             height: 100%;
+            background: #ffffff;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -54,88 +38,82 @@
             background: #ffffff;
             display: flex;
             flex-direction: column;
-            gap: 16px;
         }
 
-        .message-bubble {
-            max-width: 80%;
-            padding: 12px 16px;
-            font-size: 16px;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .user-side-bubble {
-            align-self: flex-end;
-            background-color: #f1f3f4;
-            color: #0d0d0d;
-            border-radius: 18px 18px 4px 18px;
-        }
-
-        .ai-side-bubble {
-            align-self: flex-start;
-            background-color: #ffffff;
-            color: #0d0d0d;
-            border-radius: 18px 18px 18px 4px;
-            border: 1px solid #e5e5ea;
-        }
-
-        .typing-indicator-box {
-            align-self: flex-start;
-            background: #ffffff;
-            border: 1px solid #e5e5ea;
-            padding: 14px 20px;
-            border-radius: 18px 18px 18px 4px;
-            display: none;
-            align-items: center;
-            gap: 6px;
-            margin-left: 20px;
-            margin-bottom: 10px;
-        }
-
-        .typing-indicator-box.active {
+        .welcome-screen {
+            width: 100%;
+            min-height: 100%;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 10px 30px;
         }
 
-        .dot {
-            width: 6px;
-            height: 6px;
-            background-color: #0d0d0d;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #111111;
+            text-align: center;
+            margin-bottom: 8px;
         }
 
-        .dot:nth-child(1) {
-            animation-delay: -0.32s;
+        .welcome-subtitle {
+            font-size: 14px;
+            color: #777777;
+            text-align: center;
+            line-height: 1.5;
+            max-width: 330px;
+            margin-bottom: 24px;
         }
 
-        .dot:nth-child(2) {
-            animation-delay: -0.16s;
+        .feature-list {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
 
-        @keyframes bounce {
+        .feature-item {
+            width: 100%;
+            height: 44px;
+            padding: 0 13px;
+            border: 1px solid #e5e5ea;
+            border-radius: 12px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
 
-            0%,
-            80%,
-            100% {
-                transform: scale(0);
-                opacity: 0.3;
-            }
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-right: 10px;
+        }
 
-            40% {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .feature-text {
+            flex: 1;
+            font-size: 14px;
+            color: #202124;
+        }
+
+        .feature-arrow {
+            font-size: 20px;
+            color: #8a8a8a;
+            line-height: 1;
         }
 
         .input-panel-wrapper {
             width: 100%;
             background: #ffffff;
-            padding: 12px 16px 16px 16px;
+            padding: 12px 16px 16px;
             flex-shrink: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             border-top: 1px solid #f1f3f4;
         }
 
@@ -149,7 +127,7 @@
             flex-direction: column;
             gap: 0;
             box-shadow: 0 2px 12px rgba(0,0,0,0.03);
-            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.22s ease;
         }
 
         .text-field-container {
@@ -172,6 +150,27 @@
             color: #757575;
         }
 
+        .model-selector {
+            width: 100%;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .model-selector.visible {
+            display: block;
+        }
+
+        .model-select {
+            width: 100%;
+            border: 1px solid #e5e5ea;
+            background: #ffffff;
+            color: #0d0d0d;
+            border-radius: 14px;
+            padding: 10px 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
         .icons-action-control-row {
             display: flex;
             justify-content: space-between;
@@ -186,9 +185,8 @@
 
         .bottom-master-widget.popup-expanded-card {
             border-radius: 24px;
-            padding: 16px 20px 14px 20px;
+            padding: 16px 20px 14px;
             gap: 14px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
         }
 
         .bottom-master-widget.popup-expanded-card
@@ -227,6 +225,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            padding: 0;
         }
 
         .arrow-submit-circle-btn {
@@ -247,6 +246,26 @@
             background-color: #1a73e8;
         }
 
+        @media (max-width: 480px) {
+
+            .welcome-title {
+                font-size: 26px;
+            }
+
+            .welcome-subtitle {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+
+            .feature-list {
+                max-width: 350px;
+            }
+
+            .feature-item {
+                height: 42px;
+            }
+        }
+
     </style>
 </head>
 
@@ -258,21 +277,56 @@
     >
 
         <div
-            class="message-bubble ai-side-bubble"
+            class="welcome-screen"
+            id="welcomeScreen"
         >
-            হ্যালো! আমি pingme। আমাকে যেকোনো প্রশ্ন করতে পারেন।
+
+            <div class="welcome-title">
+                What can I help you with?
+            </div>
+
+            <div class="welcome-subtitle">
+                Ask anything, explore ideas, learn something new,
+                or get help with your work.
+            </div>
+
+            <div class="feature-list">
+
+                <div class="feature-item">
+                    <span class="feature-icon">✨</span>
+                    <span class="feature-text">
+                        Create something
+                    </span>
+                    <span class="feature-arrow">›</span>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">📚</span>
+                    <span class="feature-text">
+                        Learn something
+                    </span>
+                    <span class="feature-arrow">›</span>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">💡</span>
+                    <span class="feature-text">
+                        Get ideas
+                    </span>
+                    <span class="feature-arrow">›</span>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">💻</span>
+                    <span class="feature-text">
+                        Help with coding
+                    </span>
+                    <span class="feature-arrow">›</span>
+                </div>
+
+            </div>
+
         </div>
-
-    </div>
-
-    <div
-        class="typing-indicator-box"
-        id="typingIndicatorBox"
-    >
-
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
 
     </div>
 
@@ -282,6 +336,32 @@
             class="bottom-master-widget"
             id="mainWidgetCard"
         >
+
+            <div
+                class="model-selector"
+                id="modelSelectorBox"
+            >
+
+                <select
+                    class="model-select"
+                    id="modelSelect"
+                >
+
+                    <option value="gemini-3.8-flash">
+                        Gemini 3.8 Flash
+                    </option>
+
+                    <option value="gemini-3.7-flash">
+                        Gemini 3.7 Flash
+                    </option>
+
+                    <option value="gemini-3.6-flash">
+                        Gemini 3.6 Flash
+                    </option>
+
+                </select>
+
+            </div>
 
             <div class="text-field-container">
 
@@ -295,13 +375,9 @@
 
             </div>
 
-            <div
-                class="icons-action-control-row"
-            >
+            <div class="icons-action-control-row">
 
-                <div
-                    class="left-icon-utilities-group"
-                >
+                <div class="left-icon-utilities-group">
 
                     <button
                         class="plus-action-gray-circle"
@@ -310,8 +386,6 @@
                     >
                         +
                     </button>
-
-                    <!-- VOICE -->
 
                     <button
                         class="utility-svg-action-trigger"
@@ -348,8 +422,6 @@
 
                     </button>
 
-                    <!-- CAMERA -->
-
                     <button
                         class="utility-svg-action-trigger"
                         type="button"
@@ -381,8 +453,6 @@
                     </button>
 
                 </div>
-
-                <!-- SEND -->
 
                 <button
                     class="arrow-submit-circle-btn"
@@ -422,60 +492,38 @@
 
     </div>
 
+
     <script>
 
-        // =====================================================
-        // 🔑 GEMINI API KEY
-        // =====================================================
+        /* =====================================
+           GEMINI API KEY
+           ===================================== */
 
-        const GEMINI_API_KEY = "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk";
-
-
-        // =====================================================
-        // AI 1
-        // =====================================================
-
-        const AI_MODEL = "gemini-3.6-flash";
+        const GEMINI_API_KEY =
+            "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk";
 
 
-        // =====================================================
-        // DOM ELEMENTS
-        // =====================================================
+        /* =====================================
+           MAIN ELEMENTS
+           ===================================== */
 
         const chatInputField =
-            document.getElementById(
-                "chatInputField"
-            );
+            document.getElementById("chatInputField");
 
         const mainWidgetCard =
-            document.getElementById(
-                "mainWidgetCard"
-            );
+            document.getElementById("mainWidgetCard");
 
         const arrowSubmitBtn =
-            document.getElementById(
-                "arrowSubmitBtn"
-            );
+            document.getElementById("arrowSubmitBtn");
 
-        const chatViewport =
-            document.getElementById(
-                "chatViewport"
-            );
-
-        const typingIndicatorBox =
-            document.getElementById(
-                "typingIndicatorBox"
-            );
+        const modelSelectorBox =
+            document.getElementById("modelSelectorBox");
 
         const plusButton =
-            document.getElementById(
-                "plusButton"
-            );
+            document.getElementById("plusButton");
 
 
-        // =====================================================
-        // POPUP
-        // =====================================================
+        /* INPUT FOCUS */
 
         chatInputField.addEventListener(
             "focus",
@@ -485,13 +533,15 @@
                     "popup-expanded-card"
                 );
 
+                modelSelectorBox.classList.add(
+                    "visible"
+                );
+
             }
         );
 
 
-        // =====================================================
-        // TYPING
-        // =====================================================
+        /* INPUT TYPING */
 
         chatInputField.addEventListener(
             "input",
@@ -517,9 +567,7 @@
         );
 
 
-        // =====================================================
-        // OUTSIDE CLICK
-        // =====================================================
+        /* CLICK OUTSIDE */
 
         document.addEventListener(
             "click",
@@ -534,293 +582,9 @@
                         "popup-expanded-card"
                     );
 
-                }
-
-            }
-        );
-
-
-        // =====================================================
-        // GEMINI REQUEST
-        // =====================================================
-
-        async function askGemini(
-            userText
-        ) {
-
-            const url =
-                "https://generativelanguage.googleapis.com/v1beta/models/" +
-                AI_MODEL +
-                ":generateContent?key=" +
-                encodeURIComponent(
-                    GEMINI_API_KEY
-                );
-
-
-            const requestBody = {
-
-                contents: [
-
-                    {
-
-                        role: "user",
-
-                        parts: [
-
-                            {
-
-                                text:
-                                    "তুমি PingMe AI। " +
-                                    "তোমার নাম pingme। " +
-                                    "কোম্পানির নাম pingme-ai। " +
-                                    "স্বাভাবিকভাবে সাহায্যকারী উত্তর দাও।\n\n" +
-                                    userText
-
-                            }
-
-                        ]
-
-                    }
-
-                ]
-
-            };
-
-
-            const response =
-                await fetch(
-                    url,
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                            JSON.stringify(
-                                requestBody
-                            )
-
-                    }
-                );
-
-
-            if (!response.ok) {
-
-                const errorText =
-                    await response.text();
-
-                throw new Error(
-                    "Gemini API Error: " +
-                    response.status +
-                    " " +
-                    errorText
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            const answer =
-                data
-                ?.candidates
-                ?.[0]
-                ?.content
-                ?.parts
-                ?.[0]
-                ?.text;
-
-
-            if (!answer) {
-
-                throw new Error(
-                    "Gemini কোনো উত্তর দেয়নি।"
-                );
-
-            }
-
-
-            return answer;
-
-        }
-
-
-        // =====================================================
-        // SEND MESSAGE
-        // =====================================================
-
-        async function handleMessageSend() {
-
-            const userText =
-                chatInputField.value.trim();
-
-
-            if (
-                userText === ""
-            ) {
-
-                return;
-
-            }
-
-
-            // USER BUBBLE
-
-            const userBubble =
-                document.createElement(
-                    "div"
-                );
-
-
-            userBubble.className =
-                "message-bubble user-side-bubble";
-
-
-            userBubble.innerText =
-                userText;
-
-
-            chatViewport.appendChild(
-                userBubble
-            );
-
-
-            // RESET
-
-            chatInputField.value = "";
-
-
-            arrowSubmitBtn.classList.remove(
-                "typing-active-blue"
-            );
-
-
-            mainWidgetCard.classList.remove(
-                "popup-expanded-card"
-            );
-
-
-            chatInputField.blur();
-
-
-            chatViewport.scrollTop =
-                chatViewport.scrollHeight;
-
-
-            // TYPING
-
-            typingIndicatorBox.classList.add(
-                "active"
-            );
-
-
-            try {
-
-                // AI REQUEST
-
-                const aiResponse =
-                    await askGemini(
-                        userText
+                    modelSelectorBox.classList.remove(
+                        "visible"
                     );
-
-
-                // AI BUBBLE
-
-                const aiBubble =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                aiBubble.className =
-                    "message-bubble ai-side-bubble";
-
-
-                aiBubble.innerText =
-                    aiResponse;
-
-
-                chatViewport.appendChild(
-                    aiBubble
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "PingMe AI Error:",
-                    error
-                );
-
-
-                const errorBubble =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                errorBubble.className =
-                    "message-bubble ai-side-bubble";
-
-
-                errorBubble.innerText =
-                    "API ERROR: " +
-                    error.message;
-
-
-                chatViewport.appendChild(
-                    errorBubble
-                );
-
-            }
-
-
-            // HIDE TYPING
-
-            typingIndicatorBox.classList.remove(
-                "active"
-            );
-
-
-            chatViewport.scrollTop =
-                chatViewport.scrollHeight;
-
-        }
-
-
-        // =====================================================
-        // SEND BUTTON
-        // =====================================================
-
-        arrowSubmitBtn.addEventListener(
-            "click",
-            handleMessageSend
-        );
-
-
-        // =====================================================
-        // ENTER
-        // =====================================================
-
-        chatInputField.addEventListener(
-            "keypress",
-            (e) => {
-
-                if (
-                    e.key === "Enter"
-                ) {
-
-                    e.preventDefault();
-
-                    handleMessageSend();
 
                 }
 
@@ -828,9 +592,7 @@
         );
 
 
-        // =====================================================
-        // PLUS BUTTON
-        // =====================================================
+        /* PLUS BUTTON */
 
         plusButton.addEventListener(
             "click",
@@ -840,9 +602,12 @@
                     "popup-expanded-card"
                 );
 
+                modelSelectorBox.classList.toggle(
+                    "visible"
+                );
+
             }
         );
-
 
     </script>
 
