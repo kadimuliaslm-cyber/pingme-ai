@@ -609,6 +609,70 @@
             }
         );
 
+
+        /* =====================================
+           SEND MESSAGE
+        ===================================== */
+
+        arrowSubmitBtn.addEventListener(
+            "click",
+            () => {
+
+                const message =
+                    chatInputField.value.trim();
+
+                if (message === "") {
+                    return;
+                }
+
+
+                const messageBox =
+                    document.createElement("div");
+
+
+                messageBox.textContent =
+                    message;
+
+
+                messageBox.style.cssText = `
+                    align-self: flex-end;
+                    max-width: 80%;
+                    margin: 8px 0;
+                    padding: 10px 14px;
+                    background: #1a73e8;
+                    color: #ffffff;
+                    border-radius: 18px;
+                    font-size: 15px;
+                    line-height: 1.4;
+                    word-wrap: break-word;
+                `;
+
+
+                document
+                    .getElementById("chatViewport")
+                    .appendChild(messageBox);
+
+
+                chatInputField.value = "";
+
+
+                arrowSubmitBtn.classList.remove(
+                    "typing-active-blue"
+                );
+
+
+                const chatViewport =
+                    document.getElementById(
+                        "chatViewport"
+                    );
+
+
+                chatViewport.scrollTop =
+                    chatViewport.scrollHeight;
+
+            }
+        );
+
     </script>
 
 </body>
