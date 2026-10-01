@@ -246,11 +246,6 @@
             background-color: #1a73e8;
         }
 
-
-        /* =====================================
-           USER MESSAGE
-           ===================================== */
-
         .user-message {
             align-self: flex-end;
             max-width: 80%;
@@ -264,11 +259,6 @@
             word-wrap: break-word;
             white-space: pre-wrap;
         }
-
-
-        /* =====================================
-           AI REPLY
-           ===================================== */
 
         .ai-message {
             align-self: flex-start;
@@ -292,11 +282,6 @@
             color: #1a73e8;
             margin: 8px 0 5px;
         }
-
-
-        /* =====================================
-           AI THINKING
-           ===================================== */
 
         .ai-thinking {
             align-self: flex-start;
@@ -327,11 +312,6 @@
             }
         }
 
-
-        /* =====================================
-           ERROR MESSAGE
-           ===================================== */
-
         .ai-error {
             align-self: flex-start;
             width: 100%;
@@ -340,7 +320,6 @@
             line-height: 1.5;
             margin: 10px 0;
         }
-
 
         @media (max-width: 480px) {
 
@@ -602,61 +581,187 @@
     </div>
 
 
-    <script>
+    <!-- =====================================================
+         FIREBASE + PINGME AI
+         Firebase AI Logic Web SDK
+         ===================================================== -->
 
-        /* =====================================
-           GEMINI API KEY
-           
-           এখানে নিজের নতুন API key বসাবি।
-           পুরোনো প্রকাশ করা key ব্যবহার করিস না।
-           ===================================== */
+    <script type="module">
 
-        const GEMINI_API_KEY =
-            "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk";
+        /*
+        =====================================================
+        🔑 FIREBASE CONFIG / CHABIR JAYGA
+
+        নিচের firebaseConfig-এর ভিতরে Firebase Console
+        থেকে পাওয়া Web app-এর config বসাবি।
+
+        নিজের আসল config এখানে বসাবি।
+        =====================================================
+        */
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+        import {
+            getAI,
+            getGenerativeModel,
+            GoogleAIBackend
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
 
 
-        /* =====================================
-           MAIN ELEMENTS
-           ===================================== */
+        const firebaseConfig = {
+
+            /* 🔑 API KEY — Firebase Web Config থেকে বসাবি */
+            apiKey: "PASTE_YOUR_FIREBASE_WEB_API_KEY_HERE",
+
+            /* 🔑 Firebase configuration */
+            authDomain:
+                "pingme-ai-8d8cc.firebaseapp.com",
+
+            projectId:
+                "pingme-ai-8d8cc",
+
+            storageBucket:
+                "pingme-ai-8d8cc.firebasestorage.app",
+
+            messagingSenderId:
+                "547217020747",
+
+            appId:
+                "1:547217020747:web:62b7d3843672703d8abace",
+
+            measurementId:
+                "G-3WRC64CRDR"
+        };
+
+
+        /*
+        =====================================================
+        FIREBASE INITIALIZE
+        =====================================================
+        */
+
+        const firebaseApp =
+            initializeApp(firebaseConfig);
+
+
+        /*
+        =====================================================
+        FIREBASE AI LOGIC
+        Gemini Developer API backend
+        =====================================================
+        */
+
+        const ai =
+            getAI(
+                firebaseApp,
+                {
+                    backend:
+                        new GoogleAIBackend()
+                }
+            );
+
+
+        /*
+        =====================================================
+        MAIN ELEMENTS
+        =====================================================
+        */
 
         const chatInputField =
-            document.getElementById("chatInputField");
+            document.getElementById(
+                "chatInputField"
+            );
 
         const mainWidgetCard =
-            document.getElementById("mainWidgetCard");
+            document.getElementById(
+                "mainWidgetCard"
+            );
 
         const arrowSubmitBtn =
-            document.getElementById("arrowSubmitBtn");
+            document.getElementById(
+                "arrowSubmitBtn"
+            );
 
         const modelSelectorBox =
-            document.getElementById("modelSelectorBox");
+            document.getElementById(
+                "modelSelectorBox"
+            );
 
         const plusButton =
-            document.getElementById("plusButton");
+            document.getElementById(
+                "plusButton"
+            );
 
         const chatViewport =
-            document.getElementById("chatViewport");
+            document.getElementById(
+                "chatViewport"
+            );
 
         const welcomeScreen =
-            document.getElementById("welcomeScreen");
+            document.getElementById(
+                "welcomeScreen"
+            );
 
         const aiThinking =
-            document.getElementById("aiThinking");
+            document.getElementById(
+                "aiThinking"
+            );
 
         const modelSelect =
-            document.getElementById("modelSelect");
+            document.getElementById(
+                "modelSelect"
+            );
 
 
-        /* =====================================
-           CONVERSATION HISTORY
-           ===================================== */
+        /*
+        =====================================================
+        CONVERSATION HISTORY
+        =====================================================
+        */
 
         let conversationHistory = [];
 
 
-        /* =====================================
-           INPUT FOCUS
-           ===================================== */
+        /*
+        =====================================================
+        SELECTED MODEL MEMORY
+        =====================================================
+        */
+
+        let selectedActiveModel =
+            localStorage.getItem(
+                "pingme_selected_model"
+            ) ||
+            modelSelect.value;
+
+
+        modelSelect.value =
+            selectedActiveModel;
+
+
+        modelSelect.addEventListener(
+            "change",
+            () => {
+
+                selectedActiveModel =
+                    modelSelect.value;
+
+                localStorage.setItem(
+                    "pingme_selected_model",
+                    selectedActiveModel
+                );
+
+            }
+        );
+
+
+        /*
+        =====================================================
+        INPUT FOCUS
+        =====================================================
+        */
 
         chatInputField.addEventListener(
             "focus",
@@ -674,9 +779,11 @@
         );
 
 
-        /* =====================================
-           INPUT TYPING
-           ===================================== */
+        /*
+        =====================================================
+        INPUT TYPING
+        =====================================================
+        */
 
         chatInputField.addEventListener(
             "input",
@@ -702,9 +809,11 @@
         );
 
 
-        /* =====================================
-           ENTER TO SEND
-           ===================================== */
+        /*
+        =====================================================
+        ENTER TO SEND
+        =====================================================
+        */
 
         chatInputField.addEventListener(
             "keydown",
@@ -725,16 +834,20 @@
         );
 
 
-        /* =====================================
-           CLICK OUTSIDE
-           ===================================== */
+        /*
+        =====================================================
+        CLICK OUTSIDE
+        =====================================================
+        */
 
         document.addEventListener(
             "click",
-            (e) => {
+            (event) => {
 
                 if (
-                    !mainWidgetCard.contains(e.target) &&
+                    !mainWidgetCard.contains(
+                        event.target
+                    ) &&
                     chatInputField.value.trim() === ""
                 ) {
 
@@ -752,9 +865,11 @@
         );
 
 
-        /* =====================================
-           PLUS BUTTON
-           ===================================== */
+        /*
+        =====================================================
+        PLUS BUTTON
+        =====================================================
+        */
 
         plusButton.addEventListener(
             "click",
@@ -772,9 +887,11 @@
         );
 
 
-        /* =====================================
-           SEND MESSAGE
-           ===================================== */
+        /*
+        =====================================================
+        SEND BUTTON
+        =====================================================
+        */
 
         arrowSubmitBtn.addEventListener(
             "click",
@@ -786,31 +903,43 @@
         );
 
 
-        /* =====================================
-           SEND MESSAGE FUNCTION
-           ===================================== */
+        /*
+        =====================================================
+        SEND MESSAGE
+        =====================================================
+        */
 
         async function sendMessage() {
 
             const message =
                 chatInputField.value.trim();
 
+
             if (message === "") {
                 return;
             }
 
 
-            /* WELCOME HIDE */
+            /*
+            WELCOME HIDE
+            */
 
-            welcomeScreen.style.display = "none";
-
-
-            /* USER MESSAGE */
-
-            addUserMessage(message);
+            welcomeScreen.style.display =
+                "none";
 
 
-            /* SAVE USER MESSAGE */
+            /*
+            USER MESSAGE
+            */
+
+            addUserMessage(
+                message
+            );
+
+
+            /*
+            SAVE USER MESSAGE
+            */
 
             conversationHistory.push({
 
@@ -825,7 +954,9 @@
             });
 
 
-            /* CLEAR INPUT */
+            /*
+            CLEAR INPUT
+            */
 
             chatInputField.value = "";
 
@@ -834,7 +965,9 @@
             );
 
 
-            /* SHOW THINKING */
+            /*
+            SHOW THINKING
+            */
 
             aiThinking.classList.add(
                 "visible"
@@ -855,8 +988,18 @@
                 );
 
 
-                addAIMessage(aiReply);
+                /*
+                AI MESSAGE
+                */
 
+                addAIMessage(
+                    aiReply
+                );
+
+
+                /*
+                SAVE AI MESSAGE
+                */
 
                 conversationHistory.push({
 
@@ -868,7 +1011,7 @@
                         }
                     ]
 
-                });
+                );
 
 
             } catch (error) {
@@ -890,94 +1033,66 @@
         }
 
 
-        /* =====================================
-           GEMINI REQUEST
-           ===================================== */
+        /*
+        =====================================================
+        FIREBASE AI LOGIC REQUEST
+        =====================================================
+        */
 
         async function getGeminiReply() {
-
-            if (
-                !GEMINI_API_KEY ||
-                GEMINI_API_KEY ===
-                "YOUR_NEW_GEMINI_API_KEY"
-            ) {
-
-                throw new Error(
-                    "Gemini API key is not configured."
-                );
-
-            }
-
 
             const selectedModel =
                 modelSelect.value;
 
 
-            const endpoint =
-                "https://generativelanguage.googleapis.com/v1beta/models/" +
-                encodeURIComponent(selectedModel) +
-                ":generateContent";
-
-
-            const response =
-                await fetch(
-                    endpoint,
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json",
-
-                            "x-goog-api-key":
-                                GEMINI_API_KEY
-
-                        },
-
-                        body: JSON.stringify({
-
-                            contents:
-                                conversationHistory
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                const errorMessage =
-                    data &&
-                    data.error &&
-                    data.error.message
-                        ? data.error.message
-                        : "Gemini API request failed.";
+            if (
+                !selectedModel
+            ) {
 
                 throw new Error(
-                    errorMessage
+                    "No AI model selected."
                 );
 
             }
 
 
+            /*
+            Create the Firebase AI Logic model
+            using the model selected in the UI.
+            */
+
+            const model =
+                getGenerativeModel(
+                    ai,
+                    {
+                        model:
+                            selectedModel
+                    }
+                );
+
+
+            /*
+            Send the complete conversation history.
+            */
+
+            const result =
+                await model.generateContent(
+                    conversationHistory
+                );
+
+
+            const response =
+                result.response;
+
+
             const reply =
-                data &&
-                data.candidates &&
-                data.candidates[0] &&
-                data.candidates[0].content &&
-                data.candidates[0].content.parts &&
-                data.candidates[0].content.parts[0] &&
-                data.candidates[0].content.parts[0].text;
+                response.text();
 
 
-            if (!reply) {
+            if (
+                !reply ||
+                reply.trim() === ""
+            ) {
 
                 throw new Error(
                     "Gemini returned an empty response."
@@ -991,14 +1106,20 @@
         }
 
 
-        /* =====================================
-           ADD USER MESSAGE
-           ===================================== */
+        /*
+        =====================================================
+        ADD USER MESSAGE
+        =====================================================
+        */
 
-        function addUserMessage(text) {
+        function addUserMessage(
+            text
+        ) {
 
             const messageBox =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             messageBox.className =
@@ -1019,14 +1140,20 @@
         }
 
 
-        /* =====================================
-           ADD AI MESSAGE
-           ===================================== */
+        /*
+        =====================================================
+        ADD AI MESSAGE
+        =====================================================
+        */
 
-        function addAIMessage(text) {
+        function addAIMessage(
+            text
+        ) {
 
             const messageBox =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             messageBox.className =
@@ -1034,7 +1161,9 @@
 
 
             messageBox.innerHTML =
-                formatAIResponse(text);
+                formatAIResponse(
+                    text
+                );
 
 
             chatViewport.appendChild(
@@ -1047,14 +1176,20 @@
         }
 
 
-        /* =====================================
-           AI RESPONSE FORMAT
-           ===================================== */
+        /*
+        =====================================================
+        AI RESPONSE FORMAT
+        =====================================================
+        */
 
-        function formatAIResponse(text) {
+        function formatAIResponse(
+            text
+        ) {
 
             const safeText =
-                escapeHTML(text);
+                escapeHTML(
+                    text
+                );
 
 
             let formatted =
@@ -1094,14 +1229,20 @@
         }
 
 
-        /* =====================================
-           ESCAPE HTML
-           ===================================== */
+        /*
+        =====================================================
+        ESCAPE HTML
+        =====================================================
+        */
 
-        function escapeHTML(text) {
+        function escapeHTML(
+            text
+        ) {
 
             const div =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             div.textContent =
@@ -1113,14 +1254,20 @@
         }
 
 
-        /* =====================================
-           ERROR
-           ===================================== */
+        /*
+        =====================================================
+        ERROR
+        =====================================================
+        */
 
-        function addAIError(message) {
+        function addAIError(
+            message
+        ) {
 
             const errorBox =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             errorBox.className =
@@ -1128,7 +1275,8 @@
 
 
             errorBox.textContent =
-                "AI reply error: " + message;
+                "AI reply error: " +
+                message;
 
 
             chatViewport.appendChild(
@@ -1141,9 +1289,11 @@
         }
 
 
-        /* =====================================
-           SCROLL
-           ===================================== */
+        /*
+        =====================================================
+        SCROLL
+        =====================================================
+        */
 
         function scrollToBottom() {
 
