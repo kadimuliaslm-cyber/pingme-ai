@@ -1405,7 +1405,12 @@ async function sendMessage() {
 
         /* Get current chat */
         const selectedModel = modelSelect.value;
-    
+         
+        if (selectedModel === "openai") {
+
+        } else {
+        
+        
             const chat =
           getChatSession();
                 
