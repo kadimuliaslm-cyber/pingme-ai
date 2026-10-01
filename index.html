@@ -2,181 +2,23 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <!-- অ্যাপ হিসেবে ফুল স্ক্রিন এবং জুম লক করার জন্য পারফেক্ট মেটা ট্যাগ -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>100% Android/iOS App Fit Input Bar</title>
-    
-    <!-- মোবাইল অ্যাপ মোড সক্রিয় করার জন্য পিডব্লিউএ মেটা ট্যাগসমূহ -->
+    <title>100% Fixed Chat Input System</title>
+    <!-- App Mode Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
-
-    <!-- Google Fonts for Clean UI -->
+    <!-- Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* মোবাইল অ্যাপের ফুল স্ক্রিন ব্যাকগ্রাউন্ড লক */
-        html, body {
-            background-color: #ffffff;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            /* ফোনের নিচের নেভিগেশন বার ও স্বাইপ বারের জন্য সেফ এরিয়া সাপোর্ট */
-            padding-bottom: env(safe-area-inset-bottom, 0px); 
-        }
-
-        /* চ্যাট ভিউ পোর্ট স্পেস (মেসেজ এরিয়া) */
-        .chat-space-viewport {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background: #ffffff;
-        }
-
-        /* ========================================================
-           MOBILE APP FLEX PANEL (ফোনের নিচে সবসময় লক থাকবে)
-           ======================================================== */
-        .input-panel-wrapper {
-            width: 100%;
-            background: #ffffff;
-            padding: 12px 16px 16px 16px; /* অ্যাপ ভিউতে চেপে না যাওয়ার জন্য ব্যালেন্স মার্জিন */
-            flex-shrink: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-top: 1px solid #f1f3f4;
-        }
-
-        /* --- THE MASTER DYNAMIC WIDGET CARD --- */
-        .bottom-master-widget {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid #e5e5ea;
-            border-radius: 30px; /* শুরুতে গোল চিকন ক্যাপসুল মোড */
-            padding: 12px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 0; /* শুরুতে লাইনের মাঝে গ্যাপ থাকবে না */
-            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
-            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* LINE 1: TEXT CONTAINER AREA */
-        .text-field-container {
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-main-input {
-            width: 100%;
-            border: none;
-            background: transparent;
-            font-size: 16px;
-            color: #0d0d0d;
-            outline: none;
-            padding: 4px 0;
-        }
-
-        .chat-main-input::placeholder {
-            color: #757575;
-        }
-
-        /* LINE 2: ICON ACTIONS CONTROL ROW (HIDDEN UNTIL CLICKED) */
-        .icons-action-control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            opacity: 0;
-            visibility: hidden;
-            height: 0; /* শুরুতে কোনো হাইট নেবে না */
-            overflow: hidden;
-            transition: all 0.15s ease;
-        }
-
-        /* ========================================================
-           DYNAMIC EXPANDED CLASSES (ফোকাস ও টাইপ করলে এই ক্লাসগুলো কাজ করবে)
-           ======================================================== */
-        .bottom-master-widget.popup-expanded-card {
-            border-radius: 24px; /* স্ক্রিনশটের মতো রাউন্ডেড চারকোনা কার্ড */
-            padding: 16px 20px 14px 20px;
-            gap: 14px; /* ভেতরের দুটি লাইনের মধ্যকার পারফেক্ট গ্যাপ */
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-        }
-
-        .bottom-master-widget.popup-expanded-card .icons-action-control-row {
-            opacity: 1;
-            visibility: visible;
-            height: 44px; /* বাটন রোটি সুন্দরভাবে ভেসে উঠবে */
-        }
-
-        /* --- INTERNAL BUTTONS LAYOUT --- */
-        .left-icon-utilities-group {
-            display: flex;
-            align-items: center;
-            gap: 36px; /* আইকনগুলোর মধ্যকার নিখুঁত দূরত্ব */
-        }
-
-        .plus-action-gray-circle {
-            width: 44px;
-            height: 44px;
-            background-color: #f1f3f8;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            color: #0d0d0d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 300;
-            cursor: pointer;
-        }
-
-        .utility-svg-action-trigger {
-            background: none;
-            border: none;
-            color: #0d0d0d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        /* Right Upward Send Circle Button */
-        .arrow-submit-circle-btn {
-            width: 48px;
-            height: 44px;
-            background-color: #dbe4ff; /* নিষ্ক্রিয় হালকা নীল অবস্থা */
-            color: #ffffff;
-            border: none;
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-        }
-
-        /* সক্রিয় গাঢ় নীল অবস্থা (যখন বক্সে টেক্সট থাকবে) */
-        .arrow-submit-circle-btn.typing-active-blue {
-            background-color: #1a73e8;
-        }
-    </style>
+    <!-- CSS File Link -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- চ্যাট ভিউ পোর্ট স্পেস (মেসেজের জায়গা) -->
-    <div class="chat-space-viewport" id="chatViewport"></div>
+    <!-- চ্যাট/মেসেজ ডিসপ্লে এরিয়া (Flexbox সাপোর্ট সহ) -->
+    <div class="chat-space-viewport" id="chatViewport" style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- এখানে ডায়নামিকালি মেসেজ বাবল যুক্ত হবে -->
+    </div>
 
     <!-- স্ক্রিনের নিচে লকড থাকা ইনপুট প্যানেল এরিয়া -->
     <div class="input-panel-wrapper">
@@ -189,14 +31,14 @@
                 <input type="text" class="chat-main-input" id="chatInputField" placeholder="Ask anything" autocomplete="off">
             </div>
             
-            <!-- lijn ২: কন্ট্রোল বাটন রো (শুরুতে হাইড থাকবে, ফোকাস করলে ওপেন হবে) -->
+            <!-- লাইন ২: কন্ট্রোল বাটন রো -->
             <div class="icons-action-control-row">
                 <div class="left-icon-utilities-group">
                     <!-- প্লাস বাটন -->
-                    <button class="plus-action-gray-circle">+</button>
+                    <button class="plus-action-gray-circle" type="button">+</button>
                     
                     <!-- মাইক আইকন -->
-                    <button class="utility-svg-action-trigger">
+                    <button class="utility-svg-action-trigger" type="button">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
                             <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
@@ -205,7 +47,7 @@
                     </button>
                     
                     <!-- ক্যামেরা আইকন -->
-                    <button class="utility-svg-action-trigger">
+                    <button class="utility-svg-action-trigger" type="button">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                             <circle cx="12" cy="13" r="4"></circle>
@@ -214,7 +56,7 @@
                 </div>
 
                 <!-- ডান পাশের এরো বাটন -->
-                <button class="arrow-submit-circle-btn" id="arrowSubmitBtn">
+                <button class="arrow-submit-circle-btn" id="arrowSubmitBtn" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="19" x2="12" y2="5"></line>
                         <polyline points="5 12 12 5 19 12"></polyline>
@@ -226,38 +68,9 @@
 
     </div>
 
-    <script>
-        const chatInputField = document.getElementById('chatInputField');
-        const mainWidgetCard = document.getElementById('mainWidgetCard');
-        const arrowSubmitBtn = document.getElementById('arrowSubmitBtn');
-
-        // --- THREE MODELS HERE ---
-        const AVAILABLE_SYSTEM_MODELS = { m1: "GPT", m2: "Gemini Pro", m3: "Claude" };
-        let currentModel = AVAILABLE_SYSTEM_MODELS.m2;
-
-        // --- API KEY HERE ---
-        const SECURE_PASSPHRASE_KEY = "PLACE_YOUR_API_KEY_HERE";
-
-        // লজিক ১: ইনপুট বক্সে ক্লিক (Focus) করলে এটি ওপরের দিকে পপ-আপ হয়ে বড় হবে
-        chatInputField.addEventListener('focus', () => {
-            mainWidgetCard.classList.add('popup-expanded-card');
-        });
-
-        // লজিক ২: টাইপ করা শুরু করলে বাটনটি উজ্জ্বল নীল রঙে রূপ নেবে
-        chatInputField.addEventListener('input', () => {
-            if (chatInputField.value.trim() !== "") {
-                arrowSubmitBtn.classList.add('typing-active-blue');
-            } else {
-                arrowSubmitBtn.classList.remove('typing-active-blue');
-            }
-        });
-
-        // লজিক ৩: বক্সের বাইরে কোথাও ক্লিক করলে এবং বক্স খালি থাকলে এটি আবার ছোট গোল ক্যাপসুল হয়ে যাবে
-        document.addEventListener('click', (e) => {
-            if (!mainWidgetCard.contains(e.target) && chatInputField.value.trim() === "") {
-                mainWidgetCard.classList.remove('popup-expanded-card');
-            }
-        });
-    </script>
+    <!-- গিটহাব লোডিং সিকোয়েন্স ঠিক রাখার জন্য স্ক্রিপ্ট ট্যাগগুলোর সঠিক বিন্যাস -->
+    <script src="settings.js"></script>
+    <script src="input.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
