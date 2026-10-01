@@ -1100,9 +1100,10 @@
                 errorBubble.className =
                     "message-bubble ai-side-bubble";
 
-
-                errorBubble.innerText =
-                    "দুঃখিত, নির্বাচিত AI মডেলের সাথে সংযোগ করা যাচ্ছে না।";
+errorBubble.innerText =
+    "API ERROR: " + error.message;
+                
+                    
 
 
                 chatViewport.appendChild(
