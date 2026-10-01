@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
 <title>PingMe AI</title>
-                  <link rel="manifest" href="manifest.json">
+
+<link
+    rel="manifest"
+    href="manifest.json"
+>
+
 <style>
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -25,6 +42,122 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+
+/* =========================================================
+   ১. TOP BAR
+   ========================================================= */
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: #f2f2f2;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   প্রথম অবস্থার বাটন
+   ========================================================= */
+
+.circle-btn {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.line {
+    height: 2.3px;
+    background: #000;
+    border-radius: 2px;
+}
+
+.l1 {
+    width: 20px;
+}
+
+.l2 {
+    width: 14px;
+    margin-left: -6px;
+}
+
+.plus-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #e3eefc;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 20px;
+    color: #0b57d0;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.circle-btn.right {
+    flex-direction: row;
+}
+
+
+/* =========================================================
+   দ্বিতীয় অবস্থার বাটন
+   ========================================================= */
+
+.second-bar {
+    display: none;
+}
+
+.second-bar .pill {
+    height: 52px;
+    background: #fff;
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+}
+
+.second-bar .left {
+    width: 68px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 20px;
+    gap: 6px;
+}
+
+.second-bar .right {
+    width: 102px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.second-bar .l {
+    height: 2.2px;
+    width: 18px;
+    background: #000;
+    border-radius: 2px;
+    display: block;
+}
+
+.second-bar .l.short {
+    width: 12px;
+}
+
+
+/* =========================================================
+   CHAT AREA
+   ========================================================= */
 
 .chat-area {
     flex: 1;
@@ -87,6 +220,11 @@ body {
     font-size: 21px;
     color: #888;
 }
+
+
+/* =========================================================
+   INPUT AREA
+   ========================================================= */
 
 .input-area {
     width: 100%;
@@ -197,6 +335,11 @@ body {
     color: white;
 }
 
+
+/* =========================================================
+   VOICE / SEND ICON
+   ========================================================= */
+
 .voice-icon {
     display: block;
 }
@@ -213,7 +356,10 @@ body {
     display: block;
 }
 
-/* THINKING */
+
+/* =========================================================
+   THINKING
+   ========================================================= */
 
 .thinking {
     display: none;
@@ -238,6 +384,7 @@ body {
 }
 
 @keyframes spin {
+
     from {
         transform: rotate(0deg);
     }
@@ -245,9 +392,13 @@ body {
     to {
         transform: rotate(360deg);
     }
+
 }
 
-/* MESSAGES */
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
 
 .user-message {
     max-width: 80%;
@@ -286,73 +437,332 @@ body {
     font-size: 14px;
 }
 
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media(max-width:480px) {
+
     .title {
         font-size: 26px;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
-<div class="chat-area" id="chatArea">
 
-    <div class="welcome" id="welcome">
+<!-- =========================================================
+     ২. প্রথম অবস্থা: শুরুতে উপরের বার
+     ========================================================= -->
+
+<div
+    class="top-bar"
+    id="firstBar"
+>
+
+    <!-- বামে মেনু বাটন -->
+
+    <button
+        class="circle-btn left"
+        type="button"
+    >
+
+        <div class="line l1"></div>
+
+        <div class="line l2"></div>
+
+    </button>
+
+
+    <!-- মাঝে PingMe Pro -->
+
+    <button
+        class="plus-btn"
+        type="button"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+        >
+
+            <path
+                d="M12 2l2.4 5.2L20 10l-5.6 2.8L12 18l-2.4-5.2L4 10l5.6-2.8L12 2z"
+                fill="#0b57d0"
+            />
+
+        </svg>
+
+        <span>PingMe Pro</span>
+
+    </button>
+
+
+    <!-- ডানে নতুন চ্যাট আইকন -->
+
+    <button
+        class="circle-btn right"
+        type="button"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+        >
+
+            <path
+                d="M21 11.5a8.5 8.5 0 1 1-2.5-6"
+            />
+
+            <path
+                d="M21 11.5a8.5 8.5 0 0 1-12.5 7.4"
+            />
+
+            <path
+                d="M5 16l-2 3-1"
+            />
+
+        </svg>
+
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     ৩. দ্বিতীয় অবস্থা: মেসেজ সেন্ড করার পর
+     ========================================================= -->
+
+<div
+    class="top-bar second-bar"
+    id="secondBar"
+>
+
+    <button
+        class="pill left"
+        type="button"
+    >
+
+        <span class="l"></span>
+
+        <span class="l short"></span>
+
+    </button>
+
+
+    <button
+        class="pill right"
+        type="button"
+    >
+
+        <!-- Edit -->
+
+        <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+            />
+
+            <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+            />
+
+        </svg>
+
+
+        <!-- তিন ডট -->
+
+        <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+        >
+
+            <circle
+                cx="12"
+                cy="5"
+                r="2"
+                fill="black"
+            />
+
+            <circle
+                cx="12"
+                cy="12"
+                r="2"
+                fill="black"
+            />
+
+            <circle
+                cx="12"
+                cy="19"
+                r="2"
+                fill="black"
+            />
+
+        </svg>
+
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     ৪. CHAT AREA
+     ========================================================= -->
+
+<div
+    class="chat-area"
+    id="chatArea"
+>
+
+    <div
+        class="welcome"
+        id="welcome"
+    >
 
         <div class="title">
             What can I help you with?
         </div>
 
+
         <div class="subtitle">
+
             Ask anything, explore ideas, learn something new,
             or get help with your work.
+
         </div>
+
 
         <div class="features">
 
             <div class="feature">
-                <span class="feature-icon">✨</span>
-                <span class="feature-text">Create something</span>
-                <span class="arrow">›</span>
+
+                <span class="feature-icon">
+                    ✨
+                </span>
+
+                <span class="feature-text">
+                    Create something
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
             </div>
 
-            <div class="feature">
-                <span class="feature-icon">📚</span>
-                <span class="feature-text">Learn something</span>
-                <span class="arrow">›</span>
-            </div>
 
             <div class="feature">
-                <span class="feature-icon">💡</span>
-                <span class="feature-text">Get ideas</span>
-                <span class="arrow">›</span>
+
+                <span class="feature-icon">
+                    📚
+                </span>
+
+                <span class="feature-text">
+                    Learn something
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
             </div>
 
+
             <div class="feature">
-                <span class="feature-icon">💻</span>
-                <span class="feature-text">Help with coding</span>
-                <span class="arrow">›</span>
+
+                <span class="feature-icon">
+                    💡
+                </span>
+
+                <span class="feature-text">
+                    Get ideas
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <span class="feature-icon">
+                    💻
+                </span>
+
+                <span class="feature-text">
+                    Help with coding
+                </span>
+
+                <span class="arrow">
+                    ›
+                </span>
+
             </div>
 
         </div>
 
     </div>
 
-    <div class="thinking" id="thinking">
+
+    <div
+        class="thinking"
+        id="thinking"
+    >
+
         <div class="spinner"></div>
-        <span>Thinking...</span>
+
+        <span>
+            Thinking...
+        </span>
+
     </div>
 
 </div>
+
+
+<!-- =========================================================
+     ৫. INPUT AREA
+     ========================================================= -->
 
 <div class="input-area">
 
     <div class="input-card">
 
-        <div class="model-box" id="modelBox">
 
-            <select class="model-select" id="modelSelect">
+        <div
+            class="model-box"
+            id="modelBox"
+        >
+
+            <select
+                class="model-select"
+                id="modelSelect"
+            >
 
                 <option value="gemini-3.8-flash">
                     Gemini 3.8 Flash
@@ -365,14 +775,18 @@ body {
                 <option value="gemini-3.5-flash-lite">
                     Gemini 3.5 Flash-Lite
                 </option>
-                  
-                <option value="openai">OpenAI
-                </option>
-                </select>
 
-               </div>
+                <option value="openai">
+                    OpenAI
+                </option>
+
+            </select>
+
+        </div>
+
 
         <div class="input-row">
+
             <input
                 id="chatInput"
                 class="input"
@@ -380,23 +794,31 @@ body {
                 placeholder="Ask anything"
                 autocomplete="off"
             >
-       </div>
+
+        </div>
+
 
         <div class="action-row">
 
+
             <div class="left-actions">
+
 
                 <button
                     class="plus"
                     id="plusButton"
                     type="button"
-                >+</button>
+                >
+                    +
+                </button>
+
 
                 <button
                     class="icon-button"
                     id="micButton"
                     type="button"
                 >
+
                     <svg
                         width="21"
                         height="21"
@@ -407,17 +829,33 @@ body {
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
-                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-                        <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
-                        <line x1="12" y1="19" x2="12" y2="22"></line>
+
+                        <path
+                            d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+                        />
+
+                        <path
+                            d="M19 10v1a7 7 0 0 1-14 0v-1"
+                        />
+
+                        <line
+                            x1="12"
+                            y1="19"
+                            x2="12"
+                            y2="22"
+                        />
+
                     </svg>
+
                 </button>
+
 
                 <button
                     class="icon-button"
                     id="cameraButton"
                     type="button"
                 >
+
                     <svg
                         width="21"
                         height="21"
@@ -428,18 +866,37 @@ body {
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
+
+                        <path
+                            d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                        />
+
+                        <circle
+                            cx="12"
+                            cy="13"
+                            r="4"
+                        />
+
                     </svg>
+
                 </button>
 
             </div>
+
+
+            <!-- =================================================
+                 শুরুতে এখানে MIC থাকবে
+                 লেখা শুরু করলে SEND হবে
+                 ================================================= -->
 
             <button
                 class="send-button"
                 id="sendButton"
                 type="button"
             >
+
+
+                <!-- প্রথম অবস্থার MIC -->
 
                 <svg
                     class="voice-icon"
@@ -452,10 +909,26 @@ body {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                 >
-                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-                    <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
-                    <line x1="12" y1="19" x2="12" y2="22"></line>
+
+                    <path
+                        d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+                    />
+
+                    <path
+                        d="M19 10v1a7 7 0 0 1-14 0v-1"
+                    />
+
+                    <line
+                        x1="12"
+                        y1="19"
+                        x2="12"
+                        y2="22"
+                    />
+
                 </svg>
+
+
+                <!-- লেখা থাকলে SEND -->
 
                 <svg
                     class="send-icon"
@@ -468,8 +941,18 @@ body {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                 >
-                    <line x1="12" y1="19" x2="12" y2="5"></line>
-                    <polyline points="6 11 12 5 18 11"></polyline>
+
+                    <line
+                        x1="12"
+                        y1="19"
+                        x2="12"
+                        y2="5"
+                    />
+
+                    <polyline
+                        points="6 11 12 5 18 11"
+                    />
+
                 </svg>
 
             </button>
@@ -481,99 +964,151 @@ body {
 </div>
 
 
-<!-- FIREBASE + PINGME AI -->
+<!-- =========================================================
+     FIREBASE + PINGME AI
+     ========================================================= -->
 
 <script type="module">
 
+
 /* =========================================================
-   ১. শুধু এখানে তোর Firebase Web API Key বসাবি
+   ৬. FIREBASE CONFIG
+   =========================================================
+
+   শুধু নিচের apiKey-এর জায়গায়
+   তোর Firebase Web API Key বসাবি।
+
    ========================================================= */
 
 const firebaseConfig = {
 
     apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
 
-    authDomain: "pingme-ai-8d8cc.firebaseapp.com",
+    authDomain:
+        "pingme-ai-8d8cc.firebaseapp.com",
 
-    projectId: "pingme-ai-8d8cc",
+    projectId:
+        "pingme-ai-8d8cc",
 
-    storageBucket: "pingme-ai-8d8cc.firebasestorage.app",
+    storageBucket:
+        "pingme-ai-8d8cc.firebasestorage.app",
 
-    messagingSenderId: "547217020747",
+    messagingSenderId:
+        "547217020747",
 
-    appId: "1:547217020747:web:62b7d3843672703d8abace",
+    appId:
+        "1:547217020747:web:62b7d3843672703d8abace",
 
-    measurementId: "G-3WRC64CRDR"
+    measurementId:
+        "G-3WRC64CRDR"
 };
 
 
-/* =========================================================
-   ২. Firebase SDK
-   ========================================================= */
-
 import {
     initializeApp
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
 import {
     getAI,
     getGenerativeModel,
     GoogleAIBackend
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+} from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
+
+const firebaseApp =
+    initializeApp(
+        firebaseConfig
+    );
+
+
+const ai =
+    getAI(
+        firebaseApp,
+        {
+            backend:
+                new GoogleAIBackend()
+        }
+    );
 
 
 /* =========================================================
-   ৩. Firebase শুরু
-   ========================================================= */
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-const ai = getAI(
-    firebaseApp,
-    {
-        backend: new GoogleAIBackend()
-    }
-);
-
-
-/* =========================================================
-   ৪. ELEMENTS
+   ELEMENTS
    ========================================================= */
 
 const input =
-    document.getElementById("chatInput");
+    document.getElementById(
+        "chatInput"
+    );
+
 
 const sendButton =
-    document.getElementById("sendButton");
+    document.getElementById(
+        "sendButton"
+    );
+
 
 const plusButton =
-    document.getElementById("plusButton");
+    document.getElementById(
+        "plusButton"
+    );
+
 
 const micButton =
-    document.getElementById("micButton");
+    document.getElementById(
+        "micButton"
+    );
+
 
 const cameraButton =
-    document.getElementById("cameraButton");
+    document.getElementById(
+        "cameraButton"
+    );
+
 
 const modelBox =
-    document.getElementById("modelBox");
+    document.getElementById(
+        "modelBox"
+    );
+
 
 const modelSelect =
-    document.getElementById("modelSelect");
+    document.getElementById(
+        "modelSelect"
+    );
+
 
 const chatArea =
-    document.getElementById("chatArea");
+    document.getElementById(
+        "chatArea"
+    );
+
 
 const welcome =
-    document.getElementById("welcome");
+    document.getElementById(
+        "welcome"
+    );
+
 
 const thinking =
-    document.getElementById("thinking");
+    document.getElementById(
+        "thinking"
+    );
 
 
-/* =========================================================
-   ৫. CONVERSATION HISTORY
-   ========================================================= */
+const firstBar =
+    document.getElementById(
+        "firstBar"
+    );
+
+
+const secondBar =
+    document.getElementById(
+        "secondBar"
+    );
+
 
 let conversationHistory = [];
 
@@ -583,10 +1118,26 @@ let currentChatModel = null;
 
 
 /* =========================================================
-   ৬. MODEL
+   TOP BAR STATE
    ========================================================= */
 
-function createModel(modelName) {
+function messageSent() {
+
+    firstBar.style.display =
+        "none";
+
+    secondBar.style.display =
+        "flex";
+}
+
+
+/* =========================================================
+   MODEL
+   ========================================================= */
+
+function createModel(
+    modelName
+) {
 
     return getGenerativeModel(
         ai,
@@ -597,14 +1148,11 @@ function createModel(modelName) {
 }
 
 
-/* =========================================================
-   ৭. CHAT SESSION
-   ========================================================= */
-
 function getChatSession() {
 
     const selectedModel =
         modelSelect.value;
+
 
     if (
         chatSession === null ||
@@ -612,23 +1160,29 @@ function getChatSession() {
     ) {
 
         const model =
-            createModel(selectedModel);
+            createModel(
+                selectedModel
+            );
+
 
         chatSession =
             model.startChat({
-                history: conversationHistory
+                history:
+                    conversationHistory
             });
+
 
         currentChatModel =
             selectedModel;
     }
+
 
     return chatSession;
 }
 
 
 /* =========================================================
-   ৮. MODEL CHANGE
+   MODEL CHANGE
    ========================================================= */
 
 modelSelect.addEventListener(
@@ -644,14 +1198,16 @@ modelSelect.addEventListener(
 
 
 /* =========================================================
-   ৯. INPUT CHANGE
+   INPUT CHANGE
    ========================================================= */
 
 input.addEventListener(
     "input",
     function () {
 
-        if (input.value.trim() !== "") {
+        if (
+            input.value.trim() !== ""
+        ) {
 
             sendButton.classList.add(
                 "active"
@@ -662,13 +1218,15 @@ input.addEventListener(
             sendButton.classList.remove(
                 "active"
             );
+
         }
+
     }
 );
 
 
 /* =========================================================
-   ১০. INPUT FOCUS
+   INPUT FOCUS
    ========================================================= */
 
 input.addEventListener(
@@ -678,12 +1236,13 @@ input.addEventListener(
         modelBox.classList.add(
             "show"
         );
+
     }
 );
 
 
 /* =========================================================
-   ১১. PLUS
+   PLUS BUTTON
    ========================================================= */
 
 plusButton.addEventListener(
@@ -693,35 +1252,42 @@ plusButton.addEventListener(
         modelBox.classList.toggle(
             "show"
         );
+
     }
 );
 
 
 /* =========================================================
-   ১২. ENTER = SEND
+   ENTER
    ========================================================= */
 
 input.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             event.preventDefault();
+
 
             if (
                 input.value.trim() !== ""
             ) {
 
                 sendMessage();
+
             }
+
         }
+
     }
 );
 
 
 /* =========================================================
-   ১৩. SEND BUTTON
+   SEND BUTTON
    ========================================================= */
 
 sendButton.addEventListener(
@@ -737,13 +1303,15 @@ sendButton.addEventListener(
         } else {
 
             sendMessage();
+
         }
+
     }
 );
 
 
 /* =========================================================
-   ১৪. MICROPHONE
+   MIC BUTTON
    ========================================================= */
 
 micButton.addEventListener(
@@ -751,12 +1319,13 @@ micButton.addEventListener(
     function () {
 
         startVoice();
+
     }
 );
 
 
 /* =========================================================
-   ১৫. CAMERA
+   CAMERA
    ========================================================= */
 
 cameraButton.addEventListener(
@@ -766,12 +1335,13 @@ cameraButton.addEventListener(
         alert(
             "Camera feature will be added later."
         );
+
     }
 );
 
 
 /* =========================================================
-   ১৬. SEND MESSAGE
+   SEND MESSAGE
    ========================================================= */
 
 async function sendMessage() {
@@ -779,9 +1349,20 @@ async function sendMessage() {
     const message =
         input.value.trim();
 
-    if (message === "") {
+
+    if (
+        message === ""
+    ) {
+
         return;
+
     }
+
+
+    /* প্রথম মেসেজ যাওয়ার সাথে
+       দ্বিতীয় Top Bar */
+
+    messageSent();
 
 
     /* Welcome hide */
@@ -790,14 +1371,19 @@ async function sendMessage() {
         "none";
 
 
-    /* User message show */
+    /* User message */
 
-    addUserMessage(message);
+    addUserMessage(
+        message
+    );
 
 
     /* Input clear */
 
     input.value = "";
+
+
+    /* আবার MIC state */
 
     sendButton.classList.remove(
         "active"
@@ -810,10 +1396,12 @@ async function sendMessage() {
         "show"
     );
 
+
     scrollToBottom();
 
 
     try {
+
 
         /* Get current chat */
 
@@ -829,10 +1417,11 @@ async function sendMessage() {
             );
 
 
-        /* Get AI response */
+        /* AI response */
 
         const response =
             result.response;
+
 
         const reply =
             response.text();
@@ -845,9 +1434,11 @@ async function sendMessage() {
             role: "user",
 
             parts: [
+
                 {
                     text: message
                 }
+
             ]
 
         });
@@ -858,9 +1449,11 @@ async function sendMessage() {
             role: "model",
 
             parts: [
+
                 {
                     text: reply
                 }
+
             ]
 
         });
@@ -882,6 +1475,7 @@ async function sendMessage() {
 
     } catch (error) {
 
+
         thinking.classList.remove(
             "show"
         );
@@ -897,15 +1491,17 @@ async function sendMessage() {
             error.message ||
             "AI reply failed."
         );
+
     }
 
 
     scrollToBottom();
+
 }
 
 
 /* =========================================================
-   ১৭. USER MESSAGE
+   USER MESSAGE
    ========================================================= */
 
 function addUserMessage(
@@ -917,22 +1513,27 @@ function addUserMessage(
             "div"
         );
 
+
     box.className =
         "user-message";
 
+
     box.textContent =
         message;
+
 
     chatArea.appendChild(
         box
     );
 
+
     scrollToBottom();
+
 }
 
 
 /* =========================================================
-   ১৮. AI MESSAGE
+   AI MESSAGE
    ========================================================= */
 
 function addAIMessage(
@@ -944,24 +1545,29 @@ function addAIMessage(
             "div"
         );
 
+
     box.className =
         "ai-message";
+
 
     box.innerHTML =
         formatAIResponse(
             message
         );
 
+
     chatArea.appendChild(
         box
     );
 
+
     scrollToBottom();
+
 }
 
 
 /* =========================================================
-   ১৯. AI RESPONSE FORMAT
+   FORMAT AI RESPONSE
    ========================================================= */
 
 function formatAIResponse(
@@ -969,13 +1575,14 @@ function formatAIResponse(
 ) {
 
     const safe =
-        escapeHTML(text);
+        escapeHTML(
+            text
+        );
+
 
     let result =
         safe;
 
-
-    /* Bold */
 
     result =
         result.replace(
@@ -984,19 +1591,19 @@ function formatAIResponse(
         );
 
 
-    /* Headings */
-
     result =
         result.replace(
             /^### (.*)$/gm,
             "<h3>$1</h3>"
         );
 
+
     result =
         result.replace(
             /^## (.*)$/gm,
             "<h3>$1</h3>"
         );
+
 
     result =
         result.replace(
@@ -1006,11 +1613,12 @@ function formatAIResponse(
 
 
     return result;
+
 }
 
 
 /* =========================================================
-   ২০. ESCAPE HTML
+   ESCAPE HTML
    ========================================================= */
 
 function escapeHTML(
@@ -1022,15 +1630,18 @@ function escapeHTML(
             "div"
         );
 
+
     div.textContent =
         text;
 
+
     return div.innerHTML;
+
 }
 
 
 /* =========================================================
-   ২১. ERROR
+   AI ERROR
    ========================================================= */
 
 function addAIError(
@@ -1042,18 +1653,23 @@ function addAIError(
             "div"
         );
 
+
     box.className =
         "ai-error";
+
 
     box.textContent =
         "AI reply error: " +
         message;
 
+
     chatArea.appendChild(
         box
     );
 
+
     scrollToBottom();
+
 }
 
 
@@ -1068,13 +1684,17 @@ function startVoice() {
         window.webkitSpeechRecognition;
 
 
-    if (!SpeechRecognition) {
+    if (
+        !SpeechRecognition
+    ) {
 
         alert(
             "Voice input is not supported in this browser."
         );
 
+
         return;
+
     }
 
 
@@ -1085,8 +1705,10 @@ function startVoice() {
     recognition.lang =
         "bn-BD";
 
+
     recognition.continuous =
         false;
+
 
     recognition.interimResults =
         false;
@@ -1101,8 +1723,11 @@ function startVoice() {
 
 
             input.dispatchEvent(
-                new Event("input")
+                new Event(
+                    "input"
+                )
             );
+
         };
 
 
@@ -1110,10 +1735,12 @@ function startVoice() {
         function () {
 
             input.focus();
+
         };
 
 
     recognition.start();
+
 }
 
 
@@ -1132,9 +1759,12 @@ function scrollToBottom() {
         },
         50
     );
+
 }
 
 </script>
 
+
 </body>
+
 </html>
