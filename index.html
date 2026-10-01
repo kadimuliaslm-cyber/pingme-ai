@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PingMe AI</title>
-
+    <title>Perfect Chat Input System</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -105,122 +104,11 @@
             justify-content: center;
             cursor: pointer;
         }
-
-        /* =========================
-           MODEL + API KEY SETTINGS
-           ========================= */
-
-        .settings-panel {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.35);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .settings-box {
-            width: 100%;
-            max-width: 430px;
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 22px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.18);
-        }
-
-        .settings-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 22px;
-        }
-
-        .settings-header h2 {
-            font-size: 20px;
-            color: #111111;
-        }
-
-        .close-settings {
-            width: 34px;
-            height: 34px;
-            border: none;
-            border-radius: 50%;
-            background: #f1f3f8;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .settings-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333333;
-            margin-bottom: 8px;
-        }
-
-        .model-select,
-        .api-key-input {
-            width: 100%;
-            height: 46px;
-            border: 1px solid #dedee5;
-            border-radius: 13px;
-            padding: 0 13px;
-            font-size: 15px;
-            outline: none;
-            background: #ffffff;
-            color: #111111;
-        }
-
-        .api-key-input {
-            margin-top: 18px;
-        }
-
-        .save-settings {
-            width: 100%;
-            height: 46px;
-            margin-top: 16px;
-            border: none;
-            border-radius: 13px;
-            background: #1a73e8;
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .saved-status {
-            text-align: center;
-            font-size: 13px;
-            color: #188038;
-            margin-top: 12px;
-            min-height: 18px;
-        }
-
-        .open-settings {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 42px;
-            height: 42px;
-            border: none;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 1px solid #e5e5ea;
-            font-size: 19px;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- Settings Button -->
-    <button class="open-settings" id="openSettings">⚙</button>
-
-    <!-- Chat Input -->
     <div class="input-system-container">
 
         <div class="input-text-row">
@@ -240,10 +128,10 @@
 
                 <button class="utility-icon-trigger">
                     <svg width="20" height="20" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor"
-                        stroke-width="2.2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round">
+                         fill="none" stroke="currentColor"
+                         stroke-width="2.2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
                         <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
                         <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
                         <line x1="12" y1="19" x2="12" y2="22"></line>
@@ -252,10 +140,10 @@
 
                 <button class="utility-icon-trigger">
                     <svg width="20" height="20" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor"
-                        stroke-width="2.2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round">
+                         fill="none" stroke="currentColor"
+                         stroke-width="2.2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                         <circle cx="12" cy="13" r="4"></circle>
                     </svg>
@@ -265,178 +153,53 @@
 
             <button class="arrow-submit-circle" id="submitActionBtn">
                 <svg width="20" height="20" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
+                     fill="none" stroke="currentColor"
+                     stroke-width="2.5"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
                     <line x1="12" y1="19" x2="12" y2="5"></line>
                     <polyline points="5 12 12 5 19 12"></polyline>
                 </svg>
             </button>
 
         </div>
-    </div>
-
-
-    <!-- Model + API Key Settings -->
-    <div class="settings-panel" id="settingsPanel">
-
-        <div class="settings-box">
-
-            <div class="settings-header">
-                <h2>AI Settings</h2>
-                <button class="close-settings" id="closeSettings">×</button>
-            </div>
-
-            <label class="settings-label">
-                Gemini Model
-            </label>
-
-            <select class="model-select" id="modelSelect">
-                <option value="gemini-3.8-flash">
-                    Gemini 3.8 Flash
-                </option>
-
-                <option value="gemini-3.7-flash">
-                    Gemini 3.7 Flash
-                </option>
-
-                <option value="gemini-3.6-flash">
-                    Gemini 3.6 Flash
-                </option>
-            </select>
-
-            <input
-                type="password"
-                class="api-key-input"
-                id="apiKeyInput"
-                placeholder="AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk"
-                autocomplete="off"
-            >
-
-            <button class="save-settings" id="saveSettings">
-                Save Settings
-            </button>
-
-            <div class="saved-status" id="savedStatus"></div>
-
-        </div>
 
     </div>
-
 
     <script>
-
         const chatInputField =
             document.getElementById('chatInputField');
 
         const submitActionBtn =
             document.getElementById('submitActionBtn');
 
-        const openSettings =
-            document.getElementById('openSettings');
+        const INTEGRATED_AI_MODELS = {
+            m1: "GPT Core Engine",
+            m2: "Gemini Pro System",
+            m3: "Claude Core Engine"
+        };
 
-        const closeSettings =
-            document.getElementById('closeSettings');
-
-        const settingsPanel =
-            document.getElementById('settingsPanel');
-
-        const modelSelect =
-            document.getElementById('modelSelect');
-
-        const apiKeyInput =
-            document.getElementById('apiKeyInput');
-
-        const saveSettings =
-            document.getElementById('saveSettings');
-
-        const savedStatus =
-            document.getElementById('savedStatus');
-
-
-        /* Current selected model */
         let selectedActiveModel =
-            localStorage.getItem('pingme_selected_model')
-            || 'gemini-3.8-flash';
+            INTEGRATED_AI_MODELS.m2;
 
+        const SECRET_CHABI_CODE =
+            "PASTE_YOUR_API_KEY_HERE";
 
-        /* Open settings */
-        openSettings.addEventListener('click', () => {
-            settingsPanel.style.display = 'flex';
-
-            modelSelect.value =
-                selectedActiveModel;
-        });
-
-
-        /* Close settings */
-        closeSettings.addEventListener('click', () => {
-            settingsPanel.style.display = 'none';
-        });
-
-
-        /* Close by tapping outside */
-        settingsPanel.addEventListener('click', (event) => {
-            if (event.target === settingsPanel) {
-                settingsPanel.style.display = 'none';
-            }
-        });
-
-
-        /* Save model + key */
-        saveSettings.addEventListener('click', () => {
-
-            selectedActiveModel =
-                modelSelect.value;
-
-            const apiKey =
-                apiKeyInput.value.trim();
-
-            localStorage.setItem(
-                'pingme_selected_model',
-                selectedActiveModel
-            );
-
-            /*
-             * API key is stored locally only for this
-             * preview/settings system.
-             * Real Firebase AI connection will be added
-             * separately in the next file.
-             */
-            if (apiKey !== '') {
-                localStorage.setItem(
-                    'pingme_api_key',
-                    apiKey
-                );
-            }
-
-            savedStatus.textContent =
-                'Settings saved';
-
-            setTimeout(() => {
-                savedStatus.textContent = '';
-            }, 1800);
-        });
-
-
-        /* Current chat input test */
         submitActionBtn.addEventListener('click', () => {
 
             const queryValue =
                 chatInputField.value.trim();
 
-            if (queryValue !== '') {
+            if (queryValue !== "") {
 
                 console.log(
-                    'Selected model:',
+                    "Sending data using key to: " +
                     selectedActiveModel
                 );
 
-                chatInputField.value = '';
+                chatInputField.value = "";
             }
         });
-
     </script>
 
 </body>
