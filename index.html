@@ -1405,10 +1405,12 @@ async function sendMessage() {
 
         /* Get current chat */
         const selectedModel = modelSelect.value;
-        const chat =
-            getChatSession();
 
-
+         if (selectedModel === "openai") {
+              
+            const chat =
+          getChatSession();
+                
         /* Send to Gemini */
 
         const result =
