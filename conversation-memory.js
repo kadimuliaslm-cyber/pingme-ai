@@ -1,5 +1,5 @@
 // ============================================================
-// PingMe - Conversation Memory
+// PingMe AI - Conversation Memory
 // File: conversation-memory.js
 // ============================================================
 
@@ -37,8 +37,7 @@ function getPingMeRecentMemory(limit = 20) {
 // ------------------------------------------------------------
 
 function getPingMeMemoryPrompt(limit = 20) {
-  const messages =
-    getPingMeRecentMemory(limit);
+  const messages = getPingMeRecentMemory(limit);
 
   if (!messages.length) {
     return "";
@@ -49,7 +48,7 @@ function getPingMeMemoryPrompt(limit = 20) {
       const speaker =
         message.role === "user"
           ? "User"
-          : "PingMe";
+          : "PingMe AI";
 
       return `${speaker}: ${message.text}`;
     })
@@ -96,5 +95,5 @@ window.getPingMeMemoryCount =
 
 
 console.log(
-  "PingMe Conversation Memory loaded."
+  "PingMe AI Conversation Memory loaded."
 );
