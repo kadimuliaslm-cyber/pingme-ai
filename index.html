@@ -1,574 +1,496 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PingMe AI</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0,
-        maximum-scale=1.0, user-scalable=no"
-    >
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-    <title>PingMe AI Chat System</title>
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+}
 
-    <style>
+body {
+    display: flex;
+    flex-direction: column;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+}
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+.welcome {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-        .chat-space-viewport {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-        }
+.title {
+    font-size: 27px;
+    font-weight: 600;
+    color: #111;
+    text-align: center;
+}
 
-        .welcome-screen {
-            width: 100%;
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px 10px 30px;
-        }
+.subtitle {
+    margin-top: 8px;
+    margin-bottom: 24px;
+    max-width: 330px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #777;
+}
 
-        .welcome-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #111111;
-            text-align: center;
-            margin-bottom: 8px;
-        }
+.features {
+    width: 100%;
+    max-width: 360px;
+}
 
-        .welcome-subtitle {
-            font-size: 14px;
-            color: #777777;
-            text-align: center;
-            line-height: 1.5;
-            max-width: 330px;
-            margin-bottom: 24px;
-        }
+.feature {
+    height: 44px;
+    margin-bottom: 8px;
+    padding: 0 13px;
+    border: 1px solid #e5e5ea;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+}
 
-        .feature-list {
-            width: 100%;
-            max-width: 360px;
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
+.feature-icon {
+    width: 28px;
+    font-size: 17px;
+}
 
-        .feature-item {
-            width: 100%;
-            height: 44px;
-            padding: 0 13px;
-            border: 1px solid #e5e5ea;
-            border-radius: 12px;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
+.feature-text {
+    flex: 1;
+    font-size: 14px;
+    color: #202124;
+}
 
-        .feature-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            margin-right: 10px;
-        }
+.arrow {
+    font-size: 21px;
+    color: #888;
+}
 
-        .feature-text {
-            flex: 1;
-            font-size: 14px;
-            color: #202124;
-        }
+.input-area {
+    width: 100%;
+    padding: 10px 16px 16px;
+    border-top: 1px solid #f1f3f4;
+    background: #fff;
+}
 
-        .feature-arrow {
-            font-size: 20px;
-            color: #8a8a8a;
-            line-height: 1;
-        }
+.input-card {
+    width: 100%;
+    padding: 12px 18px;
+    border: 1px solid #e5e5ea;
+    border-radius: 30px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,.03);
+}
 
-        .input-panel-wrapper {
-            width: 100%;
-            background: #ffffff;
-            padding: 12px 16px 16px;
-            flex-shrink: 0;
-            border-top: 1px solid #f1f3f4;
-        }
+.model-box {
+    display: none;
+    margin-bottom: 10px;
+}
 
-        .bottom-master-widget {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid #e5e5ea;
-            border-radius: 30px;
-            padding: 12px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
-            transition: all 0.22s ease;
-        }
+.model-box.show {
+    display: block;
+}
 
-        .text-field-container {
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
+.model-select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #e5e5ea;
+    border-radius: 13px;
+    background: white;
+    padding: 0 10px;
+    font-size: 14px;
+    outline: none;
+}
 
-        .chat-main-input {
-            width: 100%;
-            border: none;
-            background: transparent;
-            font-size: 16px;
-            color: #0d0d0d;
-            outline: none;
-            padding: 4px 0;
-        }
+.input-row {
+    width: 100%;
+}
 
-        .chat-main-input::placeholder {
-            color: #757575;
-        }
+.input {
+    width: 100%;
+    height: 38px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
 
-        .model-selector {
-            width: 100%;
-            margin-bottom: 10px;
-            display: none;
-        }
+.input::placeholder {
+    color: #777;
+}
 
-        .model-selector.visible {
-            display: block;
-        }
+.action-row {
+    width: 100%;
+    height: 44px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-        .model-select {
-            width: 100%;
-            border: 1px solid #e5e5ea;
-            background: #ffffff;
-            color: #0d0d0d;
-            border-radius: 14px;
-            padding: 10px 12px;
-            font-size: 14px;
-            outline: none;
-        }
+.left-actions {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
 
-        .icons-action-control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            opacity: 0;
-            visibility: hidden;
-            height: 0;
-            overflow: hidden;
-            transition: all 0.15s ease;
-        }
+.plus {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f3f8;
+    color: #111;
+    font-size: 25px;
+    cursor: pointer;
+}
 
-        .bottom-master-widget.popup-expanded-card {
-            border-radius: 24px;
-            padding: 16px 20px 14px;
-            gap: 14px;
-        }
+.icon-button {
+    width: 24px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+}
 
-        .bottom-master-widget.popup-expanded-card
-        .icons-action-control-row {
-            opacity: 1;
-            visibility: visible;
-            height: 44px;
-        }
+.send-button {
+    width: 46px;
+    height: 42px;
+    border: none;
+    border-radius: 22px;
+    background: #dbe4ff;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
-        .left-icon-utilities-group {
-            display: flex;
-            align-items: center;
-            gap: 36px;
-        }
+.send-button.active {
+    background: #1a73e8;
+    color: white;
+}
 
-        .plus-action-gray-circle {
-            width: 44px;
-            height: 44px;
-            background-color: #f1f3f8;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            color: #0d0d0d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 300;
-            cursor: pointer;
-        }
+.voice-icon {
+    display: block;
+}
 
-        .utility-svg-action-trigger {
-            background: none;
-            border: none;
-            color: #0d0d0d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 0;
-        }
+.send-icon {
+    display: none;
+}
 
-        .arrow-submit-circle-btn {
-            width: 48px;
-            height: 44px;
-            background-color: #dbe4ff;
-            color: #ffffff;
-            border: none;
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-        }
+.send-button.active .voice-icon {
+    display: none;
+}
 
-        .arrow-submit-circle-btn.typing-active-blue {
-            background-color: #1a73e8;
-        }
+.send-button.active .send-icon {
+    display: block;
+}
 
-        .user-message {
-            align-self: flex-end;
-            max-width: 80%;
-            margin: 8px 0;
-            padding: 10px 14px;
-            background: #1a73e8;
-            color: #ffffff;
-            border-radius: 18px;
-            font-size: 15px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
+/* THINKING */
 
-        .ai-message {
-            align-self: flex-start;
-            width: 100%;
-            max-width: 760px;
-            margin: 12px 0;
-            padding: 4px 0;
-            color: #202124;
-            font-size: 15px;
-            line-height: 1.65;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
+.thinking {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    color: #777;
+    font-size: 14px;
+}
 
-        .ai-message strong {
-            color: #1a73e8;
-            font-weight: 700;
-        }
+.thinking.show {
+    display: flex;
+}
 
-        .ai-message h3 {
-            color: #1a73e8;
-            margin: 8px 0 5px;
-        }
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #e5e5ea;
+    border-top-color: #1a73e8;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}
 
-        .ai-thinking {
-            align-self: flex-start;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            margin: 10px 0;
-            color: #777777;
-            font-size: 14px;
-        }
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
 
-        .ai-thinking.visible {
-            display: flex;
-        }
+    to {
+        transform: rotate(360deg);
+    }
+}
 
-        .thinking-spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid #e5e5ea;
-            border-top: 3px solid #1a73e8;
-            border-radius: 50%;
-            animation: thinkingRotate 0.8s linear infinite;
-        }
+/* MESSAGES */
 
-        @keyframes thinkingRotate {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+.user-message {
+    max-width: 80%;
+    margin: 8px 0 8px auto;
+    padding: 10px 14px;
+    border-radius: 18px;
+    background: #1a73e8;
+    color: white;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 
-        .ai-error {
-            align-self: flex-start;
-            width: 100%;
-            color: #d93025;
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 10px 0;
-        }
+.ai-message {
+    width: 100%;
+    margin: 12px 0;
+    color: #202124;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 
-        @media (max-width: 480px) {
+.ai-message strong {
+    color: #1a73e8;
+}
 
-            .welcome-title {
-                font-size: 26px;
-            }
+.ai-message h3 {
+    color: #1a73e8;
+    margin: 8px 0 5px;
+}
 
-            .welcome-subtitle {
-                font-size: 13px;
-                margin-bottom: 20px;
-            }
+.ai-error {
+    width: 100%;
+    margin: 10px 0;
+    color: #d93025;
+    line-height: 1.5;
+    font-size: 14px;
+}
 
-            .feature-list {
-                max-width: 350px;
-            }
+@media(max-width:480px) {
 
-            .feature-item {
-                height: 42px;
-            }
+    .title {
+        font-size: 26px;
+    }
 
-        }
-
-    </style>
+}
+</style>
 </head>
 
 <body>
 
-    <div
-        class="chat-space-viewport"
-        id="chatViewport"
-    >
+<div class="chat-area" id="chatArea">
 
-        <div
-            class="welcome-screen"
-            id="welcomeScreen"
-        >
+    <div class="welcome" id="welcome">
 
-            <div class="welcome-title">
-                What can I help you with?
-            </div>
-
-            <div class="welcome-subtitle">
-                Ask anything, explore ideas, learn something new,
-                or get help with your work.
-            </div>
-
-            <div class="feature-list">
-
-                <div class="feature-item">
-                    <span class="feature-icon">✨</span>
-                    <span class="feature-text">
-                        Create something
-                    </span>
-                    <span class="feature-arrow">›</span>
-                </div>
-
-                <div class="feature-item">
-                    <span class="feature-icon">📚</span>
-                    <span class="feature-text">
-                        Learn something
-                    </span>
-                    <span class="feature-arrow">›</span>
-                </div>
-
-                <div class="feature-item">
-                    <span class="feature-icon">💡</span>
-                    <span class="feature-text">
-                        Get ideas
-                    </span>
-                    <span class="feature-arrow">›</span>
-                </div>
-
-                <div class="feature-item">
-                    <span class="feature-icon">💻</span>
-                    <span class="feature-text">
-                        Help with coding
-                    </span>
-                    <span class="feature-arrow">›</span>
-                </div>
-
-            </div>
-
+        <div class="title">
+            What can I help you with?
         </div>
 
-        <div
-            class="ai-thinking"
-            id="aiThinking"
-        >
+        <div class="subtitle">
+            Ask anything, explore ideas, learn something new,
+            or get help with your work.
+        </div>
 
-            <div class="thinking-spinner"></div>
+        <div class="features">
 
-            <span>Thinking...</span>
+            <div class="feature">
+                <span class="feature-icon">✨</span>
+                <span class="feature-text">Create something</span>
+                <span class="arrow">›</span>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">📚</span>
+                <span class="feature-text">Learn something</span>
+                <span class="arrow">›</span>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">💡</span>
+                <span class="feature-text">Get ideas</span>
+                <span class="arrow">›</span>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">💻</span>
+                <span class="feature-text">Help with coding</span>
+                <span class="arrow">›</span>
+            </div>
 
         </div>
 
     </div>
 
+    <!-- THINKING -->
 
-    <div class="input-panel-wrapper">
+    <div
+        class="thinking"
+        id="thinking"
+    >
+
+        <div class="spinner"></div>
+
+        <span>
+            Thinking...
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="input-area">
+
+    <div class="input-card">
+
+        <!-- MODEL -->
 
         <div
-            class="bottom-master-widget"
-            id="mainWidgetCard"
+            class="model-box"
+            id="modelBox"
         >
 
-            <div
-                class="model-selector"
-                id="modelSelectorBox"
+            <select
+                class="model-select"
+                id="modelSelect"
             >
 
-                <select
-                    class="model-select"
-                    id="modelSelect"
-                >
+                <option value="gemini-3.8-flash">
+                    Gemini 3.8 Flash
+                </option>
 
-                    <option value="gemini-3.8-flash">
-                        Gemini 3.8 Flash
-                    </option>
+                <option value="gemini-3.6-flash">
+                    Gemini 3.6 Flash
+                </option>
 
-                    <option value="gemini-3.7-flash">
-                        Gemini 3.7 Flash
-                    </option>
+                <option value="gemini-3.5-flash-lite">
+                    Gemini 3.5 Flash-Lite
+                </option>
 
-                    <option value="gemini-3.6-flash">
-                        Gemini 3.6 Flash
-                    </option>
+            </select>
 
-                </select>
+        </div>
 
-            </div>
 
-            <div class="text-field-container">
+        <!-- INPUT -->
 
-                <input
-                    type="text"
-                    class="chat-main-input"
-                    id="chatInputField"
-                    placeholder="Ask anything"
-                    autocomplete="off"
-                >
+        <div class="input-row">
 
-            </div>
+            <input
+                id="chatInput"
+                class="input"
+                type="text"
+                placeholder="Ask anything"
+                autocomplete="off"
+            >
 
-            <div class="icons-action-control-row">
+        </div>
 
-                <div class="left-icon-utilities-group">
 
-                    <button
-                        class="plus-action-gray-circle"
-                        type="button"
-                        id="plusButton"
-                    >
-                        +
-                    </button>
+        <!-- ACTIONS -->
 
-                    <button
-                        class="utility-svg-action-trigger"
-                        type="button"
-                    >
+        <div class="action-row">
 
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
+            <div class="left-actions">
 
-                            <path
-                                d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
-                            ></path>
-
-                            <path
-                                d="M19 10v1a7 7 0 0 1-14 0v-1"
-                            ></path>
-
-                            <line
-                                x1="12"
-                                y1="19"
-                                x2="12"
-                                y2="22"
-                            ></line>
-
-                        </svg>
-
-                    </button>
-
-                    <button
-                        class="utility-svg-action-trigger"
-                        type="button"
-                    >
-
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
-                            ></path>
-
-                            <circle
-                                cx="12"
-                                cy="13"
-                                r="4"
-                            ></circle>
-
-                        </svg>
-
-                    </button>
-
-                </div>
+                <!-- PLUS -->
 
                 <button
-                    class="arrow-submit-circle-btn"
-                    id="arrowSubmitBtn"
+                    class="plus"
+                    id="plusButton"
+                    type="button"
+                >
+                    +
+                </button>
+
+
+                <!-- MICROPHONE -->
+
+                <button
+                    class="icon-button"
+                    id="micButton"
                     type="button"
                 >
 
                     <svg
-                        width="20"
-                        height="20"
+                        width="21"
+                        height="21"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="2.5"
+                        stroke-width="2.2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
+
+                        <path
+                            d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+                        ></path>
+
+                        <path
+                            d="M19 10v1a7 7 0 0 1-14 0v-1"
+                        ></path>
 
                         <line
                             x1="12"
                             y1="19"
                             x2="12"
-                            y2="5"
+                            y2="22"
                         ></line>
 
-                        <polyline
-                            points="5 12 12 5 19 12"
-                        ></polyline>
+                    </svg>
+
+                </button>
+
+
+                <!-- CAMERA -->
+
+                <button
+                    class="icon-button"
+                    id="cameraButton"
+                    type="button"
+                >
+
+                    <svg
+                        width="21"
+                        height="21"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                        ></path>
+
+                        <circle
+                            cx="12"
+                            cy="13"
+                            r="4"
+                        ></circle>
 
                     </svg>
 
@@ -576,740 +498,773 @@
 
             </div>
 
+
+            <!-- VOICE / SEND -->
+
+            <button
+                class="send-button"
+                id="sendButton"
+                type="button"
+            >
+
+                <!-- VOICE -->
+
+                <svg
+                    class="voice-icon"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+                    ></path>
+
+                    <path
+                        d="M19 10v1a7 7 0 0 1-14 0v-1"
+                    ></path>
+
+                    <line
+                        x1="12"
+                        y1="19"
+                        x2="12"
+                        y2="22"
+                    ></line>
+
+                </svg>
+
+
+                <!-- SEND ARROW -->
+
+                <svg
+                    class="send-icon"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <line
+                        x1="12"
+                        y1="19"
+                        x2="12"
+                        y2="5"
+                    ></line>
+
+                    <polyline
+                        points="6 11 12 5 18 11"
+                    ></polyline>
+
+                </svg>
+
+            </button>
+
         </div>
 
     </div>
 
-
-    <!-- =====================================================
-         FIREBASE + PINGME AI
-         Firebase AI Logic Web SDK
-         ===================================================== -->
-
-    <script type="module">
-
-        /*
-        =====================================================
-        🔑 FIREBASE CONFIG / CHABIR JAYGA
-
-        নিচের firebaseConfig-এর ভিতরে Firebase Console
-        থেকে পাওয়া Web app-এর config বসাবি।
-
-        নিজের আসল config এখানে বসাবি।
-        =====================================================
-        */
-
-        import {
-            initializeApp
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-
-        import {
-            getAI,
-            getGenerativeModel,
-            GoogleAIBackend
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+</div>
 
 
-        const firebaseConfig = {
+<script>
 
-            /* 🔑 API KEY — Firebase Web Config থেকে বসাবি */
-            apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
+/* =====================================================
+   🔑 GEMINI API KEY
+   =====================================================
 
-            /* 🔑 Firebase configuration */
-            authDomain:
-                "pingme-ai-8d8cc.firebaseapp.com",
+   এখানে তোর Google/Gemini API key বসাবি।
 
-            projectId:
-                "pingme-ai-8d8cc",
+   উদাহরণ:
 
-            storageBucket:
-                "pingme-ai-8d8cc.firebasestorage.app",
+   const GEMINI_API_KEY =
+       "AIza....";
 
-            messagingSenderId:
-                "547217020747",
+   নিজের আসল key এখানে বসাবি।
+   ===================================================== */
 
-            appId:
-                "1:547217020747:web:62b7d3843672703d8abace",
-
-            measurementId:
-                "G-3WRC64CRDR"
-        };
+const GEMINI_API_KEY =
+    "PASTE_YOUR_GOOGLE_API_KEY_HERE";
 
 
-        /*
-        =====================================================
-        FIREBASE INITIALIZE
-        =====================================================
-        */
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
 
-        const firebaseApp =
-            initializeApp(firebaseConfig);
+const input =
+    document.getElementById("chatInput");
+
+const sendButton =
+    document.getElementById("sendButton");
+
+const plusButton =
+    document.getElementById("plusButton");
+
+const micButton =
+    document.getElementById("micButton");
+
+const cameraButton =
+    document.getElementById("cameraButton");
+
+const modelBox =
+    document.getElementById("modelBox");
+
+const modelSelect =
+    document.getElementById("modelSelect");
+
+const chatArea =
+    document.getElementById("chatArea");
+
+const welcome =
+    document.getElementById("welcome");
+
+const thinking =
+    document.getElementById("thinking");
 
 
-        /*
-        =====================================================
-        FIREBASE AI LOGIC
-        Gemini Developer API backend
-        =====================================================
-        */
+/* =====================================================
+   CONVERSATION HISTORY
+   ===================================================== */
 
-        const ai =
-            getAI(
-                firebaseApp,
-                {
-                    backend:
-                        new GoogleAIBackend()
-                }
+let conversationHistory = [];
+
+
+/* =====================================================
+   INPUT CHANGE
+   ===================================================== */
+
+input.addEventListener(
+    "input",
+    function () {
+
+        if (
+            input.value.trim() !== ""
+        ) {
+
+            sendButton.classList.add(
+                "active"
             );
 
+        } else {
 
-        /*
-        =====================================================
-        MAIN ELEMENTS
-        =====================================================
-        */
-
-        const chatInputField =
-            document.getElementById(
-                "chatInputField"
+            sendButton.classList.remove(
+                "active"
             );
 
-        const mainWidgetCard =
-            document.getElementById(
-                "mainWidgetCard"
-            );
+        }
 
-        const arrowSubmitBtn =
-            document.getElementById(
-                "arrowSubmitBtn"
-            );
-
-        const modelSelectorBox =
-            document.getElementById(
-                "modelSelectorBox"
-            );
-
-        const plusButton =
-            document.getElementById(
-                "plusButton"
-            );
-
-        const chatViewport =
-            document.getElementById(
-                "chatViewport"
-            );
-
-        const welcomeScreen =
-            document.getElementById(
-                "welcomeScreen"
-            );
-
-        const aiThinking =
-            document.getElementById(
-                "aiThinking"
-            );
-
-        const modelSelect =
-            document.getElementById(
-                "modelSelect"
-            );
+    }
+);
 
 
-        /*
-        =====================================================
-        CONVERSATION HISTORY
-        =====================================================
-        */
+/* =====================================================
+   INPUT FOCUS
+   ===================================================== */
 
-        let conversationHistory = [];
+input.addEventListener(
+    "focus",
+    function () {
 
-
-        /*
-        =====================================================
-        SELECTED MODEL MEMORY
-        =====================================================
-        */
-
-        let selectedActiveModel =
-            localStorage.getItem(
-                "pingme_selected_model"
-            ) ||
-            modelSelect.value;
-
-
-        modelSelect.value =
-            selectedActiveModel;
-
-
-        modelSelect.addEventListener(
-            "change",
-            () => {
-
-                selectedActiveModel =
-                    modelSelect.value;
-
-                localStorage.setItem(
-                    "pingme_selected_model",
-                    selectedActiveModel
-                );
-
-            }
+        modelBox.classList.add(
+            "show"
         );
 
+    }
+);
 
-        /*
-        =====================================================
-        INPUT FOCUS
-        =====================================================
-        */
 
-        chatInputField.addEventListener(
-            "focus",
-            () => {
+/* =====================================================
+   PLUS
+   ===================================================== */
 
-                mainWidgetCard.classList.add(
-                    "popup-expanded-card"
-                );
+plusButton.addEventListener(
+    "click",
+    function () {
 
-                modelSelectorBox.classList.add(
-                    "visible"
-                );
-
-            }
+        modelBox.classList.toggle(
+            "show"
         );
 
-
-        /*
-        =====================================================
-        INPUT TYPING
-        =====================================================
-        */
-
-        chatInputField.addEventListener(
-            "input",
-            () => {
-
-                if (
-                    chatInputField.value.trim() !== ""
-                ) {
-
-                    arrowSubmitBtn.classList.add(
-                        "typing-active-blue"
-                    );
-
-                } else {
-
-                    arrowSubmitBtn.classList.remove(
-                        "typing-active-blue"
-                    );
-
-                }
-
-            }
-        );
+    }
+);
 
 
-        /*
-        =====================================================
-        ENTER TO SEND
-        =====================================================
-        */
+/* =====================================================
+   ENTER
+   ===================================================== */
 
-        chatInputField.addEventListener(
-            "keydown",
-            (event) => {
+input.addEventListener(
+    "keydown",
+    function (event) {
 
-                if (
-                    event.key === "Enter" &&
-                    !event.shiftKey
-                ) {
+        if (
+            event.key === "Enter"
+        ) {
 
-                    event.preventDefault();
+            event.preventDefault();
 
-                    sendMessage();
-
-                }
-
-            }
-        );
-
-
-        /*
-        =====================================================
-        CLICK OUTSIDE
-        =====================================================
-        */
-
-        document.addEventListener(
-            "click",
-            (event) => {
-
-                if (
-                    !mainWidgetCard.contains(
-                        event.target
-                    ) &&
-                    chatInputField.value.trim() === ""
-                ) {
-
-                    mainWidgetCard.classList.remove(
-                        "popup-expanded-card"
-                    );
-
-                    modelSelectorBox.classList.remove(
-                        "visible"
-                    );
-
-                }
-
-            }
-        );
-
-
-        /*
-        =====================================================
-        PLUS BUTTON
-        =====================================================
-        */
-
-        plusButton.addEventListener(
-            "click",
-            () => {
-
-                mainWidgetCard.classList.toggle(
-                    "popup-expanded-card"
-                );
-
-                modelSelectorBox.classList.toggle(
-                    "visible"
-                );
-
-            }
-        );
-
-
-        /*
-        =====================================================
-        SEND BUTTON
-        =====================================================
-        */
-
-        arrowSubmitBtn.addEventListener(
-            "click",
-            () => {
+            if (
+                input.value.trim() !== ""
+            ) {
 
                 sendMessage();
 
             }
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SEND BUTTON
+   ===================================================== */
+
+sendButton.addEventListener(
+    "click",
+    function () {
+
+        if (
+            input.value.trim() === ""
+        ) {
+
+            startVoice();
+
+        } else {
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   MICROPHONE
+   ===================================================== */
+
+micButton.addEventListener(
+    "click",
+    function () {
+
+        startVoice();
+
+    }
+);
+
+
+/* =====================================================
+   CAMERA
+   ===================================================== */
+
+cameraButton.addEventListener(
+    "click",
+    function () {
+
+        alert(
+            "Camera feature will be added later."
+        );
+
+    }
+);
+
+
+/* =====================================================
+   SEND MESSAGE
+   ===================================================== */
+
+async function sendMessage() {
+
+    const message =
+        input.value.trim();
+
+
+    if (
+        message === ""
+    ) {
+
+        return;
+
+    }
+
+
+    /* Hide welcome */
+
+    welcome.style.display =
+        "none";
+
+
+    /* Show user message */
+
+    addUserMessage(
+        message
+    );
+
+
+    /* Save conversation */
+
+    conversationHistory.push({
+
+        role: "user",
+
+        parts: [
+            {
+                text: message
+            }
+        ]
+
+    });
+
+
+    /* Clear input */
+
+    input.value = "";
+
+    sendButton.classList.remove(
+        "active"
+    );
+
+
+    /* Show thinking */
+
+    thinking.classList.add(
+        "show"
+    );
+
+
+    scrollToBottom();
+
+
+    try {
+
+        const reply =
+            await getGeminiReply();
+
+
+        thinking.classList.remove(
+            "show"
         );
 
 
-        /*
-        =====================================================
-        SEND MESSAGE
-        =====================================================
-        */
+        addAIMessage(
+            reply
+        );
 
-        async function sendMessage() {
 
-            const message =
-                chatInputField.value.trim();
+        conversationHistory.push({
 
+            role: "model",
 
-            if (message === "") {
-                return;
-            }
+            parts: [
+                {
+                    text: reply
+                }
+            ]
 
+        });
 
-            /*
-            WELCOME HIDE
-            */
 
-            welcomeScreen.style.display =
-                "none";
+    } catch (error) {
 
+        thinking.classList.remove(
+            "show"
+        );
 
-            /*
-            USER MESSAGE
-            */
 
-            addUserMessage(
-                message
-            );
+        addAIError(
+            error.message
+        );
 
+    }
 
-            /*
-            SAVE USER MESSAGE
-            */
 
-            conversationHistory.push({
+    scrollToBottom();
 
-                role: "user",
+}
 
-                parts: [
-                    {
-                        text: message
-                    }
-                ]
 
-            });
+/* =====================================================
+   GEMINI API
+   ===================================================== */
 
+async function getGeminiReply() {
 
-            /*
-            CLEAR INPUT
-            */
+    if (
+        !GEMINI_API_KEY ||
+        GEMINI_API_KEY ===
+        "PASTE_YOUR_GOOGLE_API_KEY_HERE"
+    ) {
 
-            chatInputField.value = "";
+        throw new Error(
+            "API key বসানো হয়নি। GEMINI_API_KEY-এর জায়গায় Google API key বসা।"
+        );
 
-            arrowSubmitBtn.classList.remove(
-                "typing-active-blue"
-            );
+    }
 
 
-            /*
-            SHOW THINKING
-            */
+    const model =
+        modelSelect.value;
 
-            aiThinking.classList.add(
-                "visible"
-            );
 
+    const url =
+        "https://generativelanguage.googleapis.com/v1beta/models/" +
+        encodeURIComponent(model) +
+        ":generateContent";
 
-            scrollToBottom();
 
+    const response =
+        await fetch(
+            url,
+            {
 
-            try {
+                method: "POST",
 
-                const aiReply =
-                    await getGeminiReply();
+                headers: {
 
+                    "Content-Type":
+                        "application/json",
 
-                aiThinking.classList.remove(
-                    "visible"
-                );
-
-
-                /*
-                AI MESSAGE
-                */
-
-                addAIMessage(
-                    aiReply
-                );
-
-
-                /*
-                SAVE AI MESSAGE
-                */
-
-                conversationHistory.push({
-
-                    role: "model",
-
-                    parts: [
-                        {
-                            text: aiReply
-                        }
-                    ]
-
-                );
-
-
-            } catch (error) {
-
-                aiThinking.classList.remove(
-                    "visible"
-                );
-
-
-                addAIError(
-                    error.message
-                );
-
-            }
-
-
-            scrollToBottom();
-
-        }
-
-
-        /*
-        =====================================================
-        FIREBASE AI LOGIC REQUEST
-        =====================================================
-        */
-
-        async function getGeminiReply() {
-
-            const selectedModel =
-                modelSelect.value;
-
-
-            if (
-                !selectedModel
-            ) {
-
-                throw new Error(
-                    "No AI model selected."
-                );
-
-            }
-
-
-            /*
-            Create the Firebase AI Logic model
-            using the model selected in the UI.
-            */
-
-            const model =
-                getGenerativeModel(
-                    ai,
-                    {
-                        model:
-                            selectedModel
-                    }
-                );
-
-
-            /*
-            Send the complete conversation history.
-            */
-
-            const result =
-                await model.generateContent(
-                    conversationHistory
-                );
-
-
-            const response =
-                result.response;
-
-
-            const reply =
-                response.text();
-
-
-            if (
-                !reply ||
-                reply.trim() === ""
-            ) {
-
-                throw new Error(
-                    "Gemini returned an empty response."
-                );
-
-            }
-
-
-            return reply;
-
-        }
-
-
-        /*
-        =====================================================
-        ADD USER MESSAGE
-        =====================================================
-        */
-
-        function addUserMessage(
-            text
-        ) {
-
-            const messageBox =
-                document.createElement(
-                    "div"
-                );
-
-
-            messageBox.className =
-                "user-message";
-
-
-            messageBox.textContent =
-                text;
-
-
-            chatViewport.appendChild(
-                messageBox
-            );
-
-
-            scrollToBottom();
-
-        }
-
-
-        /*
-        =====================================================
-        ADD AI MESSAGE
-        =====================================================
-        */
-
-        function addAIMessage(
-            text
-        ) {
-
-            const messageBox =
-                document.createElement(
-                    "div"
-                );
-
-
-            messageBox.className =
-                "ai-message";
-
-
-            messageBox.innerHTML =
-                formatAIResponse(
-                    text
-                );
-
-
-            chatViewport.appendChild(
-                messageBox
-            );
-
-
-            scrollToBottom();
-
-        }
-
-
-        /*
-        =====================================================
-        AI RESPONSE FORMAT
-        =====================================================
-        */
-
-        function formatAIResponse(
-            text
-        ) {
-
-            const safeText =
-                escapeHTML(
-                    text
-                );
-
-
-            let formatted =
-                safeText;
-
-
-            formatted =
-                formatted.replace(
-                    /\*\*(.*?)\*\*/g,
-                    "<strong>$1</strong>"
-                );
-
-
-            formatted =
-                formatted.replace(
-                    /^### (.*)$/gm,
-                    "<h3>$1</h3>"
-                );
-
-
-            formatted =
-                formatted.replace(
-                    /^## (.*)$/gm,
-                    "<h3>$1</h3>"
-                );
-
-
-            formatted =
-                formatted.replace(
-                    /^# (.*)$/gm,
-                    "<h3>$1</h3>"
-                );
-
-
-            return formatted;
-
-        }
-
-
-        /*
-        =====================================================
-        ESCAPE HTML
-        =====================================================
-        */
-
-        function escapeHTML(
-            text
-        ) {
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-
-            div.textContent =
-                text;
-
-
-            return div.innerHTML;
-
-        }
-
-
-        /*
-        =====================================================
-        ERROR
-        =====================================================
-        */
-
-        function addAIError(
-            message
-        ) {
-
-            const errorBox =
-                document.createElement(
-                    "div"
-                );
-
-
-            errorBox.className =
-                "ai-error";
-
-
-            errorBox.textContent =
-                "AI reply error: " +
-                message;
-
-
-            chatViewport.appendChild(
-                errorBox
-            );
-
-
-            scrollToBottom();
-
-        }
-
-
-        /*
-        =====================================================
-        SCROLL
-        =====================================================
-        */
-
-        function scrollToBottom() {
-
-            setTimeout(
-                () => {
-
-                    chatViewport.scrollTop =
-                        chatViewport.scrollHeight;
+                    "x-goog-api-key":
+                        GEMINI_API_KEY
 
                 },
-                50
+
+                body:
+                    JSON.stringify({
+
+                        contents:
+                            conversationHistory
+
+                    })
+
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if (
+        !response.ok
+    ) {
+
+        const errorMessage =
+            data &&
+            data.error &&
+            data.error.message
+                ? data.error.message
+                : "Gemini API request failed.";
+
+        throw new Error(
+            errorMessage
+        );
+
+    }
+
+
+    const reply =
+        data &&
+        data.candidates &&
+        data.candidates[0] &&
+        data.candidates[0].content &&
+        data.candidates[0].content.parts &&
+        data.candidates[0].parts;
+
+
+    if (
+        !data.candidates ||
+        !data.candidates[0] ||
+        !data.candidates[0].content ||
+        !data.candidates[0].content.parts ||
+        !data.candidates[0].content.parts[0]
+    ) {
+
+        throw new Error(
+            "Gemini কোনো উত্তর দেয়নি।"
+        );
+
+    }
+
+
+    return data.candidates[0]
+        .content
+        .parts[0]
+        .text;
+
+}
+
+
+/* =====================================================
+   USER MESSAGE
+   ===================================================== */
+
+function addUserMessage(
+    message
+) {
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.className =
+        "user-message";
+
+
+    box.textContent =
+        message;
+
+
+    chatArea.appendChild(
+        box
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+/* =====================================================
+   AI MESSAGE
+   ===================================================== */
+
+function addAIMessage(
+    message
+) {
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.className =
+        "ai-message";
+
+
+    box.innerHTML =
+        formatAIResponse(
+            message
+        );
+
+
+    chatArea.appendChild(
+        box
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+/* =====================================================
+   AI FORMATTING
+   ===================================================== */
+
+function formatAIResponse(
+    text
+) {
+
+    const safe =
+        escapeHTML(
+            text
+        );
+
+
+    let result =
+        safe;
+
+
+    result =
+        result.replace(
+            /\*\*(.*?)\*\*/g,
+            "<strong>$1</strong>"
+        );
+
+
+    result =
+        result.replace(
+            /^### (.*)$/gm,
+            "<h3>$1</h3>"
+        );
+
+
+    result =
+        result.replace(
+            /^## (.*)$/gm,
+            "<h3>$1</h3>"
+        );
+
+
+    result =
+        result.replace(
+            /^# (.*)$/gm,
+            "<h3>$1</h3>"
+        );
+
+
+    return result;
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
+
+function escapeHTML(
+    text
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+function addAIError(
+    message
+) {
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.className =
+        "ai-error";
+
+
+    box.textContent =
+        "AI reply error: " +
+        message;
+
+
+    chatArea.appendChild(
+        box
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+/* =====================================================
+   VOICE
+   ===================================================== */
+
+function startVoice() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (
+        !SpeechRecognition
+    ) {
+
+        alert(
+            "Voice input is not supported in this browser."
+        );
+
+        return;
+
+    }
+
+
+    const recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "bn-BD";
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.onresult =
+        function (event) {
+
+            input.value =
+                event.results[0][0]
+                    .transcript;
+
+
+            input.dispatchEvent(
+                new Event("input")
             );
 
-        }
+        };
 
-    </script>
+
+    recognition.onerror =
+        function () {
+
+            input.focus();
+
+        };
+
+
+    recognition.start();
+
+}
+
+
+/* =====================================================
+   SCROLL
+   ===================================================== */
+
+function scrollToBottom() {
+
+    setTimeout(
+        function () {
+
+            chatArea.scrollTop =
+                chatArea.scrollHeight;
+
+        },
+        50
+    );
+
+}
+
+</script>
 
 </body>
 </html>
