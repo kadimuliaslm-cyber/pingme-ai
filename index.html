@@ -3,74 +3,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>100% Fixed Chat Input System</title>
-    <!-- App Mode Meta Tags -->
+
+    <title>PingMe AI Chat System</title>
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
-    <!-- Google Fonts -->
-    <link href="https://googleapis.com" rel="stylesheet">
-    <!-- CSS File Link -->
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            background: #ffffff;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-space-viewport {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            font-size: 16px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .user-side-bubble {
+            align-self: flex-end;
+            background-color: #f1f3f4;
+            color: #0d0d0d;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .ai-side-bubble {
+            align-self: flex-start;
+            background-color: #ffffff;
+            color: #0d0d0d;
+            border-radius: 18px 18px 18px 4px;
+            border: 1px solid #e5e5ea;
+        }
+
+        .typing-indicator-box {
+            align-self: flex-start;
+            background: #ffffff;
+            border: 1px solid #e5e5ea;
+            padding: 14px 20px;
+            border-radius: 18px 18px 18px 4px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .typing-indicator-box.active {
+            display: flex;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: #0d0d0d;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.3;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .input-panel-wrapper {
+            width: 100%;
+            background: #ffffff;
+            padding: 12px 16px 16px 16px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #f1f3f4;
+        }
+
+        .bottom-master-widget {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e5e5ea;
+            border-radius: 30px;
+            padding: 12px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .text-field-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-main-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: #0d0d0d;
+            outline: none;
+            padding: 4px 0;
+        }
+
+        .chat-main-input::placeholder {
+            color: #757575;
+        }
+
+        .icons-action-control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+            transition: all 0.15s ease;
+        }
+
+        .bottom-master-widget.popup-expanded-card {
+            border-radius: 24px;
+            padding: 16px 20px 14px 20px;
+            gap: 14px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+
+        .bottom-master-widget.popup-expanded-card .icons-action-control-row {
+            opacity: 1;
+            visibility: visible;
+            height: 44px;
+        }
+
+        .left-icon-utilities-group {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+
+        .plus-action-gray-circle {
+            width: 44px;
+            height: 44px;
+            background-color: #f1f3f8;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            color: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        .utility-svg-action-trigger {
+            background: none;
+            border: none;
+            color: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .arrow-submit-circle-btn {
+            width: 48px;
+            height: 44px;
+            background-color: #dbe4ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .arrow-submit-circle-btn.typing-active-blue {
+            background-color: #1a73e8;
+        }
+    </style>
 </head>
+
 <body>
 
-    <!-- চ্যাট/মেসেজ ডিসপ্লে এরিয়া (Flexbox সাপোর্ট সহ) -->
-    <div class="chat-space-viewport" id="chatViewport" style="display: flex; flex-direction: column; gap: 16px;">
-        <!-- এখানে ডায়নামিকালি মেসেজ বাবল যুক্ত হবে -->
+    <div class="chat-space-viewport" id="chatViewport">
+
+        <div class="message-bubble ai-side-bubble">
+            হ্যালো! আমি pingme। আমাকে যেকোনো প্রশ্ন করতে পারেন।
+        </div>
+
     </div>
 
-    <!-- স্ক্রিনের নিচে লকড থাকা ইনপুট প্যানেল এরিয়া -->
+    <div class="typing-indicator-box" id="typingIndicatorBox">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
     <div class="input-panel-wrapper">
-        
-        <!-- মূল ডায়নামিক উইজেট কার্ড -->
+
         <div class="bottom-master-widget" id="mainWidgetCard">
-            
-            <!-- লাইন ১: টাইপিং ইনপুট ফিল্ড -->
+
             <div class="text-field-container">
-                <input type="text" class="chat-main-input" id="chatInputField" placeholder="Ask anything" autocomplete="off">
+
+                <input
+                    type="text"
+                    class="chat-main-input"
+                    id="chatInputField"
+                    placeholder="Ask anything"
+                    autocomplete="off"
+                >
+
             </div>
-            
-            <!-- লাইন ২: কন্ট্রোল বাটন রো -->
+
             <div class="icons-action-control-row">
+
                 <div class="left-icon-utilities-group">
-                    <!-- প্লাস বাটন -->
-                    <button class="plus-action-gray-circle" type="button">+</button>
-                    
-                    <!-- মাইক আইকন -->
-                    <button class="utility-svg-action-trigger" type="button">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+
+                    <button
+                        class="plus-action-gray-circle"
+                        type="button"
+                    >
+                        +
+                    </button>
+
+                    <button
+                        class="utility-svg-action-trigger"
+                        type="button"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
                             <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
                             <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
                             <line x1="12" y1="19" x2="12" y2="22"></line>
                         </svg>
                     </button>
-                    
-                    <!-- ক্যামেরা আইকন -->
-                    <button class="utility-svg-action-trigger" type="button">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+
+                    <button
+                        class="utility-svg-action-trigger"
+                        type="button"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                             <circle cx="12" cy="13" r="4"></circle>
                         </svg>
                     </button>
+
                 </div>
 
-                <!-- ডান পাশের এরো বাটন -->
-                <button class="arrow-submit-circle-btn" id="arrowSubmitBtn" type="button">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button
+                    class="arrow-submit-circle-btn"
+                    id="arrowSubmitBtn"
+                    type="button"
+                >
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
                         <line x1="12" y1="19" x2="12" y2="5"></line>
                         <polyline points="5 12 12 5 19 12"></polyline>
                     </svg>
                 </button>
+
             </div>
 
         </div>
 
     </div>
 
-    <!-- গিটহাব লোডিং সিকোয়েন্স ঠিক রাখার জন্য স্ক্রিপ্ট ট্যাগগুলোর সঠিক বিন্যাস -->
-    <script src="settings.js"></script>
-    <script src="input.js"></script>
-    <script src="app.js"></script>
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+        // =====================================================
+        // ১. API KEY — তোর নতুন Gemini API Key এখানে বসাবি
+        // =====================================================
+
+        const SECURITY_API_KEY = "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk";
+
+
+        // =====================================================
+        // ২. PINGME IDENTITY
+        // =====================================================
+
+        const AI_IDENTITY = {
+            nickname: "pingme",
+            companyName: "pingme-ai"
+        };
+
+
+        // =====================================================
+        // ৩. DOM ELEMENTS
+        // =====================================================
+
+        const chatInputField =
+            document.getElementById("chatInputField");
+
+        const mainWidgetCard =
+            document.getElementById("mainWidgetCard");
+
+        const arrowSubmitBtn =
+            document.getElementById("arrowSubmitBtn");
+
+        const chatViewport =
+            document.getElementById("chatViewport");
+
+        const typingIndicatorBox =
+            document.getElementById("typingIndicatorBox");
+
+
+        // =====================================================
+        // ৪. INPUT POP-UP
+        // =====================================================
+
+        chatInputField.addEventListener("focus", () => {
+
+            mainWidgetCard.classList.add(
+                "popup-expanded-card"
+            );
+
+        });
+
+
+        // =====================================================
+        // ৫. TYPING করলে SEND BUTTON BLUE হবে
+        // =====================================================
+
+        chatInputField.addEventListener("input", () => {
+
+            if (chatInputField.value.trim() !== "") {
+
+                arrowSubmitBtn.classList.add(
+                    "typing-active-blue"
+                );
+
+            } else {
+
+                arrowSubmitBtn.classList.remove(
+                    "typing-active-blue"
+                );
+
+            }
+
+        });
+
+
+        // =====================================================
+        // ৬. বাইরে ক্লিক করলে POPUP বন্ধ
+        // =====================================================
+
+        document.addEventListener("click", (e) => {
+
+            if (
+                !mainWidgetCard.contains(e.target) &&
+                chatInputField.value.trim() === ""
+            ) {
+
+                mainWidgetCard.classList.remove(
+                    "popup-expanded-card"
+                );
+
+            }
+
+        });
+
+
+        // =====================================================
+        // ৭. MESSAGE SEND
+        // =====================================================
+
+        function handleMessageSend() {
+
+            const userText =
+                chatInputField.value.trim();
+
+
+            if (userText === "") {
+                return;
+            }
+
+
+            // USER MESSAGE
+
+            const userBubble =
+                document.createElement("div");
+
+            userBubble.className =
+                "message-bubble user-side-bubble";
+
+            userBubble.innerText =
+                userText;
+
+            chatViewport.appendChild(
+                userBubble
+            );
+
+
+            // INPUT RESET
+
+            chatInputField.value = "";
+
+            arrowSubmitBtn.classList.remove(
+                "typing-active-blue"
+            );
+
+            mainWidgetCard.classList.remove(
+                "popup-expanded-card"
+            );
+
+            chatInputField.blur();
+
+
+            // SCROLL DOWN
+
+            chatViewport.scrollTop =
+                chatViewport.scrollHeight;
+
+
+            // LOADING DOTS
+
+            typingIndicatorBox.classList.add(
+                "active"
+            );
+
+
+            // =================================================
+            // TEMPORARY AI RESPONSE
+            // =================================================
+
+            setTimeout(() => {
+
+                typingIndicatorBox.classList.remove(
+                    "active"
+                );
+
+
+                const aiBubble =
+                    document.createElement("div");
+
+                aiBubble.className =
+                    "message-bubble ai-side-bubble";
+
+
+                const lowerText =
+                    userText.toLowerCase();
+
+
+                // NAME QUESTION
+
+                if (
+                    lowerText.includes("তোমার নাম কি") ||
+                    lowerText.includes("তোমার নাম কী") ||
+                    lowerText.includes("your name") ||
+                    lowerText.includes("name")
+                ) {
+
+                    aiBubble.innerText =
+                        "আমার নিকনেম " +
+                        AI_IDENTITY.nickname +
+                        " এবং আমার কোম্পানির নেম " +
+                        AI_IDENTITY.companyName +
+                        "।";
+
+                } else {
+
+                    aiBubble.innerText =
+                        "ঠিক আছে ভাই, আপনার মেসেজটি সফলভাবে প্রসেস করা হয়েছে।";
+
+                }
+
+
+                chatViewport.appendChild(
+                    aiBubble
+                );
+
+
+                chatViewport.scrollTop =
+                    chatViewport.scrollHeight;
+
+
+            }, 1800);
+
+        }
+
+
+        // =====================================================
+        // ৮. SEND BUTTON CLICK
+        // =====================================================
+
+        arrowSubmitBtn.addEventListener(
+            "click",
+            handleMessageSend
+        );
+
+
+        // =====================================================
+        // ৯. ENTER PRESS
+        // =====================================================
+
+        chatInputField.addEventListener(
+            "keypress",
+            (e) => {
+
+                if (e.key === "Enter") {
+
+                    handleMessageSend();
+
+                }
+
+            }
+        );
+
+    </script>
+
 </body>
 </html>
