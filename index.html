@@ -287,11 +287,9 @@ body {
 }
 
 @media(max-width:480px) {
-
     .title {
         font-size: 26px;
     }
-
 }
 </style>
 </head>
@@ -341,39 +339,20 @@ body {
 
     </div>
 
-    <!-- THINKING -->
-
-    <div
-        class="thinking"
-        id="thinking"
-    >
-
+    <div class="thinking" id="thinking">
         <div class="spinner"></div>
-
-        <span>
-            Thinking...
-        </span>
-
+        <span>Thinking...</span>
     </div>
 
 </div>
-
 
 <div class="input-area">
 
     <div class="input-card">
 
-        <!-- MODEL -->
+        <div class="model-box" id="modelBox">
 
-        <div
-            class="model-box"
-            id="modelBox"
-        >
-
-            <select
-                class="model-select"
-                id="modelSelect"
-            >
+            <select class="model-select" id="modelSelect">
 
                 <option value="gemini-3.8-flash">
                     Gemini 3.8 Flash
@@ -391,11 +370,7 @@ body {
 
         </div>
 
-
-        <!-- INPUT -->
-
         <div class="input-row">
-
             <input
                 id="chatInput"
                 class="input"
@@ -403,35 +378,23 @@ body {
                 placeholder="Ask anything"
                 autocomplete="off"
             >
-
         </div>
-
-
-        <!-- ACTIONS -->
 
         <div class="action-row">
 
             <div class="left-actions">
 
-                <!-- PLUS -->
-
                 <button
                     class="plus"
                     id="plusButton"
                     type="button"
-                >
-                    +
-                </button>
-
-
-                <!-- MICROPHONE -->
+                >+</button>
 
                 <button
                     class="icon-button"
                     id="micButton"
                     type="button"
                 >
-
                     <svg
                         width="21"
                         height="21"
@@ -442,35 +405,17 @@ body {
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
-
-                        <path
-                            d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
-                        ></path>
-
-                        <path
-                            d="M19 10v1a7 7 0 0 1-14 0v-1"
-                        ></path>
-
-                        <line
-                            x1="12"
-                            y1="19"
-                            x2="12"
-                            y2="22"
-                        ></line>
-
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+                        <line x1="12" y1="19" x2="12" y2="22"></line>
                     </svg>
-
                 </button>
-
-
-                <!-- CAMERA -->
 
                 <button
                     class="icon-button"
                     id="cameraButton"
                     type="button"
                 >
-
                     <svg
                         width="21"
                         height="21"
@@ -481,33 +426,18 @@ body {
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
-
-                        <path
-                            d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
-                        ></path>
-
-                        <circle
-                            cx="12"
-                            cy="13"
-                            r="4"
-                        ></circle>
-
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
                     </svg>
-
                 </button>
 
             </div>
-
-
-            <!-- VOICE / SEND -->
 
             <button
                 class="send-button"
                 id="sendButton"
                 type="button"
             >
-
-                <!-- VOICE -->
 
                 <svg
                     class="voice-icon"
@@ -520,26 +450,10 @@ body {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                 >
-
-                    <path
-                        d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
-                    ></path>
-
-                    <path
-                        d="M19 10v1a7 7 0 0 1-14 0v-1"
-                    ></path>
-
-                    <line
-                        x1="12"
-                        y1="19"
-                        x2="12"
-                        y2="22"
-                    ></line>
-
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                    <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+                    <line x1="12" y1="19" x2="12" y2="22"></line>
                 </svg>
-
-
-                <!-- SEND ARROW -->
 
                 <svg
                     class="send-icon"
@@ -552,18 +466,8 @@ body {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                 >
-
-                    <line
-                        x1="12"
-                        y1="19"
-                        x2="12"
-                        y2="5"
-                    ></line>
-
-                    <polyline
-                        points="6 11 12 5 18 11"
-                    ></polyline>
-
+                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                    <polyline points="6 11 12 5 18 11"></polyline>
                 </svg>
 
             </button>
@@ -575,29 +479,64 @@ body {
 </div>
 
 
-<script>
+<!-- FIREBASE + PINGME AI -->
 
-/* =====================================================
-   🔑 GEMINI API KEY
-   =====================================================
+<script type="module">
 
-   এখানে তোর Google/Gemini API key বসাবি।
+/* =========================================================
+   ১. শুধু এখানে তোর Firebase Web API Key বসাবি
+   ========================================================= */
 
-   উদাহরণ:
+const firebaseConfig = {
 
-   const GEMINI_API_KEY =
-       "AIza....";
+    apiKey: "AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk",
 
-   নিজের আসল key এখানে বসাবি।
-   ===================================================== */
+    authDomain: "pingme-ai-8d8cc.firebaseapp.com",
 
-const GEMINI_API_KEY ="AIzaSyB4dAUhxEao415YdVg4l4WYJ21hQ9V-tyk";
+    projectId: "pingme-ai-8d8cc",
+
+    storageBucket: "pingme-ai-8d8cc.firebasestorage.app",
+
+    messagingSenderId: "547217020747",
+
+    appId: "1:547217020747:web:62b7d3843672703d8abace",
+
+    measurementId: "G-3WRC64CRDR"
+};
 
 
+/* =========================================================
+   ২. Firebase SDK
+   ========================================================= */
 
-/* =====================================================
-   ELEMENTS
-   ===================================================== */
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+    getAI,
+    getGenerativeModel,
+    GoogleAIBackend
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-ai.js";
+
+
+/* =========================================================
+   ৩. Firebase শুরু
+   ========================================================= */
+
+const firebaseApp = initializeApp(firebaseConfig);
+
+const ai = getAI(
+    firebaseApp,
+    {
+        backend: new GoogleAIBackend()
+    }
+);
+
+
+/* =========================================================
+   ৪. ELEMENTS
+   ========================================================= */
 
 const input =
     document.getElementById("chatInput");
@@ -630,24 +569,87 @@ const thinking =
     document.getElementById("thinking");
 
 
-/* =====================================================
-   CONVERSATION HISTORY
-   ===================================================== */
+/* =========================================================
+   ৫. CONVERSATION HISTORY
+   ========================================================= */
 
 let conversationHistory = [];
 
+let chatSession = null;
 
-/* =====================================================
-   INPUT CHANGE
-   ===================================================== */
+let currentChatModel = null;
+
+
+/* =========================================================
+   ৬. MODEL
+   ========================================================= */
+
+function createModel(modelName) {
+
+    return getGenerativeModel(
+        ai,
+        {
+            model: modelName
+        }
+    );
+}
+
+
+/* =========================================================
+   ৭. CHAT SESSION
+   ========================================================= */
+
+function getChatSession() {
+
+    const selectedModel =
+        modelSelect.value;
+
+    if (
+        chatSession === null ||
+        currentChatModel !== selectedModel
+    ) {
+
+        const model =
+            createModel(selectedModel);
+
+        chatSession =
+            model.startChat({
+                history: conversationHistory
+            });
+
+        currentChatModel =
+            selectedModel;
+    }
+
+    return chatSession;
+}
+
+
+/* =========================================================
+   ৮. MODEL CHANGE
+   ========================================================= */
+
+modelSelect.addEventListener(
+    "change",
+    function () {
+
+        chatSession = null;
+
+        currentChatModel =
+            null;
+    }
+);
+
+
+/* =========================================================
+   ৯. INPUT CHANGE
+   ========================================================= */
 
 input.addEventListener(
     "input",
     function () {
 
-        if (
-            input.value.trim() !== ""
-        ) {
+        if (input.value.trim() !== "") {
 
             sendButton.classList.add(
                 "active"
@@ -658,16 +660,14 @@ input.addEventListener(
             sendButton.classList.remove(
                 "active"
             );
-
         }
-
     }
 );
 
 
-/* =====================================================
-   INPUT FOCUS
-   ===================================================== */
+/* =========================================================
+   ১০. INPUT FOCUS
+   ========================================================= */
 
 input.addEventListener(
     "focus",
@@ -676,14 +676,13 @@ input.addEventListener(
         modelBox.classList.add(
             "show"
         );
-
     }
 );
 
 
-/* =====================================================
-   PLUS
-   ===================================================== */
+/* =========================================================
+   ১১. PLUS
+   ========================================================= */
 
 plusButton.addEventListener(
     "click",
@@ -692,22 +691,19 @@ plusButton.addEventListener(
         modelBox.classList.toggle(
             "show"
         );
-
     }
 );
 
 
-/* =====================================================
-   ENTER
-   ===================================================== */
+/* =========================================================
+   ১২. ENTER = SEND
+   ========================================================= */
 
 input.addEventListener(
     "keydown",
     function (event) {
 
-        if (
-            event.key === "Enter"
-        ) {
+        if (event.key === "Enter") {
 
             event.preventDefault();
 
@@ -716,18 +712,15 @@ input.addEventListener(
             ) {
 
                 sendMessage();
-
             }
-
         }
-
     }
 );
 
 
-/* =====================================================
-   SEND BUTTON
-   ===================================================== */
+/* =========================================================
+   ১৩. SEND BUTTON
+   ========================================================= */
 
 sendButton.addEventListener(
     "click",
@@ -742,30 +735,27 @@ sendButton.addEventListener(
         } else {
 
             sendMessage();
-
         }
-
     }
 );
 
 
-/* =====================================================
-   MICROPHONE
-   ===================================================== */
+/* =========================================================
+   ১৪. MICROPHONE
+   ========================================================= */
 
 micButton.addEventListener(
     "click",
     function () {
 
         startVoice();
-
     }
 );
 
 
-/* =====================================================
-   CAMERA
-   ===================================================== */
+/* =========================================================
+   ১৫. CAMERA
+   ========================================================= */
 
 cameraButton.addEventListener(
     "click",
@@ -774,59 +764,36 @@ cameraButton.addEventListener(
         alert(
             "Camera feature will be added later."
         );
-
     }
 );
 
 
-/* =====================================================
-   SEND MESSAGE
-   ===================================================== */
+/* =========================================================
+   ১৬. SEND MESSAGE
+   ========================================================= */
 
 async function sendMessage() {
 
     const message =
         input.value.trim();
 
-
-    if (
-        message === ""
-    ) {
-
+    if (message === "") {
         return;
-
     }
 
 
-    /* Hide welcome */
+    /* Welcome hide */
 
     welcome.style.display =
         "none";
 
 
-    /* Show user message */
+    /* User message show */
 
-    addUserMessage(
-        message
-    );
+    addUserMessage(message);
 
 
-    /* Save conversation */
-
-    conversationHistory.push({
-
-        role: "user",
-
-        parts: [
-            {
-                text: message
-            }
-        ]
-
-    });
-
-
-    /* Clear input */
+    /* Input clear */
 
     input.value = "";
 
@@ -835,30 +802,53 @@ async function sendMessage() {
     );
 
 
-    /* Show thinking */
+    /* Thinking */
 
     thinking.classList.add(
         "show"
     );
-
 
     scrollToBottom();
 
 
     try {
 
+        /* Get current chat */
+
+        const chat =
+            getChatSession();
+
+
+        /* Send to Gemini */
+
+        const result =
+            await chat.sendMessage(
+                message
+            );
+
+
+        /* Get AI response */
+
+        const response =
+            result.response;
+
         const reply =
-            await getGeminiReply();
+            response.text();
 
 
-        thinking.classList.remove(
-            "show"
-        );
+        /* Save conversation */
 
+        conversationHistory.push({
 
-        addAIMessage(
-            reply
-        );
+            role: "user",
+
+            parts: [
+                {
+                    text: message
+                }
+            ]
+
+        });
 
 
         conversationHistory.push({
@@ -874,6 +864,20 @@ async function sendMessage() {
         });
 
 
+        /* Stop thinking */
+
+        thinking.classList.remove(
+            "show"
+        );
+
+
+        /* Show AI reply */
+
+        addAIMessage(
+            reply
+        );
+
+
     } catch (error) {
 
         thinking.classList.remove(
@@ -881,133 +885,26 @@ async function sendMessage() {
         );
 
 
-        addAIError(
-            error.message
+        console.error(
+            "PingMe AI error:",
+            error
         );
 
+
+        addAIError(
+            error.message ||
+            "AI reply failed."
+        );
     }
 
 
     scrollToBottom();
-
 }
 
 
-/* =====================================================
-   GEMINI API
-   ===================================================== */
-
-async function getGeminiReply() {
-
-    if (
-        !GEMINI_API_KEY ||
-        GEMINI_API_KEY ===
-        "PASTE_YOUR_GOOGLE_API_KEY_HERE"
-    ) {
-
-        throw new Error(
-            "API key বসানো হয়নি। GEMINI_API_KEY-এর জায়গায় Google API key বসা।"
-        );
-
-    }
-
-
-    const model =
-        modelSelect.value;
-
-
-    const url =
-        "https://generativelanguage.googleapis.com/v1beta/models/" +
-        encodeURIComponent(model) +
-        ":generateContent";
-
-
-    const response =
-        await fetch(
-            url,
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "x-goog-api-key":
-                        GEMINI_API_KEY
-
-                },
-
-                body:
-                    JSON.stringify({
-
-                        contents:
-                            conversationHistory
-
-                    })
-
-            }
-        );
-
-
-    const data =
-        await response.json();
-
-
-    if (
-        !response.ok
-    ) {
-
-        const errorMessage =
-            data &&
-            data.error &&
-            data.error.message
-                ? data.error.message
-                : "Gemini API request failed.";
-
-        throw new Error(
-            errorMessage
-        );
-
-    }
-
-
-    const reply =
-        data &&
-        data.candidates &&
-        data.candidates[0] &&
-        data.candidates[0].content &&
-        data.candidates[0].content.parts &&
-        data.candidates[0].parts;
-
-
-    if (
-        !data.candidates ||
-        !data.candidates[0] ||
-        !data.candidates[0].content ||
-        !data.candidates[0].content.parts ||
-        !data.candidates[0].content.parts[0]
-    ) {
-
-        throw new Error(
-            "Gemini কোনো উত্তর দেয়নি।"
-        );
-
-    }
-
-
-    return data.candidates[0]
-        .content
-        .parts[0]
-        .text;
-
-}
-
-
-/* =====================================================
-   USER MESSAGE
-   ===================================================== */
+/* =========================================================
+   ১৭. USER MESSAGE
+   ========================================================= */
 
 function addUserMessage(
     message
@@ -1018,28 +915,23 @@ function addUserMessage(
             "div"
         );
 
-
     box.className =
         "user-message";
 
-
     box.textContent =
         message;
-
 
     chatArea.appendChild(
         box
     );
 
-
     scrollToBottom();
-
 }
 
 
-/* =====================================================
-   AI MESSAGE
-   ===================================================== */
+/* =========================================================
+   ১৮. AI MESSAGE
+   ========================================================= */
 
 function addAIMessage(
     message
@@ -1050,44 +942,38 @@ function addAIMessage(
             "div"
         );
 
-
     box.className =
         "ai-message";
-
 
     box.innerHTML =
         formatAIResponse(
             message
         );
 
-
     chatArea.appendChild(
         box
     );
 
-
     scrollToBottom();
-
 }
 
 
-/* =====================================================
-   AI FORMATTING
-   ===================================================== */
+/* =========================================================
+   ১৯. AI RESPONSE FORMAT
+   ========================================================= */
 
 function formatAIResponse(
     text
 ) {
 
     const safe =
-        escapeHTML(
-            text
-        );
-
+        escapeHTML(text);
 
     let result =
         safe;
 
+
+    /* Bold */
 
     result =
         result.replace(
@@ -1096,19 +982,19 @@ function formatAIResponse(
         );
 
 
+    /* Headings */
+
     result =
         result.replace(
             /^### (.*)$/gm,
             "<h3>$1</h3>"
         );
 
-
     result =
         result.replace(
             /^## (.*)$/gm,
             "<h3>$1</h3>"
         );
-
 
     result =
         result.replace(
@@ -1118,13 +1004,12 @@ function formatAIResponse(
 
 
     return result;
-
 }
 
 
-/* =====================================================
-   ESCAPE HTML
-   ===================================================== */
+/* =========================================================
+   ২০. ESCAPE HTML
+   ========================================================= */
 
 function escapeHTML(
     text
@@ -1135,19 +1020,16 @@ function escapeHTML(
             "div"
         );
 
-
     div.textContent =
         text;
 
-
     return div.innerHTML;
-
 }
 
 
-/* =====================================================
-   ERROR
-   ===================================================== */
+/* =========================================================
+   ২১. ERROR
+   ========================================================= */
 
 function addAIError(
     message
@@ -1158,29 +1040,24 @@ function addAIError(
             "div"
         );
 
-
     box.className =
         "ai-error";
-
 
     box.textContent =
         "AI reply error: " +
         message;
 
-
     chatArea.appendChild(
         box
     );
 
-
     scrollToBottom();
-
 }
 
 
-/* =====================================================
-   VOICE
-   ===================================================== */
+/* =========================================================
+   ২২. VOICE
+   ========================================================= */
 
 function startVoice() {
 
@@ -1189,16 +1066,13 @@ function startVoice() {
         window.webkitSpeechRecognition;
 
 
-    if (
-        !SpeechRecognition
-    ) {
+    if (!SpeechRecognition) {
 
         alert(
             "Voice input is not supported in this browser."
         );
 
         return;
-
     }
 
 
@@ -1209,10 +1083,8 @@ function startVoice() {
     recognition.lang =
         "bn-BD";
 
-
     recognition.continuous =
         false;
-
 
     recognition.interimResults =
         false;
@@ -1229,7 +1101,6 @@ function startVoice() {
             input.dispatchEvent(
                 new Event("input")
             );
-
         };
 
 
@@ -1237,18 +1108,16 @@ function startVoice() {
         function () {
 
             input.focus();
-
         };
 
 
     recognition.start();
-
 }
 
 
-/* =====================================================
-   SCROLL
-   ===================================================== */
+/* =========================================================
+   ২৩. SCROLL
+   ========================================================= */
 
 function scrollToBottom() {
 
@@ -1261,7 +1130,6 @@ function scrollToBottom() {
         },
         50
     );
-
 }
 
 </script>
