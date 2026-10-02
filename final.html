@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PingMe Basic Input Sample</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#ffffff;
+    font-family:Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.chat-area{
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+}
+
+
+/* =========================
+   WELCOME MESSAGE
+========================= */
+
+.welcome-message{
+    max-width:650px;
+    margin:13vh auto 0;
+    text-align:center;
+    padding:20px;
+}
+
+.welcome-title{
+    margin:0;
+    color:#111111;
+    font-size:24px;
+    font-weight:600;
+    line-height:1.3;
+}
+
+.welcome-text{
+    margin:8px 0 0;
+    color:#777777;
+    font-size:14px;
+    line-height:1.5;
+}
+
+
+/* =========================
+   SMALL SUGGESTION LINES
+========================= */
+
+.suggestions{
+    margin-top:24px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:8px;
+
+    width:100%;
+    max-width:440px;
+
+    margin-left:auto;
+    margin-right:auto;
+
+    text-align:left;
+}
+
+.suggestion-card{
+    width:100%;
+
+    min-height:48px;
+
+    border:none;
+    border-radius:14px;
+
+    background:#f5f5f5;
+
+    padding:10px 14px;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+
+    text-align:left;
+
+    transition:
+        background .22s ease,
+        transform .22s ease,
+        opacity .22s ease;
+}
+
+.suggestion-card:hover{
+    background:#eeeeee;
+}
+
+.suggestion-card:active{
+    transform:scale(.98);
+}
+
+.suggestion-icon{
+    width:28px;
+    min-width:28px;
+
+    font-size:18px;
+    line-height:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-right:10px;
+}
+
+.suggestion-title{
+    color:#111111;
+    font-size:13px;
+    font-weight:600;
+    line-height:1.3;
+}
+
+.suggestion-description{
+    margin-top:2px;
+
+    color:#777777;
+
+    font-size:11px;
+    line-height:1.3;
+}
+
+
+/* =========================
+   CHANGE ANIMATION
+========================= */
+
+.suggestion-card.changing{
+    opacity:0;
+    transform:translateY(7px);
+}
+
+
+/* =========================
+   INPUT AREA
+========================= */
+
+.input-area{
+    padding:10px 12px 14px;
+    background:#ffffff;
+}
+
+.input-card{
+    width:100%;
+    background:#f5f5f5;
+    border-radius:28px;
+    padding:10px 10px 9px;
+    position:relative;
+
+    transition:
+        border-radius .35s cubic-bezier(.22,1,.36,1),
+        padding .35s cubic-bezier(.22,1,.36,1),
+        transform .35s cubic-bezier(.22,1,.36,1),
+        box-shadow .35s ease;
+}
+
+.input-card:focus-within{
+    border-radius:20px;
+    padding-top:24px;
+    padding-bottom:20px;
+    transform:translateY(-6px);
+    box-shadow:0 7px 24px rgba(0,0,0,.09);
+}
+
+.input-row{
+    display:flex;
+    align-items:flex-end;
+}
+
+.input{
+    flex:1;
+    border:none;
+    outline:none;
+    resize:none;
+    background:transparent;
+    color:#111111;
+    font-size:16px;
+    line-height:22px;
+
+    min-height:24px;
+    max-height:130px;
+
+    padding:2px 3px;
+    font-family:inherit;
+
+    transition:height .18s ease;
+}
+
+.input::placeholder{
+    color:#777777;
+}
+
+.action-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:7px;
+}
+
+.left-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.plus-button,
+.camera-button,
+.small-mic-button{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:50%;
+    background:#e9e9e9;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:
+        background .25s ease,
+        transform .2s ease;
+}
+
+.plus-button:active,
+.camera-button:active,
+.small-mic-button:active{
+    transform:scale(.9);
+}
+
+.plus-button svg{
+    width:20px;
+    height:20px;
+}
+
+.camera-button svg{
+    width:20px;
+    height:20px;
+}
+
+.small-mic-button svg{
+    width:19px;
+    height:19px;
+}
+
+
+/* =========================
+   PLUS MENU
+========================= */
+
+.plus-menu{
+    position:absolute;
+
+    left:10px;
+    bottom:64px;
+
+    width:230px;
+
+    padding:8px;
+
+    background:#ffffff;
+    border-radius:20px;
+
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+
+    box-shadow:
+        0 8px 28px rgba(0,0,0,.14);
+
+    border:1px solid #eeeeee;
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transform:translateY(18px);
+
+    transition:
+        opacity .25s ease,
+        transform .35s cubic-bezier(.16,1,.3,1),
+        visibility .25s ease;
+}
+
+.plus-menu.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+
+    transform:translateY(0);
+}
+
+
+/* =========================
+   PLUS OPTIONS
+========================= */
+
+.plus-option{
+    width:100%;
+    min-height:54px;
+
+    border:none;
+    background:#f7f7f7;
+    color:#111111;
+
+    border-radius:14px;
+
+    padding:8px 12px;
+
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:flex-start;
+
+    gap:12px;
+
+    font-size:13px;
+    font-family:inherit;
+
+    cursor:pointer;
+
+    opacity:0;
+    transform:translateY(8px);
+
+    transition:
+        background .2s ease,
+        opacity .22s ease,
+        transform .25s ease;
+}
+
+.plus-menu.show .plus-option{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.plus-menu.show .plus-option:nth-child(1){
+    transition-delay:.03s;
+}
+
+.plus-menu.show .plus-option:nth-child(2){
+    transition-delay:.07s;
+}
+
+.plus-menu.show .plus-option:nth-child(3){
+    transition-delay:.11s;
+}
+
+.plus-menu.show .plus-option:nth-child(4){
+    transition-delay:.15s;
+}
+
+.plus-option:active{
+    background:#eeeeee;
+    transform:scale(.98);
+}
+
+.plus-option svg{
+    width:21px;
+    height:21px;
+    flex-shrink:0;
+}
+
+
+/* =========================
+   UPDATE MODEL
+========================= */
+
+.update-model-icon{
+    width:21px;
+    height:21px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:19px;
+    line-height:1;
+}
+
+
+/* =========================
+   SMALL MIC
+========================= */
+
+.mic-normal{
+    display:block;
+}
+
+.small-mic-button.recording{
+    background:#eeeeee;
+}
+
+.small-mic-button.recording .mic-normal{
+    display:none;
+}
+
+.voice-bars{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    height:20px;
+}
+
+.small-mic-button.recording .voice-bars{
+    display:flex;
+}
+
+.voice-bars span{
+    width:2.5px;
+    height:7px;
+    border-radius:5px;
+    background:#111111;
+
+    animation:
+        voiceWave .7s ease-in-out infinite alternate;
+}
+
+.voice-bars span:nth-child(2){
+    animation-delay:.12s;
+}
+
+.voice-bars span:nth-child(3){
+    animation-delay:.24s;
+}
+
+.voice-bars span:nth-child(4){
+    animation-delay:.36s;
+}
+
+.voice-bars span:nth-child(5){
+    animation-delay:.48s;
+}
+
+@keyframes voiceWave{
+
+    from{
+        height:5px;
+    }
+
+    to{
+        height:18px;
+    }
+
+}
+
+
+/* =========================
+   VOICE / SEND
+========================= */
+
+.voice-send-button{
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#111111;
+    color:#ffffff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:transform .25s ease;
+}
+
+.voice-send-button:active{
+    transform:scale(.88);
+}
+
+.voice-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.voice-icon svg{
+    width:22px;
+    height:22px;
+}
+
+.send-icon{
+    display:none;
+}
+
+.send-icon svg{
+    width:22px;
+    height:22px;
+}
+
+.voice-send-button.active .voice-icon{
+    display:none;
+}
+
+.voice-send-button.active .send-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:480px){
+
+    .input-area{
+        padding-left:9px;
+        padding-right:9px;
+    }
+
+    .input-card{
+        border-radius:26px;
+    }
+
+    .voice-send-button{
+        width:47px;
+        height:47px;
+    }
+
+    .plus-menu{
+        left:8px;
+        bottom:62px;
+        width:230px;
+    }
+
+    .plus-option{
+        min-height:52px;
+        font-size:12px;
+    }
+
+    .welcome-message{
+        margin-top:12vh;
+        padding:15px;
+    }
+
+    .welcome-title{
+        font-size:22px;
+    }
+
+    .welcome-text{
+        font-size:13px;
+    }
+
+    .suggestions{
+        margin-top:22px;
+        gap:7px;
+        max-width:100%;
+    }
+
+    .suggestion-card{
+        min-height:46px;
+        padding:9px 12px;
+        border-radius:13px;
+    }
+
+    .suggestion-icon{
+        width:26px;
+        min-width:26px;
+        font-size:17px;
+        margin-right:8px;
+    }
+
+    .suggestion-title{
+        font-size:12px;
+    }
+
+    .suggestion-description{
+        font-size:10px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-area">
+
+    <!-- WELCOME MESSAGE -->
+
+    <div class="welcome-message">
+
+        <h1 class="welcome-title">
+            Welcome to PingMe<span id="welcomeName"></span>
+        </h1>
+
+        <p class="welcome-text">
+            Your simple and smart AI chat experience starts here.
+        </p>
+
+
+        <!-- SMALL SUGGESTION LINES -->
+
+        <div class="suggestions" id="suggestions">
+
+            <button class="suggestion-card">
+
+                <div class="suggestion-icon">
+                    💡
+                </div>
+
+                <div>
+                    <div class="suggestion-title">
+                        Get an idea
+                    </div>
+
+                    <div class="suggestion-description">
+                        Help me think of something new
+                    </div>
+                </div>
+
+            </button>
+
+
+            <button class="suggestion-card">
+
+                <div class="suggestion-icon">
+                    ✍️
+                </div>
+
+                <div>
+                    <div class="suggestion-title">
+                        Write something
+                    </div>
+
+                    <div class="suggestion-description">
+                        Create a message or short post
+                    </div>
+                </div>
+
+            </button>
+
+
+            <button class="suggestion-card">
+
+                <div class="suggestion-icon">
+                    📚
+                </div>
+
+                <div>
+                    <div class="suggestion-title">
+                        Learn something
+                    </div>
+
+                    <div class="suggestion-description">
+                        Explain a topic in simple words
+                    </div>
+                </div>
+
+            </button>
+
+
+            <button class="suggestion-card">
+
+                <div class="suggestion-icon">
+                    🚀
+                </div>
+
+                <div>
+                    <div class="suggestion-title">
+                        Plan a project
+                    </div>
+
+                    <div class="suggestion-description">
+                        Turn an idea into a clear plan
+                    </div>
+                </div>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="input-area">
+
+    <div class="input-card">
+
+
+        <!-- PLUS MENU -->
+
+        <div id="plusMenu" class="plus-menu">
+
+
+            <!-- FILE -->
+
+            <button class="plus-option">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                    <path d="M13 2v7h7"/>
+                </svg>
+
+                <span>File</span>
+
+            </button>
+
+
+            <!-- PHOTO -->
+
+            <button class="plus-option">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="3"
+                    />
+
+                    <circle
+                        cx="8.5"
+                        cy="8.5"
+                        r="1.5"
+                    />
+
+                    <path d="M21 15l-5-5L5 21"/>
+                </svg>
+
+                <span>Photo</span>
+
+            </button>
+
+
+            <!-- CAMERA -->
+
+            <button class="plus-option">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M4 7h3l2-2h6l2 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/>
+
+                    <circle
+                        cx="12"
+                        cy="13"
+                        r="3"
+                    />
+                </svg>
+
+                <span>Camera</span>
+
+            </button>
+
+
+            <!-- UPDATE MODEL -->
+
+            <button class="plus-option">
+
+                <span class="update-model-icon">
+                    🔄
+                </span>
+
+                <span>Update Model</span>
+
+            </button>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div class="input-row">
+
+            <textarea
+                id="chatInput"
+                class="input"
+                rows="1"
+                placeholder="Message PingMe..."
+            ></textarea>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="action-row">
+
+            <div class="left-actions">
+
+
+                <!-- PLUS -->
+
+                <button
+                    id="plusButton"
+                    class="plus-button"
+                    aria-label="Add"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="black"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                    >
+                        <path d="M12 5v14"/>
+                        <path d="M5 12h14"/>
+                    </svg>
+
+                </button>
+
+
+                <!-- CAMERA -->
+
+                <button
+                    id="cameraButton"
+                    class="camera-button"
+                    aria-label="Camera"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="black"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M4 7h3l2-2h6l2 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/>
+
+                        <circle
+                            cx="12"
+                            cy="13"
+                            r="3"
+                        />
+                    </svg>
+
+                </button>
+
+
+                <!-- SMALL MIC -->
+
+                <button
+                    id="smallMicButton"
+                    class="small-mic-button"
+                    aria-label="Voice input"
+                >
+
+                    <span class="mic-normal">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="black"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect
+                                x="9"
+                                y="3"
+                                width="6"
+                                height="11"
+                                rx="3"
+                            />
+
+                            <path d="M5 11a7 7 0 0 0 14 0"/>
+
+                            <path d="M12 18v3"/>
+
+                            <path d="M8 21h8"/>
+                        </svg>
+
+                    </span>
+
+
+                    <span class="voice-bars">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- VOICE / SEND -->
+
+            <button
+                id="voiceSendButton"
+                class="voice-send-button"
+                aria-label="Voice or Send"
+            >
+
+                <span class="voice-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                    >
+                        <path d="M7 9v6"/>
+                        <path d="M10 6v12"/>
+                        <path d="M13 4v16"/>
+                        <path d="M16 7v10"/>
+                        <path d="M19 9v6"/>
+                    </svg>
+
+                </span>
+
+
+                <span class="send-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M12 19V5"/>
+                        <path d="M6 11l6-6 6 6"/>
+                    </svg>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const input =
+    document.getElementById("chatInput");
+
+const voiceSendButton =
+    document.getElementById("voiceSendButton");
+
+const plusButton =
+    document.getElementById("plusButton");
+
+const plusMenu =
+    document.getElementById("plusMenu");
+
+const smallMicButton =
+    document.getElementById("smallMicButton");
+
+const welcomeName =
+    document.getElementById("welcomeName");
+
+
+/* =========================
+   FUTURE USER NAME SYSTEM
+========================= */
+
+const currentUserName =
+    localStorage.getItem("pingme_user_name") || "";
+
+if(currentUserName){
+
+    welcomeName.textContent =
+        ", " + currentUserName;
+
+}
+
+
+/* =========================
+   INFINITE SUGGESTIONS
+========================= */
+
+const suggestionPool = [
+
+    {
+        icon:"🤖",
+        title:"Ask about AI",
+        description:"Discover something interesting about AI"
+    },
+
+    {
+        icon:"📝",
+        title:"Improve my writing",
+        description:"Make my text clearer and better"
+    },
+
+    {
+        icon:"💻",
+        title:"Help with coding",
+        description:"Build or fix something with code"
+    },
+
+    {
+        icon:"🌍",
+        title:"Explore the world",
+        description:"Tell me something fascinating"
+    },
+
+    {
+        icon:"🎯",
+        title:"Set a goal",
+        description:"Help me create a simple plan"
+    },
+
+    {
+        icon:"🧠",
+        title:"Explain an idea",
+        description:"Break down something complicated"
+    },
+
+    {
+        icon:"💼",
+        title:"Business ideas",
+        description:"Give me ideas for a project"
+    },
+
+    {
+        icon:"🎨",
+        title:"Create something",
+        description:"Help me turn an idea into reality"
+    },
+
+    {
+        icon:"🔍",
+        title:"Find an answer",
+        description:"Help me understand a question"
+    },
+
+    {
+        icon:"📱",
+        title:"Build an app",
+        description:"Plan a useful app from scratch"
+    },
+
+    {
+        icon:"🔥",
+        title:"Give me a challenge",
+        description:"Try something fun and creative"
+    },
+
+    {
+        icon:"✨",
+        title:"Surprise me",
+        description:"Show me something unexpected"
+    }
+
+];
+
+
+const suggestionCards =
+    document.querySelectorAll(
+        ".suggestion-card"
+    );
+
+
+let suggestionIndex = 0;
+
+
+suggestionCards.forEach(
+    function(card){
+
+        card.addEventListener(
+            "click",
+            function(){
+
+                card.classList.add(
+                    "changing"
+                );
+
+
+                setTimeout(
+                    function(){
+
+                        const item =
+                            suggestionPool[
+                                suggestionIndex %
+                                suggestionPool.length
+                            ];
+
+
+                        card.querySelector(
+                            ".suggestion-icon"
+                        ).textContent =
+                            item.icon;
+
+
+                        card.querySelector(
+                            ".suggestion-title"
+                        ).textContent =
+                            item.title;
+
+
+                        card.querySelector(
+                            ".suggestion-description"
+                        ).textContent =
+                            item.description;
+
+
+                        suggestionIndex++;
+
+
+                        card.classList.remove(
+                            "changing"
+                        );
+
+                    },
+                    220
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================
+   TEXT INPUT
+========================= */
+
+input.addEventListener(
+    "input",
+    function(){
+
+        if(input.value.trim() !== ""){
+
+            voiceSendButton.classList.add(
+                "active"
+            );
+
+        }else{
+
+            voiceSendButton.classList.remove(
+                "active"
+            );
+
+        }
+
+        input.style.height = "auto";
+
+        const newHeight =
+            Math.min(
+                input.scrollHeight,
+                130
+            );
+
+        input.style.height =
+            newHeight + "px";
+
+    }
+);
+
+
+/* =========================
+   PLUS MENU
+========================= */
+
+plusButton.addEventListener(
+    "click",
+    function(){
+
+        plusMenu.classList.toggle(
+            "show"
+        );
+
+    }
+);
+
+
+/* =========================
+   SMALL MIC
+========================= */
+
+smallMicButton.addEventListener(
+    "click",
+    function(){
+
+        smallMicButton.classList.toggle(
+            "recording"
+        );
+
+    }
+);
+
+
+/* =========================
+   VOICE / SEND
+========================= */
+
+voiceSendButton.addEventListener(
+    "click",
+    function(){
+
+        if(input.value.trim() !== ""){
+
+            alert(
+                "Send button pressed."
+            );
+
+            input.value = "";
+
+            input.dispatchEvent(
+                new Event("input")
+            );
+
+        }else{
+
+            alert(
+                "Voice option pressed."
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
