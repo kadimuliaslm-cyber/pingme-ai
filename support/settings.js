@@ -1,0 +1,1 @@
+// PingMe AI — Settings Support
