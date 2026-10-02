@@ -467,8 +467,6 @@ body {
     id="firstBar"
 >
 
-    <!-- বামে মেনু বাটন -->
-
     <button
         class="circle-btn left"
         type="button"
@@ -480,8 +478,6 @@ body {
 
     </button>
 
-
-    <!-- মাঝে PingMe Pro -->
 
     <button
         class="plus-btn"
@@ -505,8 +501,6 @@ body {
 
     </button>
 
-
-    <!-- ডানে নতুন চ্যাট আইকন -->
 
     <button
         class="circle-btn right"
@@ -568,8 +562,6 @@ body {
         type="button"
     >
 
-        <!-- Edit -->
-
         <svg
             viewBox="0 0 24 24"
             width="22"
@@ -591,8 +583,6 @@ body {
 
         </svg>
 
-
-        <!-- তিন ডট -->
 
         <svg
             viewBox="0 0 24 24"
@@ -753,7 +743,6 @@ body {
 
     <div class="input-card">
 
-
         <div
             class="model-box"
             id="modelBox"
@@ -800,9 +789,7 @@ body {
 
         <div class="action-row">
 
-
             <div class="left-actions">
-
 
                 <button
                     class="plus"
@@ -884,19 +871,11 @@ body {
             </div>
 
 
-            <!-- =================================================
-                 শুরুতে এখানে MIC থাকবে
-                 লেখা শুরু করলে SEND হবে
-                 ================================================= -->
-
             <button
                 class="send-button"
                 id="sendButton"
                 type="button"
             >
-
-
-                <!-- প্রথম অবস্থার MIC -->
 
                 <svg
                     class="voice-icon"
@@ -927,8 +906,6 @@ body {
 
                 </svg>
 
-
-                <!-- লেখা থাকলে SEND -->
 
                 <svg
                     class="send-icon"
@@ -973,11 +950,6 @@ body {
 
 /* =========================================================
    ৬. FIREBASE CONFIG
-   =========================================================
-
-   শুধু নিচের apiKey-এর জায়গায়
-   তোর Firebase Web API Key বসাবি।
-
    ========================================================= */
 
 const firebaseConfig = {
@@ -1359,38 +1331,25 @@ async function sendMessage() {
     }
 
 
-    /* প্রথম মেসেজ যাওয়ার সাথে
-       দ্বিতীয় Top Bar */
-
     messageSent();
 
-
-    /* Welcome hide */
 
     welcome.style.display =
         "none";
 
-
-    /* User message */
 
     addUserMessage(
         message
     );
 
 
-    /* Input clear */
-
     input.value = "";
 
-
-    /* আবার MIC state */
 
     sendButton.classList.remove(
         "active"
     );
 
-
-    /* Thinking */
 
     thinking.classList.add(
         "show"
@@ -1402,47 +1361,106 @@ async function sendMessage() {
 
     try {
 
+        const selectedModel =
+            modelSelect.value;
 
-        /* Get current chat */
-        const selectedModel = modelSelect.value;
-         
-        if (selectedModel === "openai") {
-        
-             const response = await fetch("/api/openai", {    
-                
-           method: "POST",  
-                 
-           headers: {
-             "Content-Type": "application/json"
-             },
-                 
-         body: JSON.stringify({
-            message: message
-          })
-          });     
-       } else {    
+
+        let reply = "";
+
+
+        /* =================================================
+           OPENAI
+           ================================================= */
+
+        if (
+            selectedModel === "openai"
+        ) {
+
+            const response =
+                await fetch(
+                    "/api/openai",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                message:
+                                    message
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    "OpenAI request failed."
+                );
+
+            }
+
+
+            reply =
+                data.reply ||
+                "";
+
+
+            if (
+                reply === ""
+            ) {
+
+                throw new Error(
+                    "OpenAI returned an empty response."
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           GEMINI
+           ================================================= */
+
+        else {
+
             const chat =
-          getChatSession();
-                
-        /* Send to Gemini */
-
-        const result =
-            await chat.sendMessage(
-                message
-            );
+                getChatSession();
 
 
-        /* AI response */
-
-        const response =
-            result.response;
-
-
-        const reply =
-            response.text();
+            const result =
+                await chat.sendMessage(
+                    message
+                );
 
 
-        /* Save conversation */
+            const response =
+                result.response;
+
+
+            reply =
+                response.text();
+
+        }
+
+
+        /* =================================================
+           SAVE CONVERSATION
+           ================================================= */
 
         conversationHistory.push({
 
@@ -1474,14 +1492,18 @@ async function sendMessage() {
         });
 
 
-        /* Stop thinking */
+        /* =================================================
+           STOP THINKING
+           ================================================= */
 
         thinking.classList.remove(
             "show"
         );
 
 
-        /* Show AI reply */
+        /* =================================================
+           SHOW AI RESPONSE
+           ================================================= */
 
         addAIMessage(
             reply
@@ -1778,8 +1800,6 @@ function scrollToBottom() {
 }
 
 </script>
-    
-
 
 
 </body>
