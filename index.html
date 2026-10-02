@@ -1412,8 +1412,15 @@ async function sendMessage() {
                 
            method: "POST",  
                  
-           } else {
-        
+           headers: {
+             "Content-Type": "application/json"
+             },
+                 
+         body: JSON.stringify({
+            message: message
+          })
+          });     
+       } else {    
             const chat =
           getChatSession();
                 
@@ -1771,6 +1778,8 @@ function scrollToBottom() {
 }
 
 </script>
+    
+
 
 
 </body>
